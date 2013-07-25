@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+           id="org.apache.cordova.plugin.AdMobPlugin"
+      version="0.1.0">
+    <name>AdMob</name>
+
+    <js-module src="www/AdMobPlugin.js" name="AdMobPlugin">
+        <clobbers target="window.admob" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="AdMob">
+                <param name="android-package" value="org.apache.cordova.plugin.AdMobPlugin"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        </config-file>
+
+        <source-file src="src/android/AdMobPlugin.java" target-dir="src/org/apache/cordova/plugin" />
+
+     </platform>
+     
+     <!-- ios -->
+     <platform name="ios">    
+         <config-file target="config.xml" parent="/*">
+             <feature name="AdMob">
+                 <param name="ios-package" value="AdMobPlugin" />
+             </feature>
+         </config-file>
+         
+         <header-file src="src/ios/AdMobPlugin.h" />
+         <source-file src="src/ios/AdMobPlugin.m" />
+ 	     <framework src="CoreLocation.framework" />
+ 	     <framework src="CoreGraphics.framework" />
+         <framework src="MobileCoreServices.framework" />
+     </platform>
+          
+</plugin>
