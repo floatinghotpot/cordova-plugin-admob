@@ -6,7 +6,7 @@
     <name>AdMob</name>
 
     <js-module src="www/AdMob.js" name="AdMob">
-        <clobbers target="window.admob" />
+        <clobbers target="window.AdMob" />
     </js-module>
 
     <!-- android -->
