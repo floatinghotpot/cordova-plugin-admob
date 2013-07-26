@@ -4,6 +4,7 @@ AdMob Cordova Plugin for Android
 This plugin provides a way to request AdMob ads natively from JavaScript.
 This plugin was written and tested with the Google AdMob SDK version 6.1.0,
 and Cordova 2.0.0.
+Now, it's port to Cordova 3.0.0, and tested pass.
 
 ##Requirements:
 
@@ -16,14 +17,20 @@ and Cordova 2.0.0.
 
 ##Setup:
 
+1. It's recommended to use cordova command line tool to manage the plugin like this:
+   cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
+2. Place Cordova SDK jar, Google AdMob SDK jar inside libs/
+3. Complete the Google AdMob SDK setup for Android at
+   https://developers.google.com/mobile-ads-sdk/docs
+
+If hope to setup manually, then:
+
 1. Place Cordova SDK jar, Google AdMob SDK jar, and the AdMob Cordova plugin
    jar inside libs/
-2. Place Cordova JS and AdMobPlugin.js inside assets/www/
+2. Place Cordova JS and AdMob.js inside assets/www/
 3. Place cordova.xml and plugins.xml into res/xml
-4. Add `<plugin name='AdMobPlugin' value='com.google.cordova.plugin.AdMobPlugin'/>`
+4. Add `<plugin name='AdMob' value='com.google.cordova.plugin.admob'/>`
    to your `plugins.xml`
-5. Complete the Google AdMob SDK setup for Android at
-   https://developers.google.com/mobile-ads-sdk/docs
 
 ##Using the Plugin:
 
@@ -65,6 +72,19 @@ There are two calls needed to get AdMob Ads:
              failureCallback
          );
 
+
+3. `showAd`
+
+   Show or hide the Ad.
+   
+   This method should only be invoked once createBannerView has invoked successCallback.  
+   An example call is provided below:
+
+         window.plugins.AdMob.showAd( 
+             true,
+             successCallback,
+             failureCallback
+         );
 
 This plugin also allows you the option to listen for ad events.  The following
 events are supported:

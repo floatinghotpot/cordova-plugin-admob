@@ -27,7 +27,7 @@ import java.util.Iterator;
  * This plugin can be used to request AdMob ads natively via the Google AdMob SDK.
  * The Google AdMob SDK is a dependency for this plugin.
  */
-public class AdMobPlugin extends CordovaPlugin {
+public class AdMob extends CordovaPlugin {
   /** The adView to display to the user. */
   private AdView adView;
 
@@ -35,7 +35,7 @@ public class AdMobPlugin extends CordovaPlugin {
   private boolean positionAtTop;
 
   /** Common tag used for logging statements. */
-  private static final String LOGTAG = "AdMobPlugin";
+  private static final String LOGTAG = "AdMob";
 
   /** Cordova Actions. */
   private static final String ACTION_CREATE_BANNER_VIEW = "createBannerView";
@@ -43,11 +43,11 @@ public class AdMobPlugin extends CordovaPlugin {
   private static final String ACTION_SHOW_AD = "showAd";
   
   private static final int	PUBLISHER_ID_ARG_INDEX = 0;
-  private static final int	AD_SIZE_ARG_INDEX = 0;
-  private static final int	POSITION_AT_TOP_ARG_INDEX = 0;
+  private static final int	AD_SIZE_ARG_INDEX = 1;
+  private static final int	POSITION_AT_TOP_ARG_INDEX = 2;
 
   private static final int	IS_TESTING_ARG_INDEX = 0;
-  private static final int	EXTRAS_ARG_INDEX = 0;
+  private static final int	EXTRAS_ARG_INDEX = 1;
   
   private static final int	SHOW_AD_ARG_INDEX = 0;
 
@@ -63,7 +63,6 @@ public class AdMobPlugin extends CordovaPlugin {
    */
   @Override
   public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
-  //public PluginResult execute(String action, JSONArray inputs, String callbackId) {
     PluginResult result = null;
     if (ACTION_CREATE_BANNER_VIEW.equals(action)) {
       result = executeCreateBannerView(inputs);
@@ -76,6 +75,7 @@ public class AdMobPlugin extends CordovaPlugin {
       result = new PluginResult(Status.INVALID_ACTION);
     }
     callbackContext.sendPluginResult( result );
+    
     return true;
   }
 
@@ -96,10 +96,9 @@ public class AdMobPlugin extends CordovaPlugin {
 
     // Get the input data.
     try {
-      JSONArray data = inputs.getJSONArray( 0 );
-      publisherId = data.getString( PUBLISHER_ID_ARG_INDEX );
-      size = data.getString( AD_SIZE_ARG_INDEX );
-      this.positionAtTop = data.getBoolean( POSITION_AT_TOP_ARG_INDEX );
+      publisherId = inputs.getString( PUBLISHER_ID_ARG_INDEX );
+      size = inputs.getString( AD_SIZE_ARG_INDEX );
+      this.positionAtTop = inputs.getBoolean( POSITION_AT_TOP_ARG_INDEX );
     	
     } catch (JSONException exception) {
       Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
@@ -128,9 +127,8 @@ public class AdMobPlugin extends CordovaPlugin {
 
     // Get the input data.
     try {
-      JSONArray data = inputs.getJSONArray(0);
-      isTesting = data.getBoolean( IS_TESTING_ARG_INDEX );
-      inputExtras = data.getJSONObject( EXTRAS_ARG_INDEX );
+      isTesting = inputs.getBoolean( IS_TESTING_ARG_INDEX );
+      inputExtras = inputs.getJSONObject( EXTRAS_ARG_INDEX );
 
     } catch (JSONException exception) {
       Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
@@ -157,22 +155,14 @@ public class AdMobPlugin extends CordovaPlugin {
 
     // Get the input data.
     try {
-        JSONArray data = inputs.getJSONArray(0);
-        show = data.getBoolean( SHOW_AD_ARG_INDEX ); 
-        
+        show = inputs.getBoolean( SHOW_AD_ARG_INDEX ); 
     } catch (JSONException exception) {
       Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
       return new PluginResult(Status.JSON_EXCEPTION);
     }
     
-    // show or hide Ad here.
-    if( show ) {
-    	adView.setVisibility( View.VISIBLE );
-    } else {
-    	adView.setVisibility( View.INVISIBLE );
-    }
-
-    return new PluginResult(Status.OK);
+    // Request an ad on the UI thread.
+    return executeRunnable( new ShowAdRunnable(show) );
   }
 
   /**
@@ -285,6 +275,33 @@ public class AdMobPlugin extends CordovaPlugin {
           adView.loadAd(request);
           result = new PluginResult(Status.OK);
         }
+      }
+      synchronized (this) {
+        this.notify();
+      }
+    }
+  }
+
+  /** Runnable for the showAd action. */
+  private class ShowAdRunnable extends AdMobRunnable {
+    private boolean show;
+
+    public ShowAdRunnable(boolean show) {
+      this.show = show;
+      result = new PluginResult(Status.NO_RESULT);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void run() {
+      if (adView == null) {
+        result = new PluginResult(Status.ERROR, "AdView is null.  Did you call createBannerView?");
+      } else {
+		if (this.show) {
+			adView.setVisibility(View.VISIBLE);
+		} else {
+			adView.setVisibility(View.GONE);
+		}
       }
       synchronized (this) {
         this.notify();

@@ -1,4 +1,4 @@
-/*
+cordova.define("org.apache.cordova.plugin.admob.AdMobPlugin", function(require, exports, module) {/*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -87,7 +87,7 @@ function(options, successCallback, failureCallback) {
   cordova.exec(
       successCallback,
       failureCallback,
-      'AdMobPlugin',
+      'AdMob',
       'createBannerView',
       [defaults['publisherId'], defaults['adSize'], defaults['positionAtTop']]
   );
@@ -133,7 +133,7 @@ function(options, successCallback, failureCallback) {
   cordova.exec(
       successCallback,
       failureCallback,
-      'AdMobPlugin',
+      'AdMob',
       'requestAd',
       [defaults['isTesting'], defaults['extras']]
   );
@@ -156,10 +156,11 @@ admobExport.showAd = function( show, successCallback, failureCallback) {
 	cordova.exec(
 		successCallback,
 		failureCallback, 
-		'AdMobPlugin', 
+		'AdMob', 
 		'showAd', 
 		[ show ]
 	);
 };
 
 module.exports = admobExport;
+});

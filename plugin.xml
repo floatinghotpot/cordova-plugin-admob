@@ -5,7 +5,7 @@
       version="0.1.0">
     <name>AdMob</name>
 
-    <js-module src="www/AdMobPlugin.js" name="AdMobPlugin">
+    <js-module src="www/AdMob.js" name="AdMob">
         <clobbers target="window.admob" />
     </js-module>
 
@@ -23,7 +23,7 @@
 			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
           </config-file>
 
-        <source-file src="src/android/AdMobPlugin.java" target-dir="src/org/apache/cordova/plugin" />
+        <source-file src="src/android/AdMob.java" target-dir="src/org/apache/cordova/plugin" />
 
      </platform>
      
