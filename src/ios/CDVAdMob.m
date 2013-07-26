@@ -1,9 +1,9 @@
-#import "AdMobPlugin.h"
+#import "CDVAdMob.h"
 #import "GADAdMobExtras.h"
 #import "GADAdSize.h"
 #import "GADBannerView.h"
 
-@interface AdMobPlugin ()
+@interface CDVAdMob ()
 
 - (void)createGADBannerViewWithPubId:(NSString *)pubId
                           bannerType:(GADAdSize)adSize;
@@ -15,14 +15,14 @@
 
 @end
 
-@implementation AdMobPlugin
+@implementation CDVAdMob
 
 @synthesize bannerView = bannerView_;
 
 #pragma mark Cordova JS bridge
 
 - (CDVPlugin *)initWithWebView:(UIWebView *)theWebView {
-  self = (AdMobPlugin *)[super initWithWebView:theWebView];
+  self = (CDVAdMob *)[super initWithWebView:theWebView];
   if (self) {
     // These notifications are required for re-placing the ad on orientation
     // changes. Start listening for notifications here since we need to
@@ -50,13 +50,13 @@
   if (![command argumentAtIndex:PUBLISHER_ID_ARG_INDEX]) {
     // Call the error callback that was passed in through the javascript
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                     messageAsString:@"AdMobPlugin:"
+                                     messageAsString:@"CDVAdMob:"
                                                      @"Invalid publisher Id"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     return;
   } else if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                     messageAsString:@"AdMobPlugin:"
+                                     messageAsString:@"CDVAdMob:"
                                                      @"Invalid ad size"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     return;
@@ -84,7 +84,7 @@
     // Try to prevent requestAd from being called without createBannerView first
     // being called.
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                     messageAsString:@"AdMobPlugin:"
+                                     messageAsString:@"CDVAdMob:"
                                                      @"No ad view exists"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     return;
@@ -109,7 +109,7 @@
     // Try to prevent requestAd from being called without createBannerView first
     // being called.
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                     messageAsString:@"AdMobPlugin:"
+                                     messageAsString:@"CDVAdMob:"
                                                      @"No ad view exists"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     return;

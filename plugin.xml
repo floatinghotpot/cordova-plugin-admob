@@ -35,8 +35,8 @@
              </feature>
          </config-file>
          
-         <header-file src="src/ios/AdMobPlugin.h" />
-         <source-file src="src/ios/AdMobPlugin.m" />
+         <header-file src="src/ios/CDVAdMob.h" />
+         <source-file src="src/ios/CDVAdMob.m" />
  	     <framework src="StoreKit.framework" />
  	     <framework src="AudioToolbox.framework" />
          <framework src="MessageUI.framework" />

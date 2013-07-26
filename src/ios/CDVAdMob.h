@@ -20,7 +20,7 @@
 #pragma mark AdMob Plugin
 
 // This version of the AdMob plugin has been tested with Cordova version 2.5.0.
-@interface AdMobPlugin : CDVPlugin <GADBannerViewDelegate> {
+@interface CDVAdMob : CDVPlugin <GADBannerViewDelegate> {
  @private
   // Value set by the javascript to indicate whether the ad is to be positioned
   // at the top or bottom of the screen.
