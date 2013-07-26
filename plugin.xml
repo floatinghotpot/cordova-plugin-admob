@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-           id="org.apache.cordova.plugin.AdMob"
+           id="org.apache.cordova.plugin.admob"
       version="0.1.0">
     <name>AdMob</name>
 
@@ -31,7 +31,7 @@
      <platform name="ios">    
          <config-file target="config.xml" parent="/*">
              <feature name="AdMob">
-                 <param name="ios-package" value="AdMob" />
+                 <param name="ios-package" value="CDVAdMob" />
              </feature>
          </config-file>
          

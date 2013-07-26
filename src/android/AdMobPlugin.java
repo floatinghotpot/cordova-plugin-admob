@@ -1,4 +1,4 @@
-package com.google.cordova.plugin;
+package org.apache.cordova.plugin;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
@@ -8,15 +8,17 @@ import com.google.ads.AdSize;
 import com.google.ads.AdView;
 import com.google.ads.mediation.admob.AdMobAdapterExtras;
 
-import android.util.Log;
-
+import org.apache.cordova.CallbackContext;
 import org.apache.cordova.LinearLayoutSoftKeyboardDetect;
-import org.apache.cordova.api.Plugin;
-import org.apache.cordova.api.PluginResult;
-import org.apache.cordova.api.PluginResult.Status;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginResult.Status;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.util.Log;
+import android.view.View;
 
 import java.util.Iterator;
 
@@ -25,7 +27,7 @@ import java.util.Iterator;
  * This plugin can be used to request AdMob ads natively via the Google AdMob SDK.
  * The Google AdMob SDK is a dependency for this plugin.
  */
-public class AdMobPlugin extends Plugin {
+public class AdMobPlugin extends CordovaPlugin {
   /** The adView to display to the user. */
   private AdView adView;
 
@@ -60,7 +62,8 @@ public class AdMobPlugin extends Plugin {
    *         status of INVALID_ACTION is returned if the action is not recognized.
    */
   @Override
-  public PluginResult execute(String action, JSONArray inputs, String callbackId) {
+  public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
+  //public PluginResult execute(String action, JSONArray inputs, String callbackId) {
     PluginResult result = null;
     if (ACTION_CREATE_BANNER_VIEW.equals(action)) {
       result = executeCreateBannerView(inputs);
@@ -72,7 +75,8 @@ public class AdMobPlugin extends Plugin {
       Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
       result = new PluginResult(Status.INVALID_ACTION);
     }
-    return result;
+    callbackContext.sendPluginResult( result );
+    return true;
   }
 
   /**
@@ -150,7 +154,6 @@ public class AdMobPlugin extends Plugin {
    */
   private PluginResult executeShowAd(JSONArray inputs) {
     boolean show;
-    JSONObject inputExtras;
 
     // Get the input data.
     try {
@@ -164,9 +167,9 @@ public class AdMobPlugin extends Plugin {
     
     // show or hide Ad here.
     if( show ) {
-    	view.setVisibility(View.VISIBLE)
+    	adView.setVisibility( View.VISIBLE );
     } else {
-    	view.setVisibility(View.INVISIBLE)
+    	adView.setVisibility( View.INVISIBLE );
     }
 
     return new PluginResult(Status.OK);
