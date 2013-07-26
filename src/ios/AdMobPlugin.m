@@ -75,6 +75,32 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
+
+- (void)showAd:(CDVInvokedUrlCommand *)command {
+  CDVPluginResult *pluginResult;
+  NSString *callbackId = command.callbackId;
+
+  if (!self.bannerView) {
+    // Try to prevent requestAd from being called without createBannerView first
+    // being called.
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                     messageAsString:@"AdMobPlugin:"
+                                                     @"No ad view exists"];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    return;
+  }
+
+  BOOL show = [[command argumentAtIndex:SHOW_AD_ARG_INDEX] boolValue];
+  if ( show ) {
+      [self.bannerView setHidden:NO];
+  } else {
+      [self.bannerView setHidden:YES];
+  }
+
+  pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
 - (void)requestAd:(CDVInvokedUrlCommand *)command {
   CDVPluginResult *pluginResult;
   NSString *callbackId = command.callbackId;

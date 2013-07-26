@@ -38,6 +38,16 @@ public class AdMobPlugin extends Plugin {
   /** Cordova Actions. */
   private static final String ACTION_CREATE_BANNER_VIEW = "createBannerView";
   private static final String ACTION_REQUEST_AD = "requestAd";
+  private static final String ACTION_SHOW_AD = "showAd";
+  
+  private static final int	PUBLISHER_ID_ARG_INDEX = 0;
+  private static final int	AD_SIZE_ARG_INDEX = 0;
+  private static final int	POSITION_AT_TOP_ARG_INDEX = 0;
+
+  private static final int	IS_TESTING_ARG_INDEX = 0;
+  private static final int	EXTRAS_ARG_INDEX = 0;
+  
+  private static final int	SHOW_AD_ARG_INDEX = 0;
 
   /**
    * This is the main method for the AdMob plugin.  All API calls go through here.
@@ -56,6 +66,8 @@ public class AdMobPlugin extends Plugin {
       result = executeCreateBannerView(inputs);
     } else if (ACTION_REQUEST_AD.equals(action)) {
       result = executeRequestAd(inputs);
+    } else if (ACTION_SHOW_AD.equals(action)) {
+        result = executeShowAd(inputs);
     } else {
       Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
       result = new PluginResult(Status.INVALID_ACTION);
@@ -80,10 +92,11 @@ public class AdMobPlugin extends Plugin {
 
     // Get the input data.
     try {
-      JSONObject data = inputs.getJSONObject(0);
-      publisherId = data.getString("publisherId");
-      size = data.getString("adSize");
-      this.positionAtTop = data.getBoolean("positionAtTop");
+      JSONArray data = inputs.getJSONArray( 0 );
+      publisherId = data.getString( PUBLISHER_ID_ARG_INDEX );
+      size = data.getString( AD_SIZE_ARG_INDEX );
+      this.positionAtTop = data.getBoolean( POSITION_AT_TOP_ARG_INDEX );
+    	
     } catch (JSONException exception) {
       Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
       return new PluginResult(Status.JSON_EXCEPTION);
@@ -111,9 +124,10 @@ public class AdMobPlugin extends Plugin {
 
     // Get the input data.
     try {
-      JSONObject data = inputs.getJSONObject(0);
-      isTesting = data.getBoolean("isTesting");
-      inputExtras = data.getJSONObject("extras");
+      JSONArray data = inputs.getJSONArray(0);
+      isTesting = data.getBoolean( IS_TESTING_ARG_INDEX );
+      inputExtras = data.getJSONObject( EXTRAS_ARG_INDEX );
+
     } catch (JSONException exception) {
       Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
       return new PluginResult(Status.JSON_EXCEPTION);
@@ -121,6 +135,41 @@ public class AdMobPlugin extends Plugin {
 
     // Request an ad on the UI thread.
     return executeRunnable(new RequestAdRunnable(isTesting, inputExtras));
+  }
+
+  /**
+   * Parses the show ad input parameters and runs the show ad action on
+   * the UI thread.
+   *
+   * @param inputs The JSONArray representing input parameters.  This function
+   *        expects the first object in the array to be a JSONObject with the
+   *        input parameters.
+   * @return A PluginResult representing whether or not an ad was requested
+   *         succcessfully.  Listen for onReceiveAd() and onFailedToReceiveAd()
+   *         callbacks to see if an ad was successfully retrieved. 
+   */
+  private PluginResult executeShowAd(JSONArray inputs) {
+    boolean show;
+    JSONObject inputExtras;
+
+    // Get the input data.
+    try {
+        JSONArray data = inputs.getJSONArray(0);
+        show = data.getBoolean( SHOW_AD_ARG_INDEX ); 
+        
+    } catch (JSONException exception) {
+      Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
+      return new PluginResult(Status.JSON_EXCEPTION);
+    }
+    
+    // show or hide Ad here.
+    if( show ) {
+    	view.setVisibility(View.VISIBLE)
+    } else {
+    	view.setVisibility(View.INVISIBLE)
+    }
+
+    return new PluginResult(Status.OK);
   }
 
   /**

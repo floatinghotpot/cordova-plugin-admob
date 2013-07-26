@@ -1,33 +1,41 @@
-/**
- * This class defines an AdMob object that is used to show ads natively in a
- * native iOS application.
- * @constructor
- */
-var AdMob = function() {
-};
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+*/
 
+var argscheck = require('cordova/argscheck'),
+    exec = require('cordova/exec');
+
+var admobExport = {};
 
 /**
  * This enum represents AdMob's supported ad sizes.  Use one of these
  * constants as the adSize when calling createBannerView.
  * @const
  */
-AdMob.AD_SIZE = {
+admobExport.AD_SIZE = {
   BANNER: 'BANNER',
   IAB_MRECT: 'IAB_MRECT',
   IAB_BANNER: 'IAB_BANNER',
   IAB_LEADERBOARD: 'IAB_LEADERBOARD',
   SMART_BANNER: 'SMART_BANNER'
 };
-
-/** This piece of code adds AdMob as a Cordova plugin. */
-cordova.addConstructor(function() {
-  if (!window.plugins) {
-    window.plugins = {};
-  }
-  window.plugins.AdMob = new AdMob();
-});
-
 
 /**
  * Creates a new AdMob banner view.
@@ -51,8 +59,8 @@ cordova.addConstructor(function() {
  * @param {function()} failureCallback The function to call if create banner
  *         was unsuccessful.
  */
-AdMob.prototype.createBannerView =
-    function(options, successCallback, failureCallback) {
+admobExport.createBannerView =
+function(options, successCallback, failureCallback) {
   var defaults = {
     'publisherId': undefined,
     'adSize': undefined,
@@ -85,7 +93,6 @@ AdMob.prototype.createBannerView =
   );
 };
 
-
 /**
  * Request an AdMob ad.  This call should not be made until after the banner
  * view has been successfully created.
@@ -109,8 +116,9 @@ AdMob.prototype.createBannerView =
  * @param {function()} failureCallback The function to call if an ad failed
  *        to be requested.
  */
-AdMob.prototype.requestAd =
-    function(options, successCallback, failureCallback) {
+
+admobExport.requestAd =
+function(options, successCallback, failureCallback) {
   var defaults = {
     'isTesting': false,
     'extras': {}
@@ -130,3 +138,28 @@ AdMob.prototype.requestAd =
       [defaults['isTesting'], defaults['extras']]
   );
 };
+
+/*
+ * Show or hide Ad.
+ * 
+ * @param {boolean} show true to show, false to hide.  
+ * @param {function()} successCallback The function to call if an ad was
+ *        requested successfully.
+ * @param {function()} failureCallback The function to call if an ad failed
+ *        to be requested.
+ */
+admobExport.showAd = function( show, successCallback, failureCallback) {
+	if (show === undefined) {
+		show = true;
+	}
+
+	cordova.exec(
+		successCallback,
+		failureCallback, 
+		'AdMobPlugin', 
+		'showAd', 
+		[ show ]
+	);
+};
+
+module.exports = admobExport;

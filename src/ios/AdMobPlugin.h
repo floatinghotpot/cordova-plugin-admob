@@ -9,8 +9,11 @@
 #define PUBLISHER_ID_ARG_INDEX    0
 #define AD_SIZE_ARG_INDEX         1
 #define POSITION_AT_TOP_ARG_INDEX 2
+
 #define IS_TESTING_ARG_INDEX      0
 #define EXTRAS_ARG_INDEX          1
+
+#define SHOW_AD_ARG_INDEX    0
 
 @class GADBannerView;
 
@@ -28,5 +31,6 @@
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
 - (void)requestAd:(CDVInvokedUrlCommand *)command;
+- (void)showAd:(CDVInokeUrlCommand *)command;
 
 @end
