@@ -69,6 +69,9 @@
   NSString *publisherId = [command argumentAtIndex:PUBLISHER_ID_ARG_INDEX];
   [self createGADBannerViewWithPubId:publisherId
                           bannerType:adSize];
+    
+  // set background color to black
+  self.webView.superview.backgroundColor = [UIColor blackColor];
 
   // Call the success callback that was passed in through the javascript.
   pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -90,11 +93,23 @@
     return;
   }
 
+  BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView];
+    
   BOOL show = [[command argumentAtIndex:SHOW_AD_ARG_INDEX] boolValue];
-  if ( show ) {
+    
+  if( adIsShowing == show ) {
+      // no change needed.
+      
+  } else if ( show ) {
+      [self.webView.superview addSubview:self.bannerView];
       [self.bannerView setHidden:NO];
+      
+      [self resizeViews];
   } else {
+      [self.bannerView removeFromSuperview];
       [self.bannerView setHidden:YES];
+      
+      [self.webView setFrame:(CGRectMake(0, 0, self.webView.superview.frame.size.width, self.webView.superview.frame.size.height)) ];
   }
 
   pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -157,7 +172,8 @@
 
 - (void)createGADBannerViewWithPubId:(NSString *)pubId
                           bannerType:(GADAdSize)adSize {
-  self.bannerView = [[[GADBannerView alloc] initWithAdSize:adSize] autorelease];
+  //self.bannerView = [[[GADBannerView alloc] initWithAdSize:adSize] autorelease];
+  self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
   self.bannerView.adUnitID = pubId;
   self.bannerView.delegate = self;
   self.bannerView.rootViewController = self.viewController;
@@ -178,7 +194,8 @@
             nil];
   }
   if (extrasDict) {
-    GADAdMobExtras *extras = [[[GADAdMobExtras alloc] init] autorelease];
+    //GADAdMobExtras *extras = [[[GADAdMobExtras alloc] init] autorelease];
+    GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
     NSMutableDictionary *modifiedExtrasDict =
         [[NSMutableDictionary alloc] initWithDictionary:extrasDict];
     [modifiedExtrasDict removeObjectForKey:@"cordova"];
@@ -325,9 +342,12 @@
       removeObserver:self
                 name:UIDeviceOrientationDidChangeNotification
               object:nil];
-  bannerView_.delegate = nil;
-  [bannerView_ release];
-  [super dealloc];
+    bannerView_.delegate = nil;
+    
+    bannerView_ = nil;
+    self.bannerView = nil;
+  //[bannerView_ release];
+  //[super dealloc];
 }
 
 @end

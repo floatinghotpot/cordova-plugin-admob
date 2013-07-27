@@ -4,6 +4,7 @@ AdMob Cordova Plugin for iOS
 This is the AdMob Cordova Plugin for iOS.  It provides a way to request
 AdMob ads natively from JavaScript.  This plugin was written and tested with
 the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
+Now, it's port to Cordova 3.0.0, and tested pass.
 
 ##Requirements:
 
@@ -15,31 +16,54 @@ the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
 
 ##Setup:
 
-1. Import Cordova SDK binary and Google AdMob SDK binary into your project (with
+1. It's recommended to use cordova command line tool to manage the plugin like this:
+   cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
+   
+2. Import Cordova SDK binary and Google AdMob SDK binary into your project (with
    their associated header files).
-2. Place Cordova JS and AdMobPlugin.js inside www/ folder. This should be where
-   your index.html lives.
-3. Place AdMobPlugin.h and AdMobPlugin.m into the plugins/ folder.
-4. Add AdMobPlugin to Config.xml under the \<plugins\> element. The entry should
-   be \<plugin name="AdMobPlugin" value="AdMobPlugin" \/>.
+   
+3. Complete the Google AdMob SDK setup for iOS at
+   https://developers.google.com/mobile-ads-sdk/docs.
+
+If hope to setup manually instead of using cordova command line tool, then:
+   
+1. Place AdMob.js inside www/ folder. The path is:
+   platforms/ios/www/plugins/org.apache.cordova.plugin.admob/www/.
+   
+2. Place CDVAdMob.h and CDVAdMob.m into the plugins folder, the path is:
+   Plugins/org.apache.cordova.plugin.admob/.
+   
+3. Add following content into config.xml:
+    <feature name="AdMob">
+        <param name="ios-package" value="CDVAdMob" />
+    </feature>
+    
+4. Add following required frameworks, targets -> buildl phases -> link binary with ...
+ 	     StoreKit.framework
+ 	     AudioToolbox.framework
+         MessageUI.framework
+         SystemConfiguration.framework
+         CoreGraphics.framework
+         AdSupport.framework
+         
 5. To make sure there are no domain whitelisting issues, make sure you've set
    the origin attribute of the \<access\> element to "*".
-6. Complete the Google AdMob SDK setup for iOS at
-   https://developers.google.com/mobile-ads-sdk/docs.
 
 ##Implementation:
 
-There are two calls needed to get AdMob Ads:
+##Using the Plugin:
+
+There are 3 calls needed to get AdMob Ads:
 
 1. `createBannerView`
 
    Takes in a object containing a publisherId and adSize, as well as success
    and failure callbacks.  An example call is provided below:
 
-         window.plugins.AdMob.createBannerView(
+        window.AdMob.createBannerView(
              {
                'publisherId': 'INSERT_YOUR_PUBLISHER_ID_HERE',
-               'adSize': AdMob.AdSize.BANNER
+               'adSize': AdSize.BANNER
              },
              successCallback,
              failureCallback
@@ -51,8 +75,7 @@ There are two calls needed to get AdMob Ads:
    list of extras.  This method should only be invoked once createBannerView
    has invoked successCallback.  An example call is provided below:
 
-         logCreateBannerSuccess();
-         window.plugins.AdMob.requestAd(
+         window.AdMob.requestAd(
              {
                'isTesting': false,
                'extras': {
@@ -69,11 +92,24 @@ There are two calls needed to get AdMob Ads:
          );
 
 
+3. `showAd`
+
+   Show or hide the Ad.
+   
+   This method should only be invoked once createBannerView has invoked successCallback.  
+   An example call is provided below:
+
+         window.AdMob.showAd( 
+             true, // or false
+             successCallback,
+             failureCallback
+         );
+
 This plugin also allows you the option to listen for ad events.  The following
 events are supported:
 
     document.addEventListener('onReceiveAd', callback);
     document.addEventListener('onFailedToReceiveAd', callback);
-    document.addEventListener('onDismissScreen', callback);
     document.addEventListener('onPresentScreen', callback);
+    document.addEventListener('onDismissScreen', callback);
     document.addEventListener('onLeaveApplication', callback);

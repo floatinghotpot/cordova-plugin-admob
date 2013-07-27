@@ -34,7 +34,7 @@ If hope to setup manually, then:
 
 ##Using the Plugin:
 
-There are two calls needed to get AdMob Ads:
+There are 3 calls needed to get AdMob Ads:
 
 1. `createBannerView`
 

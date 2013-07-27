@@ -31,6 +31,6 @@
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
 - (void)requestAd:(CDVInvokedUrlCommand *)command;
-- (void)showAd:(CDVInokeUrlCommand *)command;
+- (void)showAd:(CDVInvokedUrlCommand *)command;
 
 @end
