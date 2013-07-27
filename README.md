@@ -11,6 +11,7 @@ How to use?
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
 It's recommended to use cordova command line tool: 
+
 cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
 
 Check the README.md in sub folder for details.
