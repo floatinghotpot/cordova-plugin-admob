@@ -40,14 +40,17 @@
 // The javascript from the AdMob plugin calls this when createBannerView is
 // invoked. This method parses the arguments passed in.
 - (void)createBannerView:(CDVInvokedUrlCommand *)command {
+    
   CDVPluginResult *pluginResult;
   NSString *callbackId = command.callbackId;
+  NSArray* arguments = command.arguments;
+    
   GADAdSize adSize = [self GADAdSizeFromString:
                          [command argumentAtIndex:AD_SIZE_ARG_INDEX]];
   positionAdAtTop_ = NO;
   // We don't need positionAtTop to be set, but we need values for adSize and
   // publisherId if we don't want to fail.
-  if (![command argumentAtIndex:PUBLISHER_ID_ARG_INDEX]) {
+  if (![arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX]) {
     // Call the error callback that was passed in through the javascript
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                      messageAsString:@"CDVAdMob:"
@@ -61,14 +64,12 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     return;
   }
-  if ([command argumentAtIndex:POSITION_AT_TOP_ARG_INDEX]) {
-    positionAdAtTop_=
-        [[command argumentAtIndex:POSITION_AT_TOP_ARG_INDEX] boolValue];
+  if ([arguments objectAtIndex:POSITION_AT_TOP_ARG_INDEX]) {
+    positionAdAtTop_= [[arguments objectAtIndex:POSITION_AT_TOP_ARG_INDEX] boolValue];
   }
 
-  NSString *publisherId = [command argumentAtIndex:PUBLISHER_ID_ARG_INDEX];
-  [self createGADBannerViewWithPubId:publisherId
-                          bannerType:adSize];
+  NSString *publisherId = [arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX];
+  [self createGADBannerViewWithPubId:publisherId bannerType:adSize];
     
   // set background color to black
   self.webView.superview.backgroundColor = [UIColor blackColor];
@@ -82,7 +83,8 @@
 - (void)showAd:(CDVInvokedUrlCommand *)command {
   CDVPluginResult *pluginResult;
   NSString *callbackId = command.callbackId;
-
+  NSArray* arguments = command.arguments;
+    
   if (!self.bannerView) {
     // Try to prevent requestAd from being called without createBannerView first
     // being called.
@@ -95,7 +97,7 @@
 
   BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView];
     
-  BOOL show = [[command argumentAtIndex:SHOW_AD_ARG_INDEX] boolValue];
+  BOOL show = [[arguments objectAtIndex:SHOW_AD_ARG_INDEX] boolValue];
     
   if( adIsShowing == show ) {
       // no change needed.
@@ -117,9 +119,11 @@
 }
 
 - (void)requestAd:(CDVInvokedUrlCommand *)command {
+    
   CDVPluginResult *pluginResult;
   NSString *callbackId = command.callbackId;
-
+  NSArray* arguments = command.arguments;
+    
   if (!self.bannerView) {
     // Try to prevent requestAd from being called without createBannerView first
     // being called.
@@ -131,14 +135,11 @@
   }
 
   NSDictionary *extrasDictionary = nil;
-  if ([command argumentAtIndex:EXTRAS_ARG_INDEX]) {
-    extrasDictionary = [NSDictionary dictionaryWithDictionary:
-                           [command argumentAtIndex:EXTRAS_ARG_INDEX]];
+  if ([arguments objectAtIndex:EXTRAS_ARG_INDEX]) {
+    extrasDictionary = [NSDictionary dictionaryWithDictionary:[arguments objectAtIndex:EXTRAS_ARG_INDEX]];
   }
-  BOOL isTesting =
-      [[command argumentAtIndex:IS_TESTING_ARG_INDEX] boolValue];
-  [self requestAdWithTesting:isTesting
-                      extras:extrasDictionary];
+  BOOL isTesting = [[arguments objectAtIndex:IS_TESTING_ARG_INDEX] boolValue];
+  [self requestAdWithTesting:isTesting extras:extrasDictionary];
 
   pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
