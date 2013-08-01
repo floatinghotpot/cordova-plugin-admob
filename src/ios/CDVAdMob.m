@@ -253,7 +253,7 @@ extras:(NSDictionary *)extrasDict {
 	CGFloat yLocation = 0.0;
 	CGFloat xLocation = 0.0;
 
-	if (bannerAtTop) {
+	if (self.bannerAtTop) {
 		// Move the webview underneath the ad banner.
 		webViewFrame.origin.y = bannerViewFrame.size.height;
 		// Center the banner using the value of the origin.
