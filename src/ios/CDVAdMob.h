@@ -8,7 +8,7 @@
 
 #define PUBLISHER_ID_ARG_INDEX    0
 #define AD_SIZE_ARG_INDEX         1
-#define POSITION_AT_TOP_ARG_INDEX 2
+#define BANNER_AT_TOP_ARG_INDEX   2
 
 #define IS_TESTING_ARG_INDEX      0
 #define EXTRAS_ARG_INDEX          1
@@ -24,7 +24,7 @@
  @private
   // Value set by the javascript to indicate whether the ad is to be positioned
   // at the top or bottom of the screen.
-  BOOL positionAdAtTop_;
+  BOOL bannerAtTop;
 }
 
 @property(nonatomic, retain) GADBannerView *bannerView;

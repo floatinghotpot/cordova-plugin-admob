@@ -29,10 +29,10 @@ extras:(NSDictionary *)extraDict;
 		// translate the Smart Banner constants according to the orientation.
 		[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 		[[NSNotificationCenter defaultCenter]
-		addObserver:self
-		selector:@selector(deviceOrientationChange:)
-		name:UIDeviceOrientationDidChangeNotification
-		object:nil];
+			addObserver:self
+			selector:@selector(deviceOrientationChange:)
+			name:UIDeviceOrientationDidChangeNotification
+			object:nil];
 	}
 	return self;
 }
@@ -45,9 +45,6 @@ extras:(NSDictionary *)extraDict;
 	NSString *callbackId = command.callbackId;
 	NSArray* arguments = command.arguments;
 
-	GADAdSize adSize = [self GADAdSizeFromString:
-	[command argumentAtIndex:AD_SIZE_ARG_INDEX]];
-	positionAdAtTop_ = NO;
 	// We don't need positionAtTop to be set, but we need values for adSize and
 	// publisherId if we don't want to fail.
 	if (![arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX]) {
@@ -57,18 +54,24 @@ extras:(NSDictionary *)extraDict;
 		@"Invalid publisher Id"];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 		return;
-	} else if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
+	}
+	NSString *publisherId = [arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX];
+
+	GADAdSize adSize = [self GADAdSizeFromString:[arguments objectAtIndex:AD_SIZE_ARG_INDEX]];
+	if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
 		messageAsString:@"CDVAdMob:"
 		@"Invalid ad size"];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 		return;
 	}
-	if ([arguments objectAtIndex:POSITION_AT_TOP_ARG_INDEX]) {
-		positionAdAtTop_= [[arguments objectAtIndex:POSITION_AT_TOP_ARG_INDEX] boolValue];
+
+	if ([arguments objectAtIndex:BANNER_AT_TOP_ARG_INDEX]) {
+		self.bannerAtTop = [[arguments objectAtIndex:BANNER_AT_TOP_ARG_INDEX] boolValue];
+	} else {
+		self.bannerAtTop = NO;
 	}
 
-	NSString *publisherId = [arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX];
 	[self createGADBannerViewWithPubId:publisherId bannerType:adSize];
 
 	// set background color to black
@@ -133,11 +136,11 @@ extras:(NSDictionary *)extraDict;
 		return;
 	}
 
+	BOOL isTesting = [[arguments objectAtIndex:IS_TESTING_ARG_INDEX] boolValue];
 	NSDictionary *extrasDictionary = nil;
 	if ([arguments objectAtIndex:EXTRAS_ARG_INDEX]) {
 		extrasDictionary = [NSDictionary dictionaryWithDictionary:[arguments objectAtIndex:EXTRAS_ARG_INDEX]];
 	}
-	BOOL isTesting = [[arguments objectAtIndex:IS_TESTING_ARG_INDEX] boolValue];
 	[self requestAdWithTesting:isTesting extras:extrasDictionary];
 
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -172,7 +175,6 @@ extras:(NSDictionary *)extraDict;
 
 - (void)createGADBannerViewWithPubId:(NSString *)pubId
 bannerType:(GADAdSize)adSize {
-	//self.bannerView = [[[GADBannerView alloc] initWithAdSize:adSize] autorelease];
 	self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
 	self.bannerView.adUnitID = pubId;
 	self.bannerView.delegate = self;
@@ -251,7 +253,7 @@ extras:(NSDictionary *)extrasDict {
 	CGFloat yLocation = 0.0;
 	CGFloat xLocation = 0.0;
 
-	if (positionAdAtTop_) {
+	if (bannerAtTop) {
 		// Move the webview underneath the ad banner.
 		webViewFrame.origin.y = bannerViewFrame.size.height;
 		// Center the banner using the value of the origin.
@@ -306,32 +308,29 @@ extras:(NSDictionary *)extrasDict {
 	[self writeJavascript:@"cordova.fireDocumentEvent('onReceiveAd');"];
 }
 
-- (void)adView:(GADBannerView *)view
-didFailToReceiveAdWithError:(GADRequestError *)error {
+- (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
 	NSLog(@"%s: Failed to receive ad with error: %@",
 			__PRETTY_FUNCTION__, [error localizedFailureReason]);
-	// Since we're passing error data back through Cordova, we need to set this
-	// up.
+	// Since we're passing error back through Cordova, we need to set this up.
 	NSString *jsString =
-	@"cordova.fireDocumentEvent('onFailedToReceiveAd',"
-	@"{ 'error': '%@' });";
-	[self writeJavascript:[NSString stringWithFormat:jsString,
-	[error localizedFailureReason]]];
-}
-
-- (void)adViewWillPresentScreen:(GADBannerView *)adView {
-	[self writeJavascript:
-	@"cordova.fireDocumentEvent('onPresentScreen');"];
-}
-
-- (void)adViewDidDismissScreen:(GADBannerView *)adView {
-	[self writeJavascript:
-	@"cordova.fireDocumentEvent('onDismissScreen');"];
+		@"cordova.fireDocumentEvent('onFailedToReceiveAd',"
+		@"{ 'error': '%@' });";
+	[self writeJavascript:[NSString stringWithFormat:jsString, [error localizedFailureReason]]];
 }
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
 	[self writeJavascript:
-	@"cordova.fireDocumentEvent('onLeaveApplication');"];
+	@"cordova.fireDocumentEvent('onClickAd');"];
+}
+
+- (void)adViewWillPresentScreen:(GADBannerView *)adView {
+	[self writeJavascript:
+	@"cordova.fireDocumentEvent('onPresentAd');"];
+}
+
+- (void)adViewDidDismissScreen:(GADBannerView *)adView {
+	[self writeJavascript:
+	@"cordova.fireDocumentEvent('onDismissAd');"];
 }
 
 #pragma mark Cleanup
@@ -339,15 +338,14 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
 - (void)dealloc {
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter]
-	removeObserver:self
-	name:UIDeviceOrientationDidChangeNotification
-	object:nil];
-	bannerView_.delegate = nil;
+		removeObserver:self
+		name:UIDeviceOrientationDidChangeNotification
+		object:nil];
 
+	bannerView_.delegate = nil;
 	bannerView_ = nil;
+
 	self.bannerView = nil;
-	//[bannerView_ release];
-	//[super dealloc];
 }
 
 @end

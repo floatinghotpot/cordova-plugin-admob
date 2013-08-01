@@ -56,7 +56,7 @@ var app = {
         		{
         		'publisherId' : adId,
 				'adSize' : am.AD_SIZE.BANNER,
-				'positionAtTop' : true
+				'bannerAtTop' : true
         		}, 
         		function() {
         			am.requestAd({

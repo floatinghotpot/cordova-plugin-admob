@@ -65,7 +65,7 @@ function(options, successCallback, failureCallback) {
   var defaults = {
     'publisherId': undefined,
     'adSize': undefined,
-    'positionAtTop': false
+    'bannerAtTop': false
   };
   var requiredOptions = ['publisherId', 'adSize'];
 
@@ -90,7 +90,7 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'createBannerView',
-      [defaults['publisherId'], defaults['adSize'], defaults['positionAtTop']]
+      [defaults['publisherId'], defaults['adSize'], defaults['bannerAtTop']]
   );
 };
 
@@ -149,7 +149,8 @@ function(options, successCallback, failureCallback) {
  * @param {function()} failureCallback The function to call if an ad failed
  *        to be requested.
  */
-admobExport.showAd = function( show, successCallback, failureCallback) {
+admobExport.showAd = 
+function( show, successCallback, failureCallback) {
 	if (show === undefined) {
 		show = true;
 	}
