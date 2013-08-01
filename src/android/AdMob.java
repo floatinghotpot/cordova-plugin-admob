@@ -32,7 +32,7 @@ public class AdMob extends CordovaPlugin {
   private AdView adView;
 
   /** Whether or not the ad should be positioned at top or bottom of screen. */
-  private boolean positionAtTop;
+  private boolean bannerAtTop;
 
   /** Common tag used for logging statements. */
   private static final String LOGTAG = "AdMob";
@@ -98,7 +98,7 @@ public class AdMob extends CordovaPlugin {
     try {
       publisherId = inputs.getString( PUBLISHER_ID_ARG_INDEX );
       size = inputs.getString( AD_SIZE_ARG_INDEX );
-      this.positionAtTop = inputs.getBoolean( POSITION_AT_TOP_ARG_INDEX );
+      this.bannerAtTop = inputs.getBoolean( POSITION_AT_TOP_ARG_INDEX );
     	
     } catch (JSONException exception) {
       Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
@@ -217,7 +217,7 @@ public class AdMob extends CordovaPlugin {
         adView.setAdListener(new BannerListener());
         LinearLayoutSoftKeyboardDetect parentView =
             (LinearLayoutSoftKeyboardDetect) webView.getParent();
-        if (positionAtTop) {
+        if (bannerAtTop) {
           parentView.addView(adView, 0);
         } else {
           parentView.addView(adView);
