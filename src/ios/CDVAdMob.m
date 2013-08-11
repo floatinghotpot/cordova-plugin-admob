@@ -319,18 +319,18 @@ extras:(NSDictionary *)extrasDict {
 }
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
-	[self writeJavascript:
-	@"cordova.fireDocumentEvent('onClickAd');"];
+	//[self writeJavascript:@"cordova.fireDocumentEvent('onClickAd');"];
+    NSLog( @"adViewWillLeaveApplication" );
 }
 
 - (void)adViewWillPresentScreen:(GADBannerView *)adView {
-	[self writeJavascript:
-	@"cordova.fireDocumentEvent('onPresentAd');"];
+	[self writeJavascript:@"cordova.fireDocumentEvent('onClickAd');"];
+    NSLog( @"adViewWillPresentScreen" );
 }
 
 - (void)adViewDidDismissScreen:(GADBannerView *)adView {
-	[self writeJavascript:
-	@"cordova.fireDocumentEvent('onDismissAd');"];
+	[self writeJavascript:@"cordova.fireDocumentEvent('onDismissAd');"];
+    NSLog( @"adViewDidDismissScreen" );
 }
 
 #pragma mark Cleanup
