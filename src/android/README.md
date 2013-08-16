@@ -41,10 +41,10 @@ There are 3 calls needed to get AdMob Ads:
    Takes in a object containing a publisherId and adSize, as well as success
    and failure callbacks.  An example call is provided below:
 
-        window.AdMob.createBannerView(
+        window.plugins.AdMob.createBannerView(
              {
                'publisherId': 'INSERT_YOUR_PUBLISHER_ID_HERE',
-               'adSize': AdSize.BANNER
+               'adSize': window.plugins.AdMob.AD_SIZE.BANNER
              },
              successCallback,
              failureCallback
@@ -56,7 +56,7 @@ There are 3 calls needed to get AdMob Ads:
    list of extras.  This method should only be invoked once createBannerView
    has invoked successCallback.  An example call is provided below:
 
-         window.AdMob.requestAd(
+         window.plugins.AdMob.requestAd(
              {
                'isTesting': false,
                'extras': {
@@ -80,7 +80,7 @@ There are 3 calls needed to get AdMob Ads:
    This method should only be invoked once createBannerView has invoked successCallback.  
    An example call is provided below:
 
-         window.AdMob.showAd( 
+         window.plugins.AdMob.showAd( 
              true,
              successCallback,
              failureCallback
