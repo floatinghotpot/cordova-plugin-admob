@@ -91,6 +91,6 @@ events are supported:
 
     document.addEventListener('onReceiveAd', callback);
     document.addEventListener('onFailedToReceiveAd', callback);
-    document.addEventListener('onPresentScreen', callback);
-    document.addEventListener('onDismissScreen', callback);
-    document.addEventListener('onLeaveApplication', callback);
+    document.addEventListener('onPresentAd', callback);
+    document.addEventListener('onDismissAd', callback);
+    document.addEventListener('onLeaveToAd', callback); 
