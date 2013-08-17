@@ -315,9 +315,9 @@ public class AdMob extends CordovaPlugin {
    *
    * document.addEventListener('onReceiveAd', function());
    * document.addEventListener('onFailedToReceiveAd', function(data));
-   * document.addEventListener('onPresentScreen', function());
-   * document.addEventListener('onDismissScreen', function());
-   * document.addEventListener('onLeaveApplication', function());
+   * document.addEventListener('onPresentAd', function());
+   * document.addEventListener('onDismissAd', function());
+   * document.addEventListener('onLeaveToAd', function());
    */
   private class BannerListener implements AdListener {
     @Override
@@ -334,7 +334,7 @@ public class AdMob extends CordovaPlugin {
 
     @Override
     public void onPresentScreen(Ad ad) {
-      webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentScreen');");
+      webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentAd');");
     }
 
     @Override
@@ -344,7 +344,7 @@ public class AdMob extends CordovaPlugin {
 
     @Override
     public void onLeaveApplication(Ad ad) {
-      webView.loadUrl("javascript:cordova.fireDocumentEvent('onLeaveApplication');");
+      webView.loadUrl("javascript:cordova.fireDocumentEvent('onLeaveToAd');");
     }
   }
 

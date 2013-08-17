@@ -319,12 +319,12 @@ extras:(NSDictionary *)extrasDict {
 }
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
-	//[self writeJavascript:@"cordova.fireDocumentEvent('onClickAd');"];
+	//[self writeJavascript:@"cordova.fireDocumentEvent('onLeaveToAd');"];
     NSLog( @"adViewWillLeaveApplication" );
 }
 
 - (void)adViewWillPresentScreen:(GADBannerView *)adView {
-	[self writeJavascript:@"cordova.fireDocumentEvent('onClickAd');"];
+	[self writeJavascript:@"cordova.fireDocumentEvent('onPresentAd');"];
     NSLog( @"adViewWillPresentScreen" );
 }
 
