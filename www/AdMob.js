@@ -94,6 +94,17 @@ function(options, successCallback, failureCallback) {
   );
 };
 
+admobExport.destroyBannerView =
+function(options, successCallback, failureCallback) {
+  cordova.exec(
+	      successCallback,
+	      failureCallback,
+	      'AdMob',
+	      'destroyBannerView',
+	      []
+	  );
+};
+
 /**
  * Request an AdMob ad.  This call should not be made until after the banner
  * view has been successfully created.

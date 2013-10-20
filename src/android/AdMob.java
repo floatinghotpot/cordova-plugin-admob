@@ -39,6 +39,7 @@ public class AdMob extends CordovaPlugin {
 
   /** Cordova Actions. */
   private static final String ACTION_CREATE_BANNER_VIEW = "createBannerView";
+  private static final String ACTION_DESTROY_BANNER_VIEW = "destroyBannerView";
   private static final String ACTION_REQUEST_AD = "requestAd";
   private static final String ACTION_SHOW_AD = "showAd";
   
@@ -66,7 +67,9 @@ public class AdMob extends CordovaPlugin {
     PluginResult result = null;
     if (ACTION_CREATE_BANNER_VIEW.equals(action)) {
       result = executeCreateBannerView(inputs);
-    } else if (ACTION_REQUEST_AD.equals(action)) {
+    } else if (ACTION_DESTROY_BANNER_VIEW.equals(action)) {
+        result = executeDestroyBannerView(inputs);
+      } else if (ACTION_REQUEST_AD.equals(action)) {
       result = executeRequestAd(inputs);
     } else if (ACTION_SHOW_AD.equals(action)) {
         result = executeShowAd(inputs);
@@ -108,6 +111,11 @@ public class AdMob extends CordovaPlugin {
     // Create the AdView on the UI thread.
     return executeRunnable(new CreateBannerViewRunnable(
         publisherId, adSizeFromSize(size)));
+  }
+
+  private PluginResult executeDestroyBannerView(JSONArray inputs) {
+    // Destroy the AdView on the UI thread.
+    return executeRunnable(new DestroyBannerViewRunnable());
   }
 
   /**
@@ -231,6 +239,28 @@ public class AdMob extends CordovaPlugin {
     }
   }
 
+  private class DestroyBannerViewRunnable extends AdMobRunnable {
+
+	    public CreateBannerViewRunnable() {
+	      result = new PluginResult(Status.NO_RESULT);
+	    }
+
+	    @Override
+	    public void run() {
+	        if(adView != null) {
+		        LinearLayoutSoftKeyboardDetect parentView =
+			            (LinearLayoutSoftKeyboardDetect) webView.getParent();
+	        	parentView.removeView(adView);
+	        }
+	        // Notify the plugin.
+	        result = new PluginResult(Status.OK);
+	      }
+	      synchronized (this) {
+	        this.notify();
+	      }
+	    }
+	  }
+  
   /** Runnable for the requestAd action. */
   private class RequestAdRunnable extends AdMobRunnable {
     private boolean isTesting;

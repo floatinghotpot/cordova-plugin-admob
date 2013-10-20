@@ -82,6 +82,21 @@ extras:(NSDictionary *)extraDict;
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
+- (void)destroyBannerView:(CDVInvokedUrlCommand *)command {
+
+	CDVPluginResult *pluginResult;
+	NSString *callbackId = command.callbackId;
+	NSArray* arguments = command.arguments;
+
+	if(self.bannerView) {
+		[self.bannerView removeFromSuperview];
+	}
+		
+	// Call the success callback that was passed in through the javascript.
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
 - (void)showAd:(CDVInvokedUrlCommand *)command {
 	CDVPluginResult *pluginResult;
 	NSString *callbackId = command.callbackId;

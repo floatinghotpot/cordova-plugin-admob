@@ -27,6 +27,7 @@
 @property (assign) BOOL bannerAtTop;
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
+- (void)destroyBannerView:(CDVInvokedUrlCommand *)command;
 - (void)requestAd:(CDVInvokedUrlCommand *)command;
 - (void)showAd:(CDVInvokedUrlCommand *)command;
 
