@@ -240,26 +240,24 @@ public class AdMob extends CordovaPlugin {
   }
 
   private class DestroyBannerViewRunnable extends AdMobRunnable {
+    public DestroyBannerViewRunnable() {
+      result = new PluginResult(Status.NO_RESULT);
+    }
 
-	    public CreateBannerViewRunnable() {
-	      result = new PluginResult(Status.NO_RESULT);
-	    }
-
-	    @Override
-	    public void run() {
-	        if(adView != null) {
-		        LinearLayoutSoftKeyboardDetect parentView =
-			            (LinearLayoutSoftKeyboardDetect) webView.getParent();
-	        	parentView.removeView(adView);
-	        }
-	        // Notify the plugin.
-	        result = new PluginResult(Status.OK);
-	      }
-	      synchronized (this) {
-	        this.notify();
-	      }
-	    }
-	  }
+    @Override
+    public void run() {
+      if(adView != null) {
+        LinearLayoutSoftKeyboardDetect parentView =
+          (LinearLayoutSoftKeyboardDetect) webView.getParent();
+        parentView.removeView(adView);
+      }
+      // Notify the plugin.
+      result = new PluginResult(Status.OK);
+      synchronized (this) {
+      	this.notify();
+      }
+    }
+  }
   
   /** Runnable for the requestAd action. */
   private class RequestAdRunnable extends AdMobRunnable {
