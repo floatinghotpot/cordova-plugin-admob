@@ -6,7 +6,8 @@
       
     <name>AdMob</name>
 	<description>Add AdMob support</description>
-	<author>Foo plugin description</author>
+	<author>Liming Xie</author>
+	<license>Apache 2.0 License</license>
 
 	<engines>
 	    <engine name="cordova" version=">=2.9" />
