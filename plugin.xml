@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
            id="org.apache.cordova.plugin.admob"
-      version="0.1.0">
+      version="1.0">
+      
     <name>AdMob</name>
+	<description>Add AdMob support</description>
+	<author>Foo plugin description</author>
+
+	<engines>
+	    <engine name="cordova" version=">=2.9" />
+	</engines>
 
     <js-module src="www/AdMob.js" name="AdMob">
         <clobbers target="window.plugins.AdMob" />
