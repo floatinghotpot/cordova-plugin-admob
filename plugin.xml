@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	id="org.apache.cordova.plugin.admob"
+	id="com.rjfun.cordova.plugin.admob"
 	version="1.1">
       
     <name>AdMob</name>
@@ -22,7 +22,7 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="AdMob">
-                <param name="android-package" value="org.apache.cordova.plugin.AdMob"/>
+                <param name="android-package" value="com.rjfun.cordova.plugin.AdMob"/>
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -34,7 +34,7 @@
 			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
           </config-file>
           
-        <source-file src="src/android/AdMob.java" target-dir="src/org/apache/cordova/plugin" />
+        <source-file src="src/android/AdMob.java" target-dir="src/com/rjfun/cordova/plugin" />
 
      </platform>
      

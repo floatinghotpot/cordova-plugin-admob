@@ -1,4 +1,4 @@
-package org.apache.cordova.plugin;
+package com.rjfun.cordova.plugin;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
