@@ -35,7 +35,7 @@
           </config-file>
           
         <source-file src="src/android/AdMob.java" target-dir="src/com/rjfun/cordova/plugin" />
-
+		<source-file src="src/android/GoogleAdMobAdsSdk-6.4.1.jar" target-dir="libs" />
      </platform>
      
      <!-- ios -->
@@ -48,6 +48,18 @@
          
          <header-file src="src/ios/CDVAdMob.h" />
          <source-file src="src/ios/CDVAdMob.m" />
+         
+         <header-file src="src/ios/GADAdMobExtras.h" />
+         <header-file src="src/ios/GADAdNetworkExtras.h" />
+         <header-file src="src/ios/GADAdSize.h" />
+         <header-file src="src/ios/GADBannerView.h" />
+         <header-file src="src/ios/GADBannerViewDelegate.h" />
+         <header-file src="src/ios/GADInterstitial.h" />
+         <header-file src="src/ios/GADInterstitialDelegate.h" />
+         <header-file src="src/ios/GADRequest.h" />
+         <header-file src="src/ios/GADRequestError.h" />
+         <source-file src="src/ios/libGoogleAdMobAds.a" framework="true" />
+         
  	     <framework src="StoreKit.framework" />
  	     <framework src="AudioToolbox.framework" />
          <framework src="MessageUI.framework" />
