@@ -18,29 +18,33 @@ Check the README.md in sub folder for details.
 
 Quick example
 ---------------------------
-  if( window.plugins && window.plugins.AdMob ) {
-    var admob_ios_key = 'a151e6d43c5a28f';
-    var admob_android_key = 'a151e6d65b12438';
-    var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
-    var am = window.plugins.AdMob;
+Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
+
+    if( window.plugins && window.plugins.AdMob ) {
+        var admob_ios_key = 'a151e6d43c5a28f';
+        var admob_android_key = 'a151e6d65b12438';
+        var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
+        var am = window.plugins.AdMob;
     
-    am.createBannerView( 
-    {
-    'publisherId': adId,
-    'adSize': am.AD_SIZE.BANNER,
-    'bannerAtTop': false
-    }, 
-    function() {
-    	am.requestAd(
-    		{ 'isTesting':isTesting }, 
-    		function(){
-    			am.showAd( true );
-    		}, 
-    		function(){ alert('failed to request ad'); }
-    	);
-    }, 
-    function(){ alert('failed to create banner view'); }
-    );
-  } else {
-    alert('AdMob plugin not available/ready.');
-  }
+        am.createBannerView( 
+            {
+            'publisherId': adId,
+            'adSize': am.AD_SIZE.BANNER,
+            'bannerAtTop': false
+            }, 
+            function() {
+        	    am.requestAd(
+        		    { 'isTesting':isTesting }, 
+            		function(){
+            			am.showAd( true );
+            		}, 
+            		function(){ alert('failed to request ad'); }
+            	);
+            }, 
+            function(){ alert('failed to create banner view'); }
+        );
+    } else {
+      alert('AdMob plugin not available/ready.');
+    }
+
+    
