@@ -15,3 +15,28 @@ It's recommended to use cordova command line tool:
 cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
 
 Check the README.md in sub folder for details.
+
+Quick example
+---------------------------
+  if( window.plugins && window.plugins.AdMob ) {
+    var am = window.plugins.AdMob;
+    am.createBannerView( 
+    {
+    'publisherId': adId,
+    'adSize': am.AD_SIZE.BANNER,
+    'bannerAtTop': false
+    }, 
+    function() {
+    	am.requestAd(
+    		{ 'isTesting':isTesting }, 
+    		function(){
+    			am.showAd( true );
+    		}, 
+    		function(){ alert('failed to request ad'); }
+    	);
+    }, 
+    function(){ alert('failed to create banner view'); }
+    );
+  } else {
+    alert('AdMob plugin not available/ready.');
+  }
