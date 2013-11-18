@@ -34,7 +34,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
             }, 
             function() {
         	    am.requestAd(
-        		    { 'isTesting':isTesting }, 
+        		    { 'isTesting':false }, 
             		function(){
             			am.showAd( true );
             		}, 
