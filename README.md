@@ -19,7 +19,11 @@ Check the README.md in sub folder for details.
 Quick example
 ---------------------------
   if( window.plugins && window.plugins.AdMob ) {
+    var admob_ios_key = 'a151e6d43c5a28f';
+    var admob_android_key = 'a151e6d65b12438';
+    var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
     var am = window.plugins.AdMob;
+    
     am.createBannerView( 
     {
     'publisherId': adId,
