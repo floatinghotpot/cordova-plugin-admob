@@ -10,7 +10,7 @@ Now, it's port to Cordova 3.0.0, and tested pass.
 
 - Cordova SDK jar for Android
 - Cordova JS for Android
-- Google AdMob Ads SDK for Android
+- Google Play SDK for Android
 - Android SDK 3.2 or higher (to compile with AdMob)
 - Android runtime 2.1 or higher (Cordova only supports 2.1+)
 - AdMob publisher ID from [AdMob](www.admob.com)
@@ -19,17 +19,21 @@ Now, it's port to Cordova 3.0.0, and tested pass.
 
 1. It's recommended to use cordova command line tool to manage the plugin like this:
    cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
-2. Place Cordova SDK jar, Google AdMob SDK jar inside libs/
-3. Complete the Google AdMob SDK setup for Android at
-   https://developers.google.com/mobile-ads-sdk/docs
+2. Place Cordova SDK jar inside libs/
+3. Complete the Google Play SDK setup for Android at
+   https://developer.android.com/google/play-services/setup.html
 
 If hope to setup manually, then:
 
-1. Place Cordova SDK jar, Google AdMob SDK jar, and the AdMob Cordova plugin
+1. Place Cordova SDK jar, and the AdMob Cordova plugin
    jar inside libs/
-2. Place Cordova JS and AdMob.js inside assets/www/
-3. Place cordova.xml and plugins.xml into res/xml
-4. Add `<plugin name='AdMob' value='com.google.cordova.plugin.admob'/>`
+2. Add Google Play SDK:
+      * Copy the library project at ```<android-sdk>/extras/google/google_play_services/libproject/google-play-services_lib/``` to the location where you maintain your Android app projects. 
+      * add ```android.library.reference.2=./google-play-services_lib``` to project.properties.
+      * enter the google-play-services_lib directory, run ```android update lib-project -p . --target android-19```
+3. Place Cordova JS and AdMob.js inside assets/www/
+4. Place cordova.xml and plugins.xml into res/xml
+5. Add `<plugin name='AdMob' value='com.google.cordova.plugin.admob'/>`
    to your `plugins.xml`
 
 ##Using the Plugin:
