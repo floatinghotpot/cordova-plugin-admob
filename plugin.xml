@@ -26,8 +26,12 @@
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <meta-data android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version"/>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" 
-			    android:name="com.google.ads.AdActivity" />
+			    android:name="com.google.android.gms.ads.AdActivity" />
           </config-file>
         <config-file target="AndroidManifest.xml" parent="/*">
 			<uses-permission android:name="android.permission.INTERNET"/>
@@ -35,7 +39,6 @@
           </config-file>
           
         <source-file src="src/android/AdMob.java" target-dir="src/com/rjfun/cordova/plugin" />
-		<source-file src="src/android/GoogleAdMobAdsSdk-6.4.1.jar" target-dir="libs" />
      </platform>
      
      <!-- ios -->
