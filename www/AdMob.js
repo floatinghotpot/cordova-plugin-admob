@@ -1,4 +1,3 @@
-
 /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -91,6 +90,54 @@ function(options, successCallback, failureCallback) {
       'AdMob',
       'createBannerView',
       [defaults['publisherId'], defaults['adSize'], defaults['bannerAtTop']]
+  );
+};
+
+/**
+ * Creates a new AdMob interstitial view.
+ *
+ * @param {!Object} options The options used to create a interstitial.  They should
+ *        be specified similar to the following.
+ *
+ *        {
+ *          'publisherId': 'MY_PUBLISHER_ID'
+ *        }
+ *
+ *        publisherId is the publisher ID from your AdMob site, which is required.  
+ * @param {function()} successCallback The function to call if the interstitial was
+ *         created successfully.
+ * @param {function()} failureCallback The function to call if create interstitial
+ *         was unsuccessful.
+ */
+admobExport.createInterstitialView =
+function(options, successCallback, failureCallback) {
+  var defaults = {
+    'publisherId': undefined
+  };
+  var requiredOptions = ['publisherId'];
+
+  // Merge optional settings into defaults.
+  for (var key in defaults) {
+    if (typeof options[key] !== 'undefined') {
+      defaults[key] = options[key];
+    }
+  }
+
+  // Check for and merge required settings into defaults.
+  requiredOptions.forEach(function(key) {
+    if (typeof options[key] === 'undefined') {
+      failureCallback('Failed to specify key: ' + key + '.');
+      return;
+    }
+    defaults[key] = options[key];
+  });
+
+  cordova.exec(
+      successCallback,
+      failureCallback,
+      'AdMob',
+      'createInterstitialView',
+      [defaults['publisherId']]
   );
 };
 
