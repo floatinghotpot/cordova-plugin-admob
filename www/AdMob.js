@@ -1,4 +1,4 @@
-/*
+/* 
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -194,6 +194,52 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'requestAd',
+      [defaults['isTesting'], defaults['extras']]
+  );
+};
+
+/**
+ * Request an AdMob interstitial ad.  This call should not be made until after the banner
+ * view has been successfully created.
+ *
+ * @param {!Object} options The options used to request an ad.  They should
+ *        be specified similar to the following.
+ *
+ *        {
+ *          'isTesting': true|false,
+ *          'extras': {
+ *            'key': 'value'
+ *          }
+ *        }
+ *
+ *        isTesting is a boolean determining whether or not to request a
+ *        test ad on an emulator, and extras represents the extras to pass
+ *        into the request. If no options are passed, the request will have
+ *        testing set to false and an empty extras.
+ * @param {function()} successCallback The function to call if an ad was
+ *        requested successfully.
+ * @param {function()} failureCallback The function to call if an ad failed
+ *        to be requested.
+ */
+
+admobExport.requestInterstitialAd =
+function(options, successCallback, failureCallback) {
+  var defaults = {
+    'isTesting': false,
+    'extras': {}
+  };
+
+  for (var key in defaults) {
+    if (typeof options[key] !== 'undefined') {
+      defaults[key] = options[key];
+    }
+  }
+
+  cordova.exec(
+      successCallback,
+      failureCallback,
+      'AdMob',
+      'requestInterstitialAd',
       [defaults['isTesting'], defaults['extras']]
   );
 };

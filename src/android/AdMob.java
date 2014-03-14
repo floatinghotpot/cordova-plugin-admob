@@ -44,6 +44,7 @@ public class AdMob extends CordovaPlugin {
   private static final String ACTION_CREATE_INTERSTITIAL_VIEW = "createInterstitialView";
   private static final String ACTION_DESTROY_BANNER_VIEW = "destroyBannerView";
   private static final String ACTION_REQUEST_AD = "requestAd";
+  private static final String ACTION_REQUEST_INTERSTITIAL_AD = "requestInterstitialAd";
   private static final String ACTION_SHOW_AD = "showAd";
   
   private static final int	PUBLISHER_ID_ARG_INDEX = 0;
@@ -74,6 +75,8 @@ public class AdMob extends CordovaPlugin {
       result = executeCreateInterstitialView(inputs);
     } else if (ACTION_DESTROY_BANNER_VIEW.equals(action)) {
       result = executeDestroyBannerView(inputs);
+    } else if (ACTION_REQUEST_INTERSTITIAL_AD.equals(action)) {
+      result = executeRequestInterstitialAd(inputs);
     } else if (ACTION_REQUEST_AD.equals(action)) {
       result = executeRequestAd(inputs);
     } else if (ACTION_SHOW_AD.equals(action)) {
@@ -176,6 +179,35 @@ public class AdMob extends CordovaPlugin {
 
     // Request an ad on the UI thread.
     return executeRunnable(new RequestAdRunnable(isTesting, inputExtras));
+  }
+
+  /**
+   * Parses the request interstitial ad input parameters and runs the request ad action on
+   * the UI thread.
+   *
+   * @param inputs The JSONArray representing input parameters.  This function
+   *        expects the first object in the array to be a JSONObject with the
+   *        input parameters.
+   * @return A PluginResult representing whether or not an ad was requested
+   *         succcessfully.  Listen for onReceiveAd() and onFailedToReceiveAd()
+   *         callbacks to see if an ad was successfully retrieved. 
+   */
+  private PluginResult executeRequestInterstitialAd(JSONArray inputs) {
+    boolean isTesting;
+    JSONObject inputExtras;
+
+    // Get the input data.
+    try {
+      isTesting = inputs.getBoolean( IS_TESTING_ARG_INDEX );
+      inputExtras = inputs.getJSONObject( EXTRAS_ARG_INDEX );
+
+    } catch (JSONException exception) {
+      Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
+      return new PluginResult(Status.JSON_EXCEPTION);
+    }
+
+    // Request an ad on the UI thread.
+    return executeRunnable(new RequestInterstitialAdRunnable(isTesting, inputExtras));
   }
 
   /**
@@ -286,7 +318,7 @@ public class AdMob extends CordovaPlugin {
       // Create the interstitial Ad.
       interstitialAd = new InterstitialAd(cordova.getActivity());
       interstitialAd.setAdUnitId(publisherId);
-      interstitialAd.setAdListener(new BannerListener());
+      interstitialAd.setAdListener(new InterstitialListener());
       result = new PluginResult(Status.OK);
 
       synchronized (this) {
@@ -315,21 +347,16 @@ public class AdMob extends CordovaPlugin {
     }
   }
   
-  /** Runnable for the requestAd action. */
-  private class RequestAdRunnable extends AdMobRunnable {
+  /** Runnable for the basic requestAd action. */
+  private class RequestAdBasicRunnable extends AdMobRunnable {
     private boolean isTesting;
     private JSONObject inputExtras;
-
-    public RequestAdRunnable(boolean isTesting, JSONObject inputExtras) {
-      this.isTesting = isTesting;
-      this.inputExtras = inputExtras;
-      result = new PluginResult(Status.NO_RESULT);
-    }
+    private String adType;
 
     @SuppressWarnings("unchecked")
     @Override
     public void run() {
-      if (adView == null && interstitialAd == null) {
+      if (adType.isEmpty()) {
         result = new PluginResult(Status.ERROR, "AdView/InterstitialAd is null.  Did you call createBannerView/createInterstitialView?");
       } else {
         AdRequest.Builder request_builder = new AdRequest.Builder();
@@ -358,9 +385,9 @@ public class AdMob extends CordovaPlugin {
           AdMobExtras extras = new AdMobExtras(bundle);
           request_builder = request_builder.addNetworkExtras(extras);
           AdRequest request = request_builder.build();
-          if (adView != null)
+          if (adView != null && adType.equals("banner"))
             adView.loadAd(request);
-          else if (interstitialAd != null)
+          else if (interstitialAd != null && adType.equals("interstitial"))
             interstitialAd.loadAd(request);
           result = new PluginResult(Status.OK);
         }
@@ -368,6 +395,26 @@ public class AdMob extends CordovaPlugin {
       synchronized (this) {
         this.notify();
       }
+    }
+  }
+
+  /** Runnable for the requestAd action for Banner. */
+  private class RequestAdRunnable extends RequestAdBasicRunnable {
+    public RequestAdRunnable(boolean isTesting, JSONObject inputExtras) {
+      super.isTesting = isTesting;
+      super.inputExtras = inputExtras;
+      super.adType = "banner";
+      result = new PluginResult(Status.NO_RESULT);
+    }
+  }
+
+  /** Runnable for the requestAd action for Interstitial. */
+  private class RequestInterstitialAdRunnable extends RequestAdBasicRunnable {
+    public RequestInterstitialAdRunnable(boolean isTesting, JSONObject inputExtras) {
+      super.isTesting = isTesting;
+      super.inputExtras = inputExtras;
+      super.adType = "interstitial";
+      result = new PluginResult(Status.NO_RESULT);
     }
   }
 
@@ -408,15 +455,7 @@ public class AdMob extends CordovaPlugin {
    * document.addEventListener('onDismissAd', function());
    * document.addEventListener('onLeaveToAd', function());
    */
-  private class BannerListener extends AdListener {
-    @Override
-    public void onAdLoaded() {
-        if (interstitialAd != null) {
-          interstitialAd.show();
-        }
-        webView.loadUrl("javascript:cordova.fireDocumentEvent('onReceiveAd');");
-    }
-
+  public class BasicListener extends AdListener {
     @Override
     public void onAdFailedToLoad(int errorCode) {
       webView.loadUrl(String.format(
@@ -437,6 +476,25 @@ public class AdMob extends CordovaPlugin {
     @Override
     public void onAdLeftApplication() {
       webView.loadUrl("javascript:cordova.fireDocumentEvent('onLeaveToAd');");
+    }
+  }
+
+  private class BannerListener extends BasicListener {
+    @Override
+    public void onAdLoaded() {
+        Log.w("AdMob", "BannerAdLoaded");
+        webView.loadUrl("javascript:cordova.fireDocumentEvent('onReceiveAd');");
+    }
+  }
+
+  private class InterstitialListener extends BasicListener {
+    @Override
+    public void onAdLoaded() {
+        if (interstitialAd != null) {
+          interstitialAd.show();
+          Log.w("AdMob", "InterstitialAdLoaded");
+        }
+        webView.loadUrl("javascript:cordova.fireDocumentEvent('onReceiveAd');");
     }
   }
 
