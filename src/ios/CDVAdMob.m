@@ -86,12 +86,11 @@ extras:(NSDictionary *)extraDict;
 
 	CDVPluginResult *pluginResult;
 	NSString *callbackId = command.callbackId;
-	NSArray* arguments = command.arguments;
 
 	if(self.bannerView) {
 		[self.bannerView removeFromSuperview];
 	}
-		
+
 	// Call the success callback that was passed in through the javascript.
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
@@ -127,8 +126,21 @@ extras:(NSDictionary *)extraDict;
 	} else {
 		[self.bannerView removeFromSuperview];
 		[self.bannerView setHidden:YES];
-
-		[self.webView setFrame:(CGRectMake(0, 0, self.webView.superview.frame.size.width, self.webView.superview.frame.size.height)) ];
+        // Resize superview dimension based on orientation
+		UIDeviceOrientation currentOrientation =
+            [[UIDevice currentDevice] orientation];
+        // If orientation is unknown, default to portrait
+        if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
+            [self.webView
+                setFrame:(CGRectMake(0, 0,
+                                     self.webView.superview.frame.size.height,
+                                     self.webView.superview.frame.size.width))];
+        } else {
+            [self.webView
+                setFrame:(CGRectMake(0, 0,
+                                     self.webView.superview.frame.size.width,
+                                     self.webView.superview.frame.size.height))];
+        }
 	}
 
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -175,11 +187,11 @@ extras:(NSDictionary *)extraDict;
 		// Have to choose the right Smart Banner constant according to orientation.
 		UIDeviceOrientation currentOrientation =
 		[[UIDevice currentDevice] orientation];
-		if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
-			return kGADAdSizeSmartBannerPortrait;
+		if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
+			return kGADAdSizeSmartBannerLandscape;
 		}
 		else {
-			return kGADAdSizeSmartBannerLandscape;
+			return kGADAdSizeSmartBannerPortrait;
 		}
 	} else {
 		return kGADAdSizeInvalid;
