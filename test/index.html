@@ -22,24 +22,41 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <title>Hello AdMob</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-            <div>
-            	<button id='show-ad' onClick="if(window.plugins.AdMob){ window.AdMob.plugins.showAd(true); }">Show Ad</button>
-            	<button id='hide-ad' onClick="if(window.plugins.AdMob){ window.AdMob.plugins.showAd(false); }">Hide Ad</button>
-            </div>
-        </div>
+        <title>Hello World</title>
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="main.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
+    </head>
+    <body onload="onLoad()">
+    <script>
+    function onLoad() {
+    	document.addEventListener("deviceready", onDeviceReady, false);
+    }
+    function onDeviceReady() {
+    	var admob_ios_key = 'a151e6d43c5a28f';
+    	var admob_android_key = 'a151e6d65b12438';
+    	var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
+    	
+    	if ( window.plugins && window.plugins.AdMob ) {
+    	    
+    	    var am = window.plugins.AdMob;
+    	    am.createBannerView( 
+    	    		{
+    		            'publisherId': adId,
+    		            'adSize': am.AD_SIZE.BANNER,
+    		            'bannerAtTop': true
+    	            }, function() {
+    	            	am.requestAd( { 'isTesting':false }, function() {
+    	            		am.showAd( true );
+    	            	}, function() {
+    	            		alert('failed to request ad');	
+    	            	})
+    	            }, function(){
+    	            	alert( "failed to create ad view" );
+    	            });
+    	} else {
+    		alert('AdMob plugin not available/ready.');
+    	}
+    }
+    </script>
+        
     </body>
 </html>

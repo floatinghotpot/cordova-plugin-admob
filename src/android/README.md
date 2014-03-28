@@ -36,12 +36,14 @@ If hope to setup manually, then:
 5. Add `<plugin name='AdMob' value='com.google.cordova.plugin.admob'/>`
    to your `plugins.xml`
 
-A simplified method (tested on Cordova 3.4.0)
+A simplified method (tested on Cordova 3.4.0 and 3.0)
 
 1. Install the Google Play Services plugin:
 ```cordova plugin add https://github.com/MobileChromeApps/google-play-services.git```
 2. Install _this_ plugin:
 ```cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git```
+
+If encounter problems, please upgrade your Google SDKs to most recent version.
 
 ##Using the Plugin:
 
