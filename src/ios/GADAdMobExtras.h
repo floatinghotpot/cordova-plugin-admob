@@ -11,8 +11,8 @@
 
 #import "GADAdNetworkExtras.h"
 
-@interface GADAdMobExtras : NSObject <GADAdNetworkExtras>
+@interface GADAdMobExtras : NSObject<GADAdNetworkExtras>
 
-@property (nonatomic, retain) NSDictionary *additionalParameters;
+@property(nonatomic, copy) NSDictionary *additionalParameters;
 
 @end

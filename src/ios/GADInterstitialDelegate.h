@@ -12,7 +12,7 @@
 
 // Delegate for receiving state change messages from a GADInterstitial such as
 // interstitial ad requests succeeding/failing.
-@protocol GADInterstitialDelegate <NSObject>
+@protocol GADInterstitialDelegate<NSObject>
 
 @optional
 
@@ -25,8 +25,7 @@
 
 // Sent when an interstitial ad request completed without an interstitial to
 // show.  This is common since interstitials are shown sparingly to users.
-- (void)interstitial:(GADInterstitial *)ad
-    didFailToReceiveAdWithError:(GADRequestError *)error;
+- (void)interstitial:(GADInterstitial *)ad didFailToReceiveAdWithError:(GADRequestError *)error;
 
 #pragma mark Display-Time Lifecycle Notifications
 
