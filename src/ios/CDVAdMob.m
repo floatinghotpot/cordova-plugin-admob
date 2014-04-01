@@ -2,15 +2,22 @@
 #import "GADAdMobExtras.h"
 #import "GADAdSize.h"
 #import "GADBannerView.h"
+#import "GADInterstitial.h"
+#import "MainViewController.h"
 
 @interface CDVAdMob()
 
 - (void)createGADBannerViewWithPubId:(NSString *)pubId
 bannerType:(GADAdSize)adSize;
+
 - (void)requestAdWithTesting:(BOOL)isTesting
-extras:(NSDictionary *)extraDict;
+extras:(NSDictionary *)extraDict
+interstitial:(BOOL)isInterstitial;
+
 - (void)resizeViews;
+
 - (GADAdSize)GADAdSizeFromString:(NSString *)string;
+
 - (void)deviceOrientationChange:(NSNotification *)notification;
 
 @end
@@ -18,6 +25,7 @@ extras:(NSDictionary *)extraDict;
 @implementation CDVAdMob
 
 @synthesize bannerView = bannerView_;
+@synthesize interstitialView = interstitialView_;
 
 #pragma mark Cordova JS bridge
 
@@ -88,13 +96,41 @@ extras:(NSDictionary *)extraDict;
 	NSString *callbackId = command.callbackId;
 
 	if(self.bannerView) {
+        [self showAd:false];
 		[self.bannerView removeFromSuperview];
+        self.bannerView = nil;
 	}
 
 	// Call the success callback that was passed in through the javascript.
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
+
+- (void)createInterstitialView:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult *pluginResult;
+	NSString *callbackId = command.callbackId;
+	NSArray* arguments = command.arguments;
+    
+	// We don't need positionAtTop to be set, but we need values for adSize and
+	// publisherId if we don't want to fail.
+	if (![arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX]) {
+		// Call the error callback that was passed in through the javascript
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                         messageAsString:@"CDVAdMob:"
+                        @"Invalid publisher Id"];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+		return;
+	}
+    
+    NSString *publisherId = [arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX];
+    [self createGADInterstitialViewWithPubId:publisherId];
+    
+    
+	// Call the success callback that was passed in through the javascript.
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
 
 - (void)showAd:(CDVInvokedUrlCommand *)command {
 	CDVPluginResult *pluginResult;
@@ -114,15 +150,28 @@ extras:(NSDictionary *)extraDict;
 	BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView];
 
 	BOOL show = [[arguments objectAtIndex:SHOW_AD_ARG_INDEX] boolValue];
+    
+    // iOS7 Hack, handle the Statusbar
+    MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
+    CGFloat top = 0;
+    BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
+    
+    if (isIOS7){
+        top = mainView.topLayoutGuide.length;
+    }
 
 	if( adIsShowing == show ) {
-		// no change needed.
+		if (top > self.bannerView.frame.origin.y && self.bannerAtTop){
+            self.bannerView.frame = CGRectMake(self.bannerView.frame.origin.x, self.bannerView.frame.origin.y + top,
+                                               self.bannerView.frame.size.width, self.bannerView.frame.size.height);
+        }
 
 	} else if ( show ) {
 		[self.webView.superview addSubview:self.bannerView];
 		[self.bannerView setHidden:NO];
-
 		[self resizeViews];
+        
+        
 	} else {
 		[self.bannerView removeFromSuperview];
 		[self.bannerView setHidden:YES];
@@ -132,12 +181,12 @@ extras:(NSDictionary *)extraDict;
         // If orientation is unknown, default to portrait
         if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
             [self.webView
-                setFrame:(CGRectMake(0, 0,
+                setFrame:(CGRectMake(0, top,
                                      self.webView.superview.frame.size.height,
                                      self.webView.superview.frame.size.width))];
         } else {
             [self.webView
-                setFrame:(CGRectMake(0, 0,
+                setFrame:(CGRectMake(0, top,
                                      self.webView.superview.frame.size.width,
                                      self.webView.superview.frame.size.height))];
         }
@@ -168,8 +217,34 @@ extras:(NSDictionary *)extraDict;
 	if ([arguments objectAtIndex:EXTRAS_ARG_INDEX]) {
 		extrasDictionary = [NSDictionary dictionaryWithDictionary:[arguments objectAtIndex:EXTRAS_ARG_INDEX]];
 	}
-	[self requestAdWithTesting:isTesting extras:extrasDictionary];
+	[self requestAdWithTesting:isTesting extras:extrasDictionary interstitial:false];
 
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
+- (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult *pluginResult;
+	NSString *callbackId = command.callbackId;
+	NSArray* arguments = command.arguments;
+    
+	if (!self.interstitialView) {
+		// Try to prevent requestInterstitialAd from being called without createInterstitialView first
+		// being called.
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                         messageAsString:@"CDVAdMob:"
+                        @"No interstitial view exists"];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+		return;
+	}
+    
+	BOOL isTesting = [[arguments objectAtIndex:IS_TESTING_ARG_INDEX] boolValue];
+	NSDictionary *extrasDictionary = nil;
+	if ([arguments objectAtIndex:EXTRAS_ARG_INDEX]) {
+		extrasDictionary = [NSDictionary dictionaryWithDictionary:[arguments objectAtIndex:EXTRAS_ARG_INDEX]];
+	}
+	[self requestAdWithTesting:isTesting extras:extrasDictionary interstitial:true];
+    
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
@@ -202,14 +277,25 @@ extras:(NSDictionary *)extraDict;
 
 - (void)createGADBannerViewWithPubId:(NSString *)pubId
 bannerType:(GADAdSize)adSize {
-	self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
-	self.bannerView.adUnitID = pubId;
-	self.bannerView.delegate = self;
-	self.bannerView.rootViewController = self.viewController;
+    if (!self.bannerView){
+        
+        self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
+        self.bannerView.adUnitID = pubId;
+        self.bannerView.delegate = self;
+        self.bannerView.rootViewController = self.viewController;
+    }
+}
+
+- (void)createGADInterstitialViewWithPubId:(NSString *)pubId {
+    if (!self.interstitialView){
+        self.interstitialView = [[GADInterstitial alloc] init];
+        self.interstitialView.adUnitID = pubId;
+        self.interstitialView.delegate = self;
+    }
 }
 
 - (void)requestAdWithTesting:(BOOL)isTesting
-extras:(NSDictionary *)extrasDict {
+                      extras:(NSDictionary *)extrasDict interstitial:(BOOL)isInterstitial {
 	GADRequest *request = [GADRequest request];
 
 	if (isTesting) {
@@ -232,11 +318,17 @@ extras:(NSDictionary *)extrasDict {
 		extras.additionalParameters = modifiedExtrasDict;
 		[request registerAdNetworkExtras:extras];
 	}
-	[self.bannerView loadRequest:request];
-	// Add the ad to the main container view, and resize the webview to make space
-	// for it.
-	[self.webView.superview addSubview:self.bannerView];
-	[self resizeViews];
+    
+    if (isInterstitial){
+        [self.interstitialView loadRequest:request];
+        
+    } else {
+     	[self.bannerView loadRequest:request];
+        // Add the ad to the main container view, and resize the webview to make space
+        // for it.
+        [self.webView.superview addSubview:self.bannerView];
+        [self resizeViews];
+    }
 }
 
 - (void)resizeViews {
@@ -252,7 +344,16 @@ extras:(NSDictionary *)extrasDict {
 	if (!adIsShowing || self.bannerView.hidden) {
 		return;
 	}
-
+    
+    // iOS7 Hack, handle the Statusbar
+    MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
+    CGFloat top = 0.0;
+    BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
+    
+    if (isIOS7){
+        top = mainView.topLayoutGuide.length;
+    }
+    
 	UIDeviceOrientation currentOrientation =
 	[[UIDevice currentDevice] orientation];
 	// Handle changing Smart Banner constants for the user.
@@ -277,12 +378,12 @@ extras:(NSDictionary *)extrasDict {
 	CGRect bannerViewFrame = self.bannerView.frame;
 	CGRect frame = bannerViewFrame;
 	// The updated x and y coordinates for the origin of the banner.
-	CGFloat yLocation = 0.0;
+	CGFloat yLocation = top;
 	CGFloat xLocation = 0.0;
 
 	if (self.bannerAtTop) {
 		// Move the webview underneath the ad banner.
-		webViewFrame.origin.y = bannerViewFrame.size.height;
+		webViewFrame.origin.y = bannerViewFrame.size.height + top;
 		// Center the banner using the value of the origin.
 		if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
 			// The superView has not had its width and height updated yet so use those
@@ -360,9 +461,21 @@ extras:(NSDictionary *)extrasDict {
     NSLog( @"adViewDidDismissScreen" );
 }
 
+- (void)interstitialDidReceiveAd:(GADInterstitial *)adView {
+    if (self.interstitialView){
+        [self.interstitialView presentFromRootViewController:self.viewController];
+        [self writeJavascript:@"cordova.fireDocumentEvent('onReceiveAd');"];
+    }
+}
+
+- (void)interstitialDidDismissScreen:(GADInterstitial *)adView {
+    self.interstitialView = nil;
+}
+
 #pragma mark Cleanup
 
 - (void)dealloc {
+    [super dealloc];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter]
 		removeObserver:self
@@ -371,8 +484,11 @@ extras:(NSDictionary *)extrasDict {
 
 	bannerView_.delegate = nil;
 	bannerView_ = nil;
+    interstitialView_.delegate = nil;
+    interstitialView_ = nil;
 
 	self.bannerView = nil;
+    self.interstitialView = nil;
 }
 
 @end
