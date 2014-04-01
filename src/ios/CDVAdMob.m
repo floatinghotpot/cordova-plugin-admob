@@ -156,7 +156,7 @@ interstitial:(BOOL)isInterstitial;
     CGFloat top = 0;
     BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
     
-    if (isIOS7){
+    if (isIOS7 && self.bannerAtTop){
         top = mainView.topLayoutGuide.length;
     }
 
@@ -183,12 +183,12 @@ interstitial:(BOOL)isInterstitial;
             [self.webView
                 setFrame:(CGRectMake(0, top,
                                      self.webView.superview.frame.size.height,
-                                     self.webView.superview.frame.size.width))];
+                                     self.webView.superview.frame.size.width-top))];
         } else {
             [self.webView
                 setFrame:(CGRectMake(0, top,
                                      self.webView.superview.frame.size.width,
-                                     self.webView.superview.frame.size.height))];
+                                     self.webView.superview.frame.size.height-top))];
         }
 	}
 
@@ -224,6 +224,7 @@ interstitial:(BOOL)isInterstitial;
 }
 
 - (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command {
+    // TODO
     CDVPluginResult *pluginResult;
 	NSString *callbackId = command.callbackId;
 	NSArray* arguments = command.arguments;
@@ -350,7 +351,7 @@ bannerType:(GADAdSize)adSize {
     CGFloat top = 0.0;
     BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
     
-    if (isIOS7){
+    if (isIOS7 && self.bannerAtTop){
         top = mainView.topLayoutGuide.length;
     }
     
@@ -417,10 +418,10 @@ bannerType:(GADAdSize)adSize {
 		// The super view's frame hasn't been updated so use its width
 		// as the height.
 		webViewFrame.size.height = superViewFrame.size.width -
-		bannerViewFrame.size.height;
+		bannerViewFrame.size.height - top;
 	} else {
 		webViewFrame.size.height = superViewFrame.size.height -
-		bannerViewFrame.size.height;
+		bannerViewFrame.size.height - top;
 	}
 	self.webView.frame = webViewFrame;
 }
