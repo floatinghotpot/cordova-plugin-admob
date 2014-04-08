@@ -13,6 +13,6 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol GADAdNetworkExtras <NSObject>
+@protocol GADAdNetworkExtras<NSObject>
 
 @end

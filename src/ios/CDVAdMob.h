@@ -3,6 +3,7 @@
 #import <UIKit/UIKit.h>
 
 #import "GADBannerViewDelegate.h"
+#import "GADInterstitialDelegate.h"
 
 #pragma mark - JS requestAd options
 
@@ -16,19 +17,23 @@
 #define SHOW_AD_ARG_INDEX    0
 
 @class GADBannerView;
+@class GADInterstitial;
 
 #pragma mark AdMob Plugin
 
 // This version of the AdMob plugin has been tested with Cordova version 2.5.0.
-@interface CDVAdMob : CDVPlugin <GADBannerViewDelegate> {
+@interface CDVAdMob : CDVPlugin <GADBannerViewDelegate, GADInterstitialDelegate> {
 }
 
 @property(nonatomic, retain) GADBannerView *bannerView;
+@property(nonatomic, retain) GADInterstitial *interstitialView;
 @property (assign) BOOL bannerAtTop;
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command;
+- (void)createInterstitialView:(CDVInvokedUrlCommand *)command;
 - (void)requestAd:(CDVInvokedUrlCommand *)command;
+- (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command;
 - (void)showAd:(CDVInvokedUrlCommand *)command;
 
 @end
