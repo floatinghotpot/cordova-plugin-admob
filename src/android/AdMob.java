@@ -248,7 +248,7 @@ public class AdMob extends CordovaPlugin {
     synchronized (runnable) {
       cordova.getActivity().runOnUiThread(runnable);
       try {
-        if (runnable.getPluginResult() == null || runnable.getPluginResult().getStatus() != PluginResult.Status.OK.ordinal()) {
+        if (runnable.getPluginResult() == null || runnable.getPluginResult().getStatus() == PluginResult.Status.NO_RESULT.ordinal()) {
           runnable.wait();
         }
       } catch (InterruptedException exception) {
