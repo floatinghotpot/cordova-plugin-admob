@@ -70,6 +70,7 @@
          <framework src="SystemConfiguration.framework" />
          <framework src="CoreGraphics.framework" />
          <framework src="AdSupport.framework" />
+         <framework src="CoreTelephony.framework" />
 	</platform>
           
 </plugin>
