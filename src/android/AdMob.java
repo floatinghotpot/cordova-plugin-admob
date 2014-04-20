@@ -248,7 +248,7 @@ public class AdMob extends CordovaPlugin {
     synchronized (runnable) {
       cordova.getActivity().runOnUiThread(runnable);
       try {
-        if (runnable.getPluginResult() == null) {
+        if (runnable.getPluginResult() == null || runnable.getPluginResult().getStatus() == PluginResult.Status.NO_RESULT.ordinal()) {
           runnable.wait();
         }
       } catch (InterruptedException exception) {
@@ -435,11 +435,12 @@ public class AdMob extends CordovaPlugin {
       if (adView == null) {
         result = new PluginResult(Status.ERROR, "AdView is null.  Did you call createBannerView?");
       } else {
-		if (this.show) {
-			adView.setVisibility(View.VISIBLE);
-		} else {
-			adView.setVisibility(View.GONE);
-		}
+        result = new PluginResult(Status.OK);
+    if (this.show) {
+      adView.setVisibility(View.VISIBLE);
+    } else {
+      adView.setVisibility(View.GONE);
+    }
       }
       synchronized (this) {
         this.notify();
