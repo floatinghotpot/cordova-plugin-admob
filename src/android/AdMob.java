@@ -278,8 +278,6 @@ public class AdMob extends CordovaPlugin {
     public CreateBannerViewRunnable(String publisherId, AdSize adSize) {
       this.publisherId = publisherId;
       this.adSize = adSize;
-//      result = new PluginResult(Status.NO_RESULT);
-//      result = new PluginResult(Status.OK);
     }
 
     @Override
@@ -407,7 +405,6 @@ public class AdMob extends CordovaPlugin {
       super.isTesting = isTesting;
       super.inputExtras = inputExtras;
       super.adType = "banner";
-//      result = new PluginResult(Status.NO_RESULT);
     }
   }
 
