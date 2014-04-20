@@ -476,7 +476,6 @@ bannerType:(GADAdSize)adSize {
 #pragma mark Cleanup
 
 - (void)dealloc {
-    [super dealloc];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter]
 		removeObserver:self

@@ -1,3 +1,4 @@
 # ignore following files
 .settings
-
+.idea
+*.iml
