@@ -32,6 +32,7 @@ Quick example with cordova command line tool
     ... cordova build, or import the android project into eclipse or ios project into xcode
 
 Or, just clone the testadmob project from github:
+
     git clone git@github.com:floatinghotpot/testadmob.git
 
 Example javascript
