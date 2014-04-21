@@ -44,7 +44,7 @@
     		            'adSize': am.AD_SIZE.BANNER,
     		            'bannerAtTop': true
     	            }, function() {
-    	            	am.requestAd( { 'isTesting':false }, function() {
+    	            	am.requestAd( { 'isTesting':true }, function() {
     	            		am.showAd( true );
     	            	}, function() {
     	            		alert('failed to request ad');	
@@ -56,7 +56,18 @@
     		alert('AdMob plugin not available/ready.');
     	}
     }
+    function showAd( bshow ) {
+    	if ( window.plugins && window.plugins.AdMob ) {
+    	    var am = window.plugins.AdMob;
+    	    am.showAd( bshow );
+    	} else {
+    		alert('AdMob plugin not available/ready.');
+    	} 
+    }
     </script>
-        
+    
+    <p><button onclick="showAd(true);">show Ad</button></p>
+    <p><button onclick="showAd(false);">hide Ad</button></p>
+    
     </body>
 </html>

@@ -11,7 +11,6 @@ How to use?
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
 It's recommended to use cordova command line tool: 
-
 cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
 
 For different platforms, please refer to the corresponding README files for Android/iOS.
@@ -20,8 +19,23 @@ And, of course, ensure you have a proper AdMob account and create an Id for your
 
 Check the README.md in sub folder for details.
 
-Quick example
----------------------------
+Quick example with cordova command line tool
+------------------------------------------------
+    cordova create testadmob com.rjfun.testadmob TestAdmob
+    cd testadmob
+    cordova platform add android
+    cordova platform add ios
+    cordova plugin add https://github.com/MobileChromeApps/google-play-services.git
+    cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
+    ... copy the www/index.html from demo to your www/
+    cordova prepare
+    ... cordova build, or import the android project into eclipse or ios project into xcode
+
+Or, just clone the testadmob project from github:
+    git clone git@github.com:floatinghotpot/testadmob.git
+
+Example javascript
+-------------------------------------------------
 Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
 
     if( window.plugins && window.plugins.AdMob ) {
