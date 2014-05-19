@@ -398,7 +398,7 @@ bannerType:(GADAdSize)adSize {
 	} else {
 
     //move the webview to the top of the screen, based on patch from https://github.com/aliokan/cordova-plugin-admob/issues/13
-	  if ([[UIDevice currentDevice].systemVersion floatValue] >= 7)
+	  if ([[UIDevice currentDevice].systemVersion floatValue] >= 7 && self.bannerAtTop)
 	    webViewFrame.origin.y = 20;
 	  else
 		// Move the webview to the top of the screen.
