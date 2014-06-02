@@ -34,6 +34,18 @@
     <script>
     function onLoad() {
     	document.addEventListener("deviceready", onDeviceReady, false);
+    	
+    	// more callback to handle Ad events
+    	document.addEventListener('onReceiveAd', function(){
+    	});
+    	document.addEventListener('onFailedToReceiveAd', function(data){
+    	});
+    	document.addEventListener('onPresentAd', function(){
+    	});
+    	document.addEventListener('onDismissAd', function(){
+    	});
+    	document.addEventListener('onLeaveToAd', function(){
+    	});
     }
     function onDeviceReady() {
     	var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';

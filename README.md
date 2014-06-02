@@ -65,4 +65,19 @@ Call the following code inside onDeviceReady(), because only after device ready 
       alert('AdMob plugin not available/ready.');
     }
 
-    
+More ...
+--------------------------------------------------
+Add more callback functions to handle success/failure events:
+
+    	// more callback to handle Ad events
+    	document.addEventListener('onReceiveAd', function(){
+    	});
+    	document.addEventListener('onFailedToReceiveAd', function(data){
+    		// alert( data.error );
+    	});
+    	document.addEventListener('onPresentAd', function(){
+    	});
+    	document.addEventListener('onDismissAd', function(){
+    	});
+    	document.addEventListener('onLeaveToAd', function(){
+    	});    
