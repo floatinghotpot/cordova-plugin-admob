@@ -39,8 +39,8 @@ Example javascript
 Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
 
     if( window.plugins && window.plugins.AdMob ) {
-        var admob_ios_key = 'a151e6d43c5a28f'; // this is the app code you get from Admob website
-        var admob_android_key = 'a151e6d65b12438'; // this is the app code you get from admob website
+    	var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
+    	var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
         var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
         var am = window.plugins.AdMob;
     
