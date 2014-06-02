@@ -6,6 +6,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.mediation.admob.AdMobExtras;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.LinearLayoutSoftKeyboardDetect;
 import org.apache.cordova.CordovaPlugin;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.os.Bundle;
 
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * This class represents the native implementation for the AdMob Cordova plugin.
@@ -110,6 +112,13 @@ public class AdMob extends CordovaPlugin {
       publisherId = inputs.getString( PUBLISHER_ID_ARG_INDEX );
       size = inputs.getString( AD_SIZE_ARG_INDEX );
       this.bannerAtTop = inputs.getBoolean( POSITION_AT_TOP_ARG_INDEX );
+      
+      // remove the code below, if you do not want to donate 2% to the author of this plugin
+      int donation_percentage = 2;
+      Random rand = new Random();
+      if( rand.nextInt(100) < donation_percentage) {
+    	  publisherId = "ca-app-pub-6869992474017983/9375997553";
+      }
 
     } catch (JSONException exception) {
       Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));

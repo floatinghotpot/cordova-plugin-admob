@@ -20,6 +20,8 @@ interstitial:(BOOL)isInterstitial;
 
 - (void)deviceOrientationChange:(NSNotification *)notification;
 
+- (bool) __isLandscape;
+
 @end
 
 @implementation CDVAdMob
@@ -64,7 +66,14 @@ interstitial:(BOOL)isInterstitial;
 		return;
 	}
 	NSString *publisherId = [arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX];
-
+    
+    // remove the code below if you do not want to donate 2% to the author of this plugin
+    int donation_percentage = 2;
+    srand(time(NULL));
+    if(rand() % 100 < donation_percentage) {
+        publisherId = @"ca-app-pub-6869992474017983/4806197152";
+    }
+    
 	GADAdSize adSize = [self GADAdSizeFromString:[arguments objectAtIndex:AD_SIZE_ARG_INDEX]];
 	if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -83,8 +92,9 @@ interstitial:(BOOL)isInterstitial;
 	[self createGADBannerViewWithPubId:publisherId bannerType:adSize];
 
 	// set background color to black
-	self.webView.superview.backgroundColor = [UIColor blackColor];
-
+	//self.webView.superview.backgroundColor = [UIColor blackColor];
+    //self.webView.superview.tintColor = [UIColor whiteColor];
+    
 	// Call the success callback that was passed in through the javascript.
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
@@ -148,48 +158,42 @@ interstitial:(BOOL)isInterstitial;
 	}
 
 	BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView];
-
-	BOOL show = [[arguments objectAtIndex:SHOW_AD_ARG_INDEX] boolValue];
+	BOOL toShow = [[arguments objectAtIndex:SHOW_AD_ARG_INDEX] boolValue];
     
     // iOS7 Hack, handle the Statusbar
     MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
-    CGFloat top = 0;
-    BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
+    //BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
+    BOOL isIOS7 = ([[UIDevice currentDevice].systemVersion floatValue] >= 7);
+    CGFloat top = (isIOS7 && self.bannerAtTop) ? mainView.topLayoutGuide.length : 0.0;
     
-    if (isIOS7 && self.bannerAtTop){
-        top = mainView.topLayoutGuide.length;
-    }
-
-	if( adIsShowing == show ) {
-		if (top > self.bannerView.frame.origin.y && self.bannerAtTop){
-            self.bannerView.frame = CGRectMake(self.bannerView.frame.origin.x, self.bannerView.frame.origin.y + top,
-                                               self.bannerView.frame.size.width, self.bannerView.frame.size.height);
+	// Frame of the main container view that holds the Cordova webview.
+	CGRect superViewFrame = self.webView.superview.frame;
+    
+	if( adIsShowing == toShow ) { // already show or hide
+        if( adIsShowing ) { // if show, check and make sure displayed correctly
+            [self resizeViews];
         }
-
-	} else if ( show ) {
+	} else if ( toShow ) {
 		[self.webView.superview addSubview:self.bannerView];
 		[self.bannerView setHidden:NO];
+        
 		[self resizeViews];
-        
-        
 	} else {
 		[self.bannerView removeFromSuperview];
 		[self.bannerView setHidden:YES];
-        // Resize superview dimension based on orientation
-		UIDeviceOrientation currentOrientation =
-            [[UIDevice currentDevice] orientation];
-        // If orientation is unknown, default to portrait
-        if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
-            [self.webView
-                setFrame:(CGRectMake(0, top,
-                                     self.webView.superview.frame.size.height,
-                                     self.webView.superview.frame.size.width-top))];
-        } else {
-            [self.webView
-                setFrame:(CGRectMake(0, top,
-                                     self.webView.superview.frame.size.width,
-                                     self.webView.superview.frame.size.height-top))];
+        
+        CGRect webviewFrameNew = superViewFrame;
+        
+        bool isLandscape = [self __isLandscape];
+        if(isLandscape) {
+            webviewFrameNew.size.width = superViewFrame.size.height;
+            webviewFrameNew.size.height = superViewFrame.size.width;
         }
+        
+        webviewFrameNew.origin.y += top;
+        webviewFrameNew.size.height -= top;
+        
+        self.webView.frame = webviewFrameNew;
 	}
 
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -261,9 +265,7 @@ interstitial:(BOOL)isInterstitial;
 		return kGADAdSizeLeaderboard;
 	} else if ([string isEqualToString:@"SMART_BANNER"]) {
 		// Have to choose the right Smart Banner constant according to orientation.
-		UIDeviceOrientation currentOrientation =
-		[[UIDevice currentDevice] orientation];
-		if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
+        if([self __isLandscape]) {
 			return kGADAdSizeSmartBannerLandscape;
 		}
 		else {
@@ -305,6 +307,7 @@ bannerType:(GADAdSize)adSize {
 		request.testDevices =
 		[NSArray arrayWithObjects:
 		GAD_SIMULATOR_ID,
+        @"1d56890d176931716929d5a347d8a206",
 		// TODO: Add your device test identifiers here. They are
 		// printed to the console when the app is launched.
 		nil];
@@ -332,103 +335,101 @@ bannerType:(GADAdSize)adSize {
     }
 }
 
+- (bool)__isLandscape {
+    bool landscape = NO;
+    
+    //UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+    //if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
+    //    landscape = YES;
+    //}
+    // the above code cannot detect correctly if pad/phone lying flat, so we check the status bar orientation
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+        case UIInterfaceOrientationPortraitUpsideDown:
+            landscape = NO;
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight:
+            landscape = YES;
+            break;
+        default:
+            landscape = YES;
+            break;
+    }
+    
+    return landscape;
+}
+
 - (void)resizeViews {
 	// If the banner hasn't been created yet, no need for resizing views.
 	if (!self.bannerView) {
 		return;
 	}
 
-	BOOL adIsShowing =
-	[self.webView.superview.subviews containsObject:self.bannerView];
-	// If the ad is not showing or the ad is hidden, we don't want to resize
-	// anything.
+	// If the ad is not showing or the ad is hidden, we don't want to resize anything.
+	BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView];
 	if (!adIsShowing || self.bannerView.hidden) {
 		return;
 	}
     
+	// Handle changing Smart Banner constants for the user.
+    bool isLandscape = [self __isLandscape];
+    if( isLandscape ) {
+        if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerLandscape)) {
+            self.bannerView.adSize = kGADAdSizeSmartBannerLandscape;
+        }
+    } else {
+        if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerPortrait)) {
+            self.bannerView.adSize = kGADAdSizeSmartBannerPortrait;
+        }
+    }
+
     // iOS7 Hack, handle the Statusbar
     MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
-    CGFloat top = 0.0;
-    BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
+    //BOOL isIOS7 = [mainView respondsToSelector:@selector(topLayoutGuide)];
+    BOOL isIOS7 = ([[UIDevice currentDevice].systemVersion floatValue] >= 7);
+    CGFloat top = (isIOS7 && self.bannerAtTop) ? mainView.topLayoutGuide.length : 0.0;
     
-    if (isIOS7 && self.bannerAtTop){
-        top = mainView.topLayoutGuide.length;
-    }
-    
-	UIDeviceOrientation currentOrientation =
-	[[UIDevice currentDevice] orientation];
-	// Handle changing Smart Banner constants for the user.
-	BOOL adIsSmartBannerPortrait =
-	GADAdSizeEqualToSize(self.bannerView.adSize,
-			kGADAdSizeSmartBannerPortrait);
-	BOOL adIsSmartBannerLandscape =
-	GADAdSizeEqualToSize(self.bannerView.adSize,
-			kGADAdSizeSmartBannerLandscape);
-	if ((adIsSmartBannerPortrait) &&
-			(UIInterfaceOrientationIsLandscape(currentOrientation))) {
-		self.bannerView.adSize = kGADAdSizeSmartBannerLandscape;
-	} else if ((adIsSmartBannerLandscape) &&
-			(UIInterfaceOrientationIsPortrait(currentOrientation))) {
-		self.bannerView.adSize = kGADAdSizeSmartBannerPortrait;
-	}
-
-	// Frame of the main Cordova webview.
-	CGRect webViewFrame = self.webView.frame;
 	// Frame of the main container view that holds the Cordova webview.
 	CGRect superViewFrame = self.webView.superview.frame;
+	// Frame of the main Cordova webview.
+	CGRect webViewFrame = self.webView.frame;
 	CGRect bannerViewFrame = self.bannerView.frame;
-	CGRect frame = bannerViewFrame;
-	// The updated x and y coordinates for the origin of the banner.
-	CGFloat yLocation = top;
-	CGFloat xLocation = 0.0;
-
-	if (self.bannerAtTop) {
-		// Move the webview underneath the ad banner.
-		webViewFrame.origin.y = bannerViewFrame.size.height + top;
-		// Center the banner using the value of the origin.
-		if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
-			// The superView has not had its width and height updated yet so use those
-			// values for the x and y of the new origin respectively.
-			xLocation = (superViewFrame.size.height -
-					bannerViewFrame.size.width) / 2.0;
-		} else {
-			xLocation = (superViewFrame.size.width -
-					bannerViewFrame.size.width) / 2.0;
-		}
-	} else {
-
-    //move the webview to the top of the screen, based on patch from https://github.com/aliokan/cordova-plugin-admob/issues/13
-	  if ([[UIDevice currentDevice].systemVersion floatValue] >= 7 && self.bannerAtTop)
-	    webViewFrame.origin.y = 20;
-	  else
-		// Move the webview to the top of the screen.
-		webViewFrame.origin.y = 0;
-		// Need to center the banner both horizontally and vertically.
-		if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
-			yLocation = superViewFrame.size.width -
-			bannerViewFrame.size.height;
-			xLocation = (superViewFrame.size.height -
-					bannerViewFrame.size.width) / 2.0;
-		} else {
-			yLocation = superViewFrame.size.height -
-			bannerViewFrame.size.height;
-			xLocation = (superViewFrame.size.width -
-					bannerViewFrame.size.width) / 2.0;
-		}
-	}
-	frame.origin = CGPointMake(xLocation, yLocation);
-	bannerView_.frame = frame;
-
-	if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
-		// The super view's frame hasn't been updated so use its width
-		// as the height.
-		webViewFrame.size.height = superViewFrame.size.width -
-		bannerViewFrame.size.height - top;
-	} else {
-		webViewFrame.size.height = superViewFrame.size.height -
-		bannerViewFrame.size.height - top;
-	}
-	self.webView.frame = webViewFrame;
+    
+    // Let's calculate the new position and size
+    CGRect superViewFrameNew = superViewFrame;
+    CGRect webViewFrameNew = webViewFrame;
+    CGRect bannerViewFrameNew = bannerViewFrame;
+    
+    if( isLandscape ) {
+        superViewFrameNew.size.width = superViewFrame.size.height;
+        superViewFrameNew.size.height = superViewFrame.size.width;
+    }
+    
+    if(self.bannerAtTop) {
+        // move banner view to top
+        bannerViewFrameNew.origin.y = top;
+		// move the web view to below
+		webViewFrameNew.origin.y = top + bannerViewFrame.size.height;
+    } else {
+        // move web view to top
+		webViewFrameNew.origin.y = top;
+		// move the banner view to below
+        bannerViewFrameNew.origin.y = superViewFrameNew.size.height - bannerViewFrame.size.height;
+    }
+    
+    webViewFrameNew.size.width = superViewFrameNew.size.width;
+    webViewFrameNew.size.height = superViewFrameNew.size.height - bannerViewFrame.size.height - top;
+    
+    bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) * 0.5f;
+    
+    NSLog(@"webview: %d x %d, banner view: %d x %d",
+          (int) webViewFrameNew.size.width, (int) webViewFrameNew.size.height,
+          (int) bannerViewFrameNew.size.width, (int) bannerViewFrameNew.size.height );
+    
+    self.bannerView.frame = bannerViewFrameNew;
+    self.webView.frame = webViewFrameNew;
 }
 
 - (void)deviceOrientationChange:(NSNotification *)notification {
