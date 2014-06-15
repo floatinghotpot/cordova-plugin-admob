@@ -72,5 +72,18 @@
          <framework src="AdSupport.framework" />
          <framework src="CoreTelephony.framework" />
 	</platform>
-          
+
+  <!-- Windows Phone 8 -->
+  <platform name="wp8">
+    <config-file target="config.xml" parent="/*">
+      <feature name="AdMob">
+        <param name="wp-package" value="AdMob"/>
+      </feature>
+    </config-file>
+
+    <source-file src="src/wp8/AdMob.cs" />
+    <framework src="src/wp8/GoogleAds.XML" custom="true"/>
+    <framework src="src/wp8/GoogleAds.dll" custom="true" />
+  </platform>
+
 </plugin>
