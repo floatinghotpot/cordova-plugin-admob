@@ -30,9 +30,11 @@ Quick example with cordova command line tool
     cordova platform add ios
     cordova plugin add https://github.com/MobileChromeApps/google-play-services.git
     cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
-    ... copy the test/index.html to your www/
-    cordova prepare
-    ... cordova build, or import the android project into eclipse or ios project into xcode
+    mv www www.default
+    mkdir www
+    cp plugins/com.rjfun.cordova.plugin.admob/test/index.html www/
+    cordova build
+    ... cordova emulate android/ios, or import the android project into eclipse or ios project into xcode
 
 Or, just clone the testadmob project from github:
 
