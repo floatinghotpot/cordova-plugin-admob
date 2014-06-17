@@ -4,7 +4,13 @@ This is the AdMob Cordova Plugin for Android and iOS. It provides a way to reque
 
 This plugin was written and tested with the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
 
-Now, it's port to Cordova 3.0.0, and tested pass.
+It's port to Cordova 3.0, and also tested pass with cordova 3.5.
+
+Platform supported:
+---------------------------
+Android
+iOS
+Windows Phone 8 (newly added)
 
 How to use?
 ---------------------------
@@ -67,7 +73,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
 
 More ...
 --------------------------------------------------
-Add more callback functions to handle success/failure events:
+You can add more callback functions to handle success/failure events:
 
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
