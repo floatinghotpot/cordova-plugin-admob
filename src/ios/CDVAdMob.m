@@ -106,9 +106,11 @@ interstitial:(BOOL)isInterstitial;
 	NSString *callbackId = command.callbackId;
 
 	if(self.bannerView) {
-        [self showAd:false];
+        [self.bannerView setDelegate:nil];
 		[self.bannerView removeFromSuperview];
         self.bannerView = nil;
+        
+        self.webView.frame = self.webView.superview.frame;
 	}
 
 	// Call the success callback that was passed in through the javascript.

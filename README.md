@@ -42,10 +42,11 @@ Example javascript
 -------------------------------------------------
 Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
 
+    var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
+    var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
+    var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
+        
     if( window.plugins && window.plugins.AdMob ) {
-    	var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
-    	var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
-        var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
         var am = window.plugins.AdMob;
     
         am.createBannerView( 
@@ -56,7 +57,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
             }, 
             function() {
         	    am.requestAd(
-        		    { 'isTesting':false }, 
+        		    { 'isTesting':true }, 
             		function(){
             			am.showAd( true );
             		}, 
@@ -65,6 +66,19 @@ Call the following code inside onDeviceReady(), because only after device ready 
             }, 
             function(){ alert('failed to create banner view'); }
         );
+        
+        am.createInterstitialView(
+              {
+                  'publisherId': adId,
+              },
+              function() {
+                  am.requestInterstitialAd( { 'isTesting':true }, function() {}, function() { alert('failed to request ad'); });
+              },
+              function() {
+                  alert("Interstitial failed");
+              }
+          );
+        
     } else {
       alert('AdMob plugin not available/ready.');
     }
@@ -84,4 +98,8 @@ This plugin also allows you the option to listen for ad events. The following ev
     	document.addEventListener('onDismissAd', function(){
     	});
     	document.addEventListener('onLeaveToAd', function(){
-    	});    
+    	});   
+    	
+ See the working example code in test/index.html
+ 
+  

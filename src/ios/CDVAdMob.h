@@ -31,9 +31,10 @@
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command;
-- (void)createInterstitialView:(CDVInvokedUrlCommand *)command;
 - (void)requestAd:(CDVInvokedUrlCommand *)command;
-- (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command;
 - (void)showAd:(CDVInvokedUrlCommand *)command;
+
+- (void)createInterstitialView:(CDVInvokedUrlCommand *)command;
+- (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command;
 
 @end

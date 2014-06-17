@@ -32,6 +32,10 @@
     </head>
     <body onload="onLoad()" onresize="onResize()">
     <script>
+    var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
+    var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
+    var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
+    
     function onLoad() {
     	document.addEventListener("deviceready", onDeviceReady, false);
     	
@@ -47,31 +51,38 @@
     	document.addEventListener('onLeaveToAd', function(){
     	});
     }
-    function onDeviceReady() {
-    	var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
-    	var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
-    	var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
-    	
+    function createAd() {
     	if ( window.plugins && window.plugins.AdMob ) {
-    	    
     	    var am = window.plugins.AdMob;
-    	    am.createBannerView( 
-    	    		{
-    		            'publisherId': adId,
-    		            'adSize': am.AD_SIZE.BANNER,
-    		            'bannerAtTop': true
-    	            }, function() {
-    	            	am.requestAd( { 'isTesting':true }, function() {
-    	            		am.showAd( true );
-    	            	}, function() {
-    	            		alert('failed to request ad');	
-    	            	})
-    	            }, function(){
-    	            	alert( "failed to create ad view" );
-    	            });
+    	    am.createBannerView(
+                                {
+                                'publisherId': adId,
+                                'adSize': am.AD_SIZE.BANNER,
+                                'bannerAtTop': true
+                                }, function() {
+                                am.requestAd( { 'isTesting':true }, function() {
+                                             am.showAd( true );
+                                             }, function() {
+                                             alert('failed to request ad');
+                                             })
+                                }, function(){
+                                alert( "failed to create ad view" );
+                                });
+                                
+                                
     	} else {
     		alert('AdMob plugin not available/ready.');
     	}
+    }
+    function removeAd() {
+        if ( window.plugins && window.plugins.AdMob ) {
+    	    var am = window.plugins.AdMob;
+    	    am.destroyBannerView();
+        }
+
+    }
+    function onDeviceReady() {
+    	createAd();
     }
     function showAd( bshow ) {
     	if ( window.plugins && window.plugins.AdMob ) {
@@ -81,6 +92,22 @@
     		alert('AdMob plugin not available/ready.');
     	} 
     }
+    function showInterstitialAd() {
+        var am = window.plugins.AdMob;
+        am.createInterstitialView(
+                                  {
+                                  'publisherId': adId,
+                                  },
+                                  function() {
+                                  am.requestInterstitialAd( { 'isTesting':true }, function() {}, function() {
+                                                           alert('failed to request ad');
+                                                           });
+                                  },
+                                  function() {
+                                  alert("Interstitial failed");
+                                  }
+                                  );
+    }
     function onResize() {
         var msg = 'web view: ' + window.innerWidth + ' x ' + window.innerHeight;
         document.getElementById('sizeinfo').innerHTML = msg;
@@ -89,9 +116,12 @@
     <div id="fullpage">
     <p><br/></p>
     <div id="sizeinfo">width * height</div>
+    <p><button onclick="createAd();">create Ad</button></p>
+    <p><button onclick="removeAd();">remove Ad</button></p>
     <p><button onclick="showAd(true);">show Ad</button></p>
     <p><button onclick="showAd(false);">hide Ad</button></p>
-    </div>
+    <p><button onclick="showInterstitialAd();">show Interstitial Ad</button></p>
     <div>Try rotate screen to test the orientation change</div>
+    </div>
     </body>
 </html>
