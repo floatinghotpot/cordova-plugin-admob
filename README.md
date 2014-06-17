@@ -8,9 +8,9 @@ It's port to Cordova 3.0, and also tested pass with cordova 3.5.
 
 Platform supported:
 ---------------------------
-Android
-iOS
-Windows Phone 8 (newly added)
+* Android
+* iOS
+* Windows Phone 8 (newly added)
 
 How to use?
 ---------------------------
