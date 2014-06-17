@@ -1,11 +1,13 @@
 //
 //  GADRequestError.h
-//  Google AdMob Ads SDK
+//  Google Mobile Ads SDK
 //
 //  Copyright 2011 Google Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+
+#import "GADModules.h"
 
 @class GADRequest;
 
@@ -14,8 +16,8 @@ extern NSString *const kGADErrorDomain;
 
 /// NSError codes for GAD error domain.
 typedef NS_ENUM(NSInteger, GADErrorCode) {
-  /// The ad request is invalid.  The localizedFailureReason error description will have more
-  /// details.  Typically this is because the ad did not have the ad unit ID or root view
+  /// The ad request is invalid. The localizedFailureReason error description will have more
+  /// details. Typically this is because the ad did not have the ad unit ID or root view
   /// controller set.
   kGADErrorInvalidRequest,
 
@@ -50,6 +52,6 @@ typedef NS_ENUM(NSInteger, GADErrorCode) {
   kGADErrorMediationInvalidAdSize
 };
 
-/// This class represents the error generated due to invalid request parameters.
+/// Represents the error generated due to invalid request parameters.
 @interface GADRequestError : NSError
 @end

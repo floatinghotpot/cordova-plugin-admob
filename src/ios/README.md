@@ -1,18 +1,19 @@
 AdMob Cordova Plugin for iOS
 ================================
 
-This is the AdMob Cordova Plugin for iOS.  It provides a way to request
-AdMob ads natively from JavaScript.  This plugin was written and tested with
-the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
-Now, it's port to Cordova 3.0.0, and tested pass.
+This is the AdMob Cordova Plugin for iOS.  It provides a way to request AdMob ads natively from JavaScript.  
 
 ##Requirements:
 
 - Cordova SDK for iOS
 - Cordova JS for iOS
-- Google AdMob Ads SDK for iOS
-- iOS version 3.2 or later as well as XCode 4.2 or later
-- AdMob publisher ID from [AdMob](www.admob.com)
+- An AdMob site ID or DoubleClick for Publishers account.
+- Xcode 5.1 or later.
+- Runtime of iOS 5.0 or later.
+- Google AdMob Ads SDK for iOS (version 6.9.3 already included)
+
+The SDK can also be downloaded at:
+https://developers.google.com/mobile-ads-sdk/download#downloadios
 
 ##Setup:
 
@@ -22,32 +23,8 @@ Now, it's port to Cordova 3.0.0, and tested pass.
 2. Import Cordova SDK binary and Google AdMob SDK binary into your project (with
    their associated header files).
    
-3. Complete the Google AdMob SDK setup for iOS at
-   https://developers.google.com/mobile-ads-sdk/docs.
-
-If hope to setup manually instead of using cordova command line tool, then:
-   
-1. Place AdMob.js inside www/ folder. The path is:
-   platforms/ios/www/plugins/org.apache.cordova.plugin.admob/www/.
-   
-2. Place CDVAdMob.h and CDVAdMob.m into the plugins folder, the path is:
-   Plugins/org.apache.cordova.plugin.admob/.
-   
-3. Add following content into config.xml:
-    <feature name="AdMob">
-        <param name="ios-package" value="CDVAdMob" />
-    </feature>
-    
-4. Add following required frameworks, targets -> buildl phases -> link binary with ...
- 	     StoreKit.framework
- 	     AudioToolbox.framework
-         MessageUI.framework
-         SystemConfiguration.framework
-         CoreGraphics.framework
-         AdSupport.framework
-         
-5. To make sure there are no domain whitelisting issues, make sure you've set
-   the origin attribute of the \<access\> element to "*".
+The latest documentation and code samples are available at:
+https://developers.google.com/mobile-ads-sdk/docs/
 
 ##Implementation:
 

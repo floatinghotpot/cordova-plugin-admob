@@ -2,21 +2,25 @@ cordova-plugin-admob
 ---------------------------
 This is the AdMob Cordova Plugin for Android and iOS. It provides a way to request AdMob ads natively from JavaScript. 
 
-This plugin was written and tested with the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
+This plugin was originally written and tested with the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
 
-Now, it's port to Cordova 3.0.0, and tested pass.
+It's now updated and enhanced to support:
+* Cordova 3.0, 3.5.
+* AdMob SDK for iOS, v6.8.4 (deprecated), v6.9.3 (SDK included)
+* AdMob SDK for Android, v6.4.1 (deprecated)
+* Google Play Service for Android, v4.4 (replacing AdMob SDK for Android)
+* AdMob SDK for Windows Phone 8, v6.5.11 (newly added, and SDK included)
+
+Note: WP8 SDK supported only in AdMob; it is not available for DoubleClick For Publishers (DFP) or Ad Exchange.
 
 How to use?
 ---------------------------
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
-It's recommended to use cordova command line tool: 
-
+    cordova plugin add https://github.com/MobileChromeApps/google-play-services.git
     cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
 
-For different platforms, please refer to the corresponding README files for Android/iOS.
-
-And, of course, ensure you have a proper AdMob account and create an Id for your app.
+Note: ensure you have a proper AdMob account and create an Id for your app.
 
 Quick example with cordova command line tool
 ------------------------------------------------
@@ -67,7 +71,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
 
 More ...
 --------------------------------------------------
-Add more callback functions to handle success/failure events:
+This plugin also allows you the option to listen for ad events. The following events are supported:
 
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
