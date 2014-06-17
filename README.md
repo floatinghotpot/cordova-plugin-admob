@@ -71,11 +71,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
 
 More ...
 --------------------------------------------------
-<<<<<<< HEAD
 This plugin also allows you the option to listen for ad events. The following events are supported:
-=======
-You can add more callback functions to handle success/failure events:
->>>>>>> 183d1912f6ec448d51b406da5c16623b9dc3a7fe
 
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
