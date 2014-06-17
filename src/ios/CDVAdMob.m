@@ -350,58 +350,45 @@ bannerType:(GADAdSize)adSize {
 		return;
 	}
 
-	// If the ad is not showing or the ad is hidden, we don't want to resize anything.
-	BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView] &&
-        (! self.bannerView.hidden);
-    
-	// Handle changing Smart Banner constants for the user.
-    bool isLandscape = [self __isLandscape];
-    if( isLandscape ) {
-        if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerLandscape)) {
-            self.bannerView.adSize = kGADAdSizeSmartBannerLandscape;
-        }
-    } else {
-        if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerPortrait)) {
-            self.bannerView.adSize = kGADAdSizeSmartBannerPortrait;
-        }
-    }
-
-    // iOS7 Hack, handle the Statusbar
-    MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
-    BOOL isIOS7 = ([[UIDevice currentDevice].systemVersion floatValue] >= 7);
-    CGFloat top = isIOS7 ? mainView.topLayoutGuide.length : 0.0;
-    
-	// Frame of the main container view that holds the Cordova webview.
-	CGRect superViewFrame = self.webView.superview.frame;
-	// Frame of the main Cordova webview.
-	CGRect webViewFrame = self.webView.frame;
-	CGRect bannerViewFrame = self.bannerView.frame;
+    // Frame of the main container view that holds the Cordova webview.
+    CGRect superViewFrame = self.webView.superview.frame;
+    // Frame of the main Cordova webview.
+    CGRect webViewFrame = self.webView.frame;
+    CGRect bannerViewFrame = self.bannerView.frame;
     
     // Let's calculate the new position and size
     CGRect superViewFrameNew = superViewFrame;
     CGRect webViewFrameNew = webViewFrame;
     CGRect bannerViewFrameNew = bannerViewFrame;
     
+    // Handle changing Smart Banner constants for the user.
+    bool isLandscape = [self __isLandscape];
     if( isLandscape ) {
         superViewFrameNew.size.width = superViewFrame.size.height;
         superViewFrameNew.size.height = superViewFrame.size.width;
     }
     
+    // If the ad is not showing or the ad is hidden, we don't want to resize anything.
+    BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView] &&
+    (! self.bannerView.hidden);
     if(adIsShowing) {
         if(self.bannerAtTop) {
+            // iOS7 Hack, handle the Statusbar
+            MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
+            BOOL isIOS7 = ([[UIDevice currentDevice].systemVersion floatValue] >= 7);
+            CGFloat top = isIOS7 ? mainView.topLayoutGuide.length : 0.0;
+            
             // move banner view to top
             bannerViewFrameNew.origin.y = top;
             // move the web view to below
             webViewFrameNew.origin.y = top + bannerViewFrame.size.height;
         } else {
-            // move web view to top
-            webViewFrameNew.origin.y = top;
             // move the banner view to below
             bannerViewFrameNew.origin.y = superViewFrameNew.size.height - bannerViewFrame.size.height;
         }
         
         webViewFrameNew.size.width = superViewFrameNew.size.width;
-        webViewFrameNew.size.height = superViewFrameNew.size.height - bannerViewFrame.size.height - top;
+        webViewFrameNew.size.height = superViewFrameNew.size.height - webViewFrameNew.origin.y;
         
         bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) * 0.5f;
         
@@ -413,8 +400,6 @@ bannerType:(GADAdSize)adSize {
         
     } else {
         webViewFrameNew = superViewFrameNew;
-        webViewFrameNew.origin.y += top;
-        webViewFrameNew.size.height -= top;
         
         NSLog(@"webview: %d x %d",
               (int) webViewFrameNew.size.width, (int) webViewFrameNew.size.height );
