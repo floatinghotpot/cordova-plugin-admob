@@ -58,8 +58,11 @@
          <header-file src="src/ios/GADAdSize.h" />
          <header-file src="src/ios/GADBannerView.h" />
          <header-file src="src/ios/GADBannerViewDelegate.h" />
+         <header-file src="src/ios/GADInAppPurchase.h" />
+         <header-file src="src/ios/GADInAppPurchaseDelegate.h" />
          <header-file src="src/ios/GADInterstitial.h" />
          <header-file src="src/ios/GADInterstitialDelegate.h" />
+         <header-file src="src/ios/GADModules.h" />
          <header-file src="src/ios/GADRequest.h" />
          <header-file src="src/ios/GADRequestError.h" />
          <source-file src="src/ios/libGoogleAdMobAds.a" framework="true" />
