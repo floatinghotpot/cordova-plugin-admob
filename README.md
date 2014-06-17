@@ -109,13 +109,13 @@ Screenshots
 
 iPhone:
 
-![ScreenShot](screenshot-admob-iphone.png)
+![ScreenShot](admob-iphone.jpg)
 
 iPad, landscape:
 
-![ScreenShot](screenshot-admob-ipad-landscape.png)
+![ScreenShot](admob-ipad-landscape.jpg)
 
 Android:
 
-![ScreenShot](screenshot-admob-android.png)
+![ScreenShot](admob-android.jpg)
 
