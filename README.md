@@ -6,12 +6,12 @@ This plugin was originally written and tested with the Google AdMob SDK version 
 
 It's now updated and enhanced to support:
 * Cordova 3.0, 3.5.
+
+Platform SDK supported:
 * AdMob SDK for iOS, v6.8.4 (deprecated), v6.9.3 (SDK included)
 * AdMob SDK for Android, v6.4.1 (deprecated)
 * Google Play Service for Android, v4.4 (replacing AdMob SDK for Android)
 * AdMob SDK for Windows Phone 8, v6.5.11 (newly added, and SDK included)
-
-Note: WP8 SDK supported only in AdMob; it is not available for DoubleClick For Publishers (DFP) or Ad Exchange.
 
 How to use?
 ---------------------------
@@ -71,7 +71,11 @@ Call the following code inside onDeviceReady(), because only after device ready 
 
 More ...
 --------------------------------------------------
+<<<<<<< HEAD
 This plugin also allows you the option to listen for ad events. The following events are supported:
+=======
+You can add more callback functions to handle success/failure events:
+>>>>>>> 183d1912f6ec448d51b406da5c16623b9dc3a7fe
 
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
