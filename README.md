@@ -102,7 +102,7 @@ This plugin also allows you the option to listen for ad events. The following ev
     	document.addEventListener('onLeaveToAd', function(){
     	});   
     	
- See the working example code in test/index.html, and here are some screenshots.
+See the working example code in [demo under test folder](test/index.html), and here are some screenshots.
  
 Screenshots (banner Ad / interstitial Ad)
 ------------------------------------------------
