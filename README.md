@@ -102,6 +102,20 @@ This plugin also allows you the option to listen for ad events. The following ev
     	document.addEventListener('onLeaveToAd', function(){
     	});   
     	
- See the working example code in test/index.html
+ See the working example code in test/index.html, and here are some screenshots.
  
-  
+Screenshots
+------------------------------------------------
+
+iPhone:
+
+![ScreenShot](admob-iphone.png)
+
+iPad, landscape:
+
+![ScreenShot](admob-ipad-landscape.png)
+
+Android:
+
+![ScreenShot](admob-android.png)
+
