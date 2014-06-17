@@ -104,7 +104,7 @@ This plugin also allows you the option to listen for ad events. The following ev
     	
  See the working example code in test/index.html, and here are some screenshots.
  
-Screenshots
+Screenshots (banner Ad / interstitial Ad)
 ------------------------------------------------
 
 iPhone:
