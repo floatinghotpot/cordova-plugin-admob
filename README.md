@@ -16,8 +16,8 @@ Platform SDK supported:
 ## See Also ##
 ---------------------------
 Besides using Google AdMob, you have some other options, all working on cordova:
-* [cordova-plugin-iad](/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
-* [cordova-plugin-flurry](/floatinghotpot/cordova-plugin-flurry), Flurry Ads service.
+* [cordova-plugin-iad](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
+* [cordova-plugin-flurry](https://github.com/floatinghotpot/cordova-plugin-flurry), Flurry Ads service.
 
 ## How to use? ##
 ---------------------------
