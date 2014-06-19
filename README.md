@@ -13,6 +13,12 @@ Platform SDK supported:
 * Google Play Service for Android, v4.4 (replacing AdMob SDK for Android)
 * AdMob SDK for Windows Phone 8, v6.5.11 (newly added, and SDK included)
 
+See Also
+---------------------------
+Besides using Google AdMob, you have some other options, all working on cordova:
+[cordova-plugin-iad](../cordova-plugin-iad), Apple iAd service. 
+[cordova-plugin-flurry](../cordova-plugin-flurry), Flurry Ads service.
+
 How to use?
 ---------------------------
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
