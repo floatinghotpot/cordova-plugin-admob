@@ -327,13 +327,15 @@ public class AdMob extends CordovaPlugin {
             return new PluginResult(Status.JSON_EXCEPTION);
         }
         
+        if(adView == null) {
+            return new PluginResult(Status.ERROR, "adView is null, call createBannerView first.");
+        }
+        
         final CallbackContext delayCallback = callbackContext;
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
-                if(adView != null) {
-                    adView.setVisibility( show ? View.VISIBLE : View.GONE );
-                }
+                adView.setVisibility( show ? View.VISIBLE : View.GONE );
                 delayCallback.success();
             }
         });
