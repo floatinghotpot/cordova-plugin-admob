@@ -380,16 +380,17 @@ bannerType:(GADAdSize)adSize {
             
             // move banner view to top
             bannerViewFrameNew.origin.y = top;
+            
             // move the web view to below
             webViewFrameNew.origin.y = top + bannerViewFrame.size.height;
+            webViewFrameNew.size.height = superViewFrameNew.size.height - webViewFrameNew.origin.y;
         } else {
             // move the banner view to below
-            bannerViewFrameNew.origin.y = superViewFrameNew.size.height - bannerViewFrame.size.height;
+            webViewFrameNew.size.height = superViewFrameNew.size.height - bannerViewFrame.size.height;
+            bannerViewFrameNew.origin.y = webViewFrameNew.size.height;
         }
         
         webViewFrameNew.size.width = superViewFrameNew.size.width;
-        webViewFrameNew.size.height = superViewFrameNew.size.height - webViewFrameNew.origin.y;
-        
         bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) * 0.5f;
         
         NSLog(@"webview: %d x %d, banner view: %d x %d",
