@@ -58,10 +58,11 @@
                                 {
                                 'publisherId': adId,
                                 'adSize': am.AD_SIZE.BANNER,
-                                'bannerAtTop': true
+                                'bannerAtTop': false,
+                                'overlap': true
                                 }, function() {
                                 am.requestAd( { 'isTesting':true }, function() {
-                                             am.showAd( true );
+                                             am.showAd( true, function(){ onResize(); }, function(){} );
                                              }, function() {
                                              alert('failed to request ad');
                                              })
@@ -77,7 +78,7 @@
     function removeAd() {
         if ( window.plugins && window.plugins.AdMob ) {
     	    var am = window.plugins.AdMob;
-    	    am.destroyBannerView();
+    	    am.destroyBannerView({},function(){onResize();},function(){});
         }
 
     }
@@ -87,7 +88,7 @@
     function showAd( bshow ) {
     	if ( window.plugins && window.plugins.AdMob ) {
     	    var am = window.plugins.AdMob;
-    	    am.showAd( bshow, function(){}, function(){ alert('please create ad first'); } );
+    	    am.showAd( bshow, function(){ onResize(); }, function(){ alert('please create ad first'); } );
     	} else {
     		alert('AdMob plugin not available/ready.');
     	} 
