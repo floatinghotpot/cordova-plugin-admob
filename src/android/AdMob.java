@@ -8,7 +8,6 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.mediation.admob.AdMobExtras;
 
 import org.apache.cordova.CallbackContext;
-import org.apache.cordova.LinearLayoutSoftKeyboardDetect;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
@@ -19,6 +18,7 @@ import org.json.JSONObject;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.os.Bundle;
 
 import java.util.Iterator;
@@ -36,11 +36,15 @@ public class AdMob extends CordovaPlugin {
     /** The interstitial ad to display to the user. */
     private InterstitialAd interstitialAd;
     
+    /** if want banner view overlap webview, we will need this layout */
+    private RelativeLayout adViewLayout = null;
+    
     private String publisherId = "";
     private AdSize adSize = null;
     /** Whether or not the ad should be positioned at top or bottom of screen. */
-    private boolean bannerAtTop;
-    private boolean bannerOverlap;
+    private boolean bannerAtTop = false;
+    /** Whether or not the banner will overlap the webview instead of push it up or down */
+    private boolean bannerOverlap = false;
     
     /** Common tag used for logging statements. */
     private static final String LOGTAG = "AdMob";
@@ -151,11 +155,28 @@ public class AdMob extends CordovaPlugin {
                 if (adView.getParent() != null) {
                     ((ViewGroup)adView.getParent()).removeView(adView);
                 }
-                ViewGroup parentView = (ViewGroup) (bannerOverlap ? webView : webView.getParent());
-                if (bannerAtTop) {
-                    parentView.addView(adView, 0);
+                if(bannerOverlap) {
+                    ViewGroup parentView = (ViewGroup) webView;
+                    
+                    adViewLayout = new RelativeLayout(cordova.getActivity());
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.MATCH_PARENT);
+                    parentView.addView(adViewLayout, params);
+                    
+                    RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    params2.addRule(bannerAtTop ? RelativeLayout.ALIGN_PARENT_TOP : RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    adViewLayout.addView(adView, params2);
+                    
                 } else {
-                    parentView.addView(adView);
+                    ViewGroup parentView = (ViewGroup) webView.getParent();
+                    if (bannerAtTop) {
+                        parentView.addView(adView, 0);
+                    } else {
+                        parentView.addView(adView);
+                    }
                 }
                 delayCallback.success();
             }
@@ -177,6 +198,13 @@ public class AdMob extends CordovaPlugin {
 						parentView.removeView(adView);
 					}
 					adView = null;
+				}
+				if (adViewLayout != null) {
+					ViewGroup parentView = (ViewGroup)adViewLayout.getParent();
+					if(parentView != null) {
+						parentView.removeView(adViewLayout);
+					}
+					adViewLayout = null;
 				}
 				delayCallback.success();
 		    }
@@ -336,7 +364,7 @@ public class AdMob extends CordovaPlugin {
         
         final CallbackContext delayCallback = callbackContext;
         cordova.getActivity().runOnUiThread(new Runnable(){
-            @Override
+			@Override
             public void run() {
                 adView.setVisibility( show ? View.VISIBLE : View.GONE );
                 delayCallback.success();
