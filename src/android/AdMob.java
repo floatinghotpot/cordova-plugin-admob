@@ -40,6 +40,7 @@ public class AdMob extends CordovaPlugin {
     private AdSize adSize = null;
     /** Whether or not the ad should be positioned at top or bottom of screen. */
     private boolean bannerAtTop;
+    private boolean bannerOverlap;
     
     /** Common tag used for logging statements. */
     private static final String LOGTAG = "AdMob";
