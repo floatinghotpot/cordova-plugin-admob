@@ -61,7 +61,8 @@ Call the following code inside onDeviceReady(), because only after device ready 
             {
             'publisherId': adId,
             'adSize': am.AD_SIZE.BANNER,
-            'bannerAtTop': false
+            'bannerAtTop': false,
+            'overlap': false
             }, 
             function() {
         	    am.requestAd(

@@ -89,6 +89,12 @@ interstitial:(BOOL)isInterstitial;
 		self.bannerAtTop = NO;
 	}
 
+	if ([arguments objectAtIndex:BANNER_OVERLAP_ARG_INDEX]) {
+		self.bannerOverlap = [[arguments objectAtIndex:BANNER_AT_TOP_ARG_INDEX] boolValue];
+	} else {
+		self.bannerOverlap = NO;
+	}
+
 	[self createGADBannerViewWithPubId:publisherId bannerType:adSize];
 
 	// set background color to black
@@ -383,6 +389,14 @@ bannerType:(GADAdSize)adSize {
     BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView] &&
     (! self.bannerView.hidden);
     if(adIsShowing) {
+        // banner overlap webview, no resizing needed, but we need bring banner over webview, and put it center.
+        if(self.bannerOverlap) {
+            bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) /2;
+            self.bannerView.frame = bannerViewFrameNew;
+            [self.webView.superview bringSubviewToFront:self.bannerView];
+            return;
+        }
+
         if(self.bannerAtTop) {
             // iOS7 Hack, handle the Statusbar
             MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;

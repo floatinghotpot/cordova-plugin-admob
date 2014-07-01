@@ -64,7 +64,8 @@ function(options, successCallback, failureCallback) {
   var defaults = {
     'publisherId': undefined,
     'adSize': undefined,
-    'bannerAtTop': false
+    'bannerAtTop': false,
+    'overlap':false
   };
   var requiredOptions = ['publisherId', 'adSize'];
 
@@ -89,7 +90,7 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'createBannerView',
-      [defaults['publisherId'], defaults['adSize'], defaults['bannerAtTop']]
+      [defaults['publisherId'], defaults['adSize'], defaults['bannerAtTop'], defaults['overlap']]
   );
 };
 
