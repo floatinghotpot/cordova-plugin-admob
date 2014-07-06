@@ -78,7 +78,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
         
         am.createInterstitialView(
               {
-                  'publisherId': adId,
+                  'publisherId': adId
               },
               function() {
                   am.requestInterstitialAd( { 'isTesting':true }, function() {}, function() { alert('failed to request ad'); });
