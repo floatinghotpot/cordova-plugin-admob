@@ -388,8 +388,8 @@ public class AdMob extends CordovaPlugin {
         @Override
         public void onAdFailedToLoad(int errorCode) {
             webView.loadUrl(String.format(
-                                          "javascript:cordova.fireDocumentEvent('onFailedToReceiveAd', { 'error': '%s' });",
-                                          errorCode));
+                    "javascript:cordova.fireDocumentEvent('onFailedToReceiveAd', { 'error': %d, 'reason':'%s' });",
+                    errorCode, getErrorReason(errorCode)));
         }
         
         @Override
@@ -472,6 +472,27 @@ public class AdMob extends CordovaPlugin {
         } else {
             return null;
         }
+    }
+
+    
+    /** Gets a string error reason from an error code. */
+    public String getErrorReason(int errorCode) {
+      String errorReason = "";
+      switch(errorCode) {
+        case AdRequest.ERROR_CODE_INTERNAL_ERROR:
+          errorReason = "Internal error";
+          break;
+        case AdRequest.ERROR_CODE_INVALID_REQUEST:
+          errorReason = "Invalid request";
+          break;
+        case AdRequest.ERROR_CODE_NETWORK_ERROR:
+          errorReason = "Network Error";
+          break;
+        case AdRequest.ERROR_CODE_NO_FILL:
+          errorReason = "No fill";
+          break;
+      }
+      return errorReason;
     }
 }
 
