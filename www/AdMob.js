@@ -65,7 +65,8 @@ function(options, successCallback, failureCallback) {
     'publisherId': undefined,
     'adSize': undefined,
     'bannerAtTop': false,
-    'overlap':false
+    'overlap':false,
+    'offsetTopBar':false
   };
   var requiredOptions = ['publisherId', 'adSize'];
 
@@ -90,7 +91,7 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'createBannerView',
-      [defaults['publisherId'], defaults['adSize'], defaults['bannerAtTop'], defaults['overlap']]
+      [defaults['publisherId'], defaults['adSize'], defaults['bannerAtTop'], defaults['overlap'], defaults['offsetTopBar']]
   );
 };
 

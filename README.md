@@ -62,7 +62,8 @@ Call the following code inside onDeviceReady(), because only after device ready 
             'publisherId': adId,
             'adSize': am.AD_SIZE.BANNER,
             'bannerAtTop': false,
-            'overlap': false
+            'overlap': false,
+            'offsetTopBar': false // set to true to avoid ios 7 status bar overlap
             }, 
             function() {
         	    am.requestAd(

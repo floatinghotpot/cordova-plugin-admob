@@ -11,6 +11,7 @@
 #define AD_SIZE_ARG_INDEX         1
 #define BANNER_AT_TOP_ARG_INDEX   2
 #define OVERLAP_ARG_INDEX         3
+#define OFFSET_TOPBAR_ARG_INDEX	  4
 
 #define IS_TESTING_ARG_INDEX      0
 #define EXTRAS_ARG_INDEX          1
@@ -30,6 +31,7 @@
 @property(nonatomic, retain) GADInterstitial *interstitialView;
 @property (assign) BOOL bannerAtTop;
 @property (assign) BOOL bannerOverlap;
+@property (assign) BOOL offsetTopBar;
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command;

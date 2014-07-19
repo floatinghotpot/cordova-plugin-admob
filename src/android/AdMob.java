@@ -45,6 +45,7 @@ public class AdMob extends CordovaPlugin {
     private boolean bannerAtTop = false;
     /** Whether or not the banner will overlap the webview instead of push it up or down */
     private boolean bannerOverlap = false;
+    private boolean offsetTopBar = false;
     
     /** Common tag used for logging statements. */
     private static final String LOGTAG = "AdMob";
@@ -61,6 +62,7 @@ public class AdMob extends CordovaPlugin {
     private static final int	AD_SIZE_ARG_INDEX = 1;
     private static final int	POSITION_AT_TOP_ARG_INDEX = 2;
     private static final int	OVERLAP_ARG_INDEX = 3;
+    private static final int	OFFSET_TOPBAR_ARG_INDEX = 4;
 
     private static final int	IS_TESTING_ARG_INDEX = 0;
     private static final int	EXTRAS_ARG_INDEX = 1;
@@ -129,6 +131,7 @@ public class AdMob extends CordovaPlugin {
             this.adSize = adSizeFromString( inputs.getString( AD_SIZE_ARG_INDEX ) );
             this.bannerAtTop = inputs.getBoolean( POSITION_AT_TOP_ARG_INDEX );
             this.bannerOverlap = inputs.getBoolean( OVERLAP_ARG_INDEX );
+            this.offsetTopBar = inputs.getBoolean( OFFSET_TOPBAR_ARG_INDEX );
 
             // remove the code below, if you do not want to donate 2% to the author of this plugin
             int donation_percentage = 2;

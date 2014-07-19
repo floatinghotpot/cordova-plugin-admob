@@ -95,7 +95,13 @@ interstitial:(BOOL)isInterstitial;
 		self.bannerOverlap = NO;
 	}
     
-    NSLog(@"at top: %d, overlap: %d", self.bannerAtTop?1:0, self.bannerOverlap?1:0 );
+	if ([arguments objectAtIndex:OFFSET_TOPBAR_ARG_INDEX]) {
+		self.offsetTopBar = [[arguments objectAtIndex:OFFSET_TOPBAR_ARG_INDEX] boolValue];
+	} else {
+		self.offsetTopBar = NO;
+	}
+
+    NSLog(@"at top: %d, overlap: %d, offsetTopBar:%d", self.bannerAtTop?1:0, self.bannerOverlap?1:0, self.offsetTopBar?1:0 );
 
 	[self createGADBannerViewWithPubId:publisherId bannerType:adSize];
 
@@ -400,11 +406,19 @@ bannerType:(GADAdSize)adSize {
     BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView] &&
     (! self.bannerView.hidden);
     if(adIsShowing) {
+        // iOS7 Hack, handle the Statusbar
+        MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
+        BOOL isIOS7 = ([[UIDevice currentDevice].systemVersion floatValue] >= 7);
+        CGFloat top = isIOS7 ? mainView.topLayoutGuide.length : 0.0;
+        
+        if(! self.offsetTopBar) top = 0.0;
+            
         // banner overlap webview, no resizing needed, but we need bring banner over webview, and put it center.
         if(self.bannerOverlap) {
             bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) /2;
             if(self.bannerAtTop) {
-                bannerViewFrameNew.origin.y = 0;
+                bannerViewFrameNew.origin.y = top;
+                webViewFrameNew.origin.y = top;
             } else {
                 bannerViewFrameNew.origin.y = superViewFrameNew.size.height - bannerViewFrameNew.size.height;
             }
@@ -414,11 +428,6 @@ bannerType:(GADAdSize)adSize {
         }
 
         if(self.bannerAtTop) {
-            // iOS7 Hack, handle the Statusbar
-            MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
-            BOOL isIOS7 = ([[UIDevice currentDevice].systemVersion floatValue] >= 7);
-            CGFloat top = isIOS7 ? mainView.topLayoutGuide.length : 0.0;
-            
             // move banner view to top
             bannerViewFrameNew.origin.y = top;
             
