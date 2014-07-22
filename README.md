@@ -21,7 +21,7 @@ To install this plugin, follow the [Command-line Interface Guide](http://cordova
 
 Note: ensure you have a proper AdMob account and create an Id for your app.
 
-## Quick example with cordova command line tool ##
+## Quick example with cordova CLI ##
     cordova create testadmob com.rjfun.testadmob TestAdmob
     cd testadmob
     cordova platform add android
@@ -33,23 +33,23 @@ Note: ensure you have a proper AdMob account and create an Id for your app.
     cordova prepare; cordova run android; cordova run ios;
     // or import into Xcode / eclipse
 
-Or, just clone the testadmob project from github:
-
-    git clone git@github.com:floatinghotpot/testadmob.git
-
 ## Javascript API ##
-```javascript
-   createBannerView(options, success, fail);
-   requestAd(options, success, fail);
-   showAd(true/false, success, fail);
-   destroyBannerView();
 
-   createInterstitialView(options, success, fail);
-   requestInterstitialAd(options, success, fail);
-   showInterstitialAd();
-```
+APIs:
+- createBannerView(options, success, fail);
+- requestAd(options, success, fail);
+- showAd(true/false, success, fail);
+- destroyBannerView();
 
-## Example javascript ##
+- createInterstitialView(options, success, fail);
+- requestInterstitialAd(options, success, fail);
+- showInterstitialAd();
+
+Events: 
+- onReceiveAd, onFailedToReceiveAd, onPresentAd, onDismissAd, onLeaveToAd
+- onReceiveInterstitialAd, onPresentInterstitialAd
+
+## Example code ##
 Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
 ```javascript
     var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
@@ -94,11 +94,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
     } else {
       alert('AdMob plugin not available/ready.');
     }
-```
 
-## Events ##
-This plugin also allows you the option to listen for ad events. The following events are supported:
-```javascript
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
 		window.plugins.AdMob.showAd( true );
