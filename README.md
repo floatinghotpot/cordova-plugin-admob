@@ -5,10 +5,9 @@ It's now updated and enhanced to support:
 * Cordova 3.0, 3.5.
 
 Platform SDK supported:
-* AdMob SDK for iOS, v6.8.4 (deprecated), v6.9.3 (SDK included)
-* AdMob SDK for Android, v6.4.1 (deprecated)
-* Google Play Service for Android, v4.4 (replacing AdMob SDK for Android)
-* AdMob SDK for Windows Phone 8, v6.5.11 (newly added, and SDK included)
+* iOS, using AdMob SDK for iOS, v6.8.4 (deprecated), v6.9.3 (SDK included)
+* Android, using Google Play Service for Android, v4.4 (replacing AdMob SDK for Android)
+* Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.11 (newly added, and SDK included)
 
 ## See Also ##
 Besides using Google AdMob, you have some other options, all working on cordova:
