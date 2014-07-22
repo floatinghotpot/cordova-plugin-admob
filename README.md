@@ -38,9 +38,8 @@ Note: ensure you have a proper AdMob account and create an Id for your app.
 APIs:
 - createBannerView(options, success, fail);
 - requestAd(options, success, fail);
-- showAd(true/false, success, fail);
+- showAd(true/false, success, fail); 
 - destroyBannerView();
-
 - createInterstitialView(options, success, fail);
 - requestInterstitialAd(options, success, fail);
 - showInterstitialAd();
