@@ -1,5 +1,4 @@
 # cordova-plugin-admob #
----------------------------
 This is the AdMob Cordova Plugin for Android and iOS. It provides a way to request AdMob ads natively from JavaScript. 
 
 This plugin was originally written and tested with the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
@@ -14,42 +13,48 @@ Platform SDK supported:
 * AdMob SDK for Windows Phone 8, v6.5.11 (newly added, and SDK included)
 
 ## See Also ##
----------------------------
 Besides using Google AdMob, you have some other options, all working on cordova:
 * [cordova-plugin-iad](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
 * [cordova-plugin-flurry](https://github.com/floatinghotpot/cordova-plugin-flurry), Flurry Ads service.
 
 ## How to use? ##
----------------------------
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
-    cordova plugin add https://github.com/MobileChromeApps/google-play-services.git
     cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
 
 Note: ensure you have a proper AdMob account and create an Id for your app.
 
 ## Quick example with cordova command line tool ##
-------------------------------------------------
     cordova create testadmob com.rjfun.testadmob TestAdmob
     cd testadmob
     cordova platform add android
     cordova platform add ios
-    cordova plugin add https://github.com/MobileChromeApps/google-play-services.git
     cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
     mv www www.default
     mkdir www
     cp plugins/com.rjfun.cordova.plugin.admob/test/index.html www/
-    cordova build
-    ... cordova emulate android/ios, or import the android project into eclipse or ios project into xcode
+    cordova prepare; cordova run android; cordova run ios;
+    // or import into Xcode / eclipse
 
 Or, just clone the testadmob project from github:
 
     git clone git@github.com:floatinghotpot/testadmob.git
 
-## Example javascript ##
--------------------------------------------------
-Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
+## Javascript API ##
+```javascript
+   createBannerView(options, success, fail);
+   requestAd(options, success, fail);
+   showAd(true/false, success, fail);
+   destroyBannerView();
 
+   createInterstitialView(options, success, fail);
+   requestInterstitialAd(options, success, fail);
+   showInterstitialAd();
+```
+
+## Example javascript ##
+Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
+```javascript
     var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
     var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
     var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
@@ -92,11 +97,11 @@ Call the following code inside onDeviceReady(), because only after device ready 
     } else {
       alert('AdMob plugin not available/ready.');
     }
+```
 
-## More ... ##
---------------------------------------------------
+## Events ##
 This plugin also allows you the option to listen for ad events. The following events are supported:
-
+```javascript
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
 		window.plugins.AdMob.showAd( true );
@@ -116,11 +121,11 @@ This plugin also allows you the option to listen for ad events. The following ev
         });
 	document.addEventListener('onPresentInterstitialAd', function(){
         });
-    	
+```
+
 See the working example code in [demo under test folder](test/index.html), and here are some screenshots.
  
 ## Screenshots (banner Ad / interstitial Ad) ##
-------------------------------------------------
 
 iPhone:
 
@@ -136,9 +141,7 @@ Android:
 
 
 ## Donate ##
-----------------------------------------------
 You can use this cordova plugin for free. To support this project, donation is welcome.  
-
 Donation can be accepted in either of following ways:
 * Share 2% Ad traffic. 
 * [Donate directly via Paypal](http://floatinghotpot.github.io/#donate)
