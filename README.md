@@ -66,13 +66,10 @@ Call the following code inside onDeviceReady(), because only after device ready 
             'offsetTopBar': false // set to true to avoid ios 7 status bar overlap
             }, 
             function() {
-        	    am.requestAd(
-        		    { 'isTesting':true }, 
-            		function(){
-            			am.showAd( true );
-            		}, 
+        	    am.requestAd( { 'isTesting':true }, 
+            		function(){}, 
             		function(){ alert('failed to request ad'); }
-            	);
+            		);
             }, 
             function(){ alert('failed to create banner view'); }
         );
@@ -82,7 +79,10 @@ Call the following code inside onDeviceReady(), because only after device ready 
                   'publisherId': adId
               },
               function() {
-                  am.requestInterstitialAd( { 'isTesting':true }, function() {}, function() { alert('failed to request ad'); });
+                  am.requestInterstitialAd( { 'isTesting':true }, 
+			function() {}, 
+			function() { alert('failed to request ad'); }
+			);
               },
               function() {
                   alert("Interstitial failed");
@@ -99,6 +99,7 @@ This plugin also allows you the option to listen for ad events. The following ev
 
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
+		window.plugins.AdMob.showAd( true );
     	});
     	document.addEventListener('onFailedToReceiveAd', function(data){
     		// alert( data.error );
@@ -109,6 +110,12 @@ This plugin also allows you the option to listen for ad events. The following ev
     	});
     	document.addEventListener('onLeaveToAd', function(){
     	});   
+
+	document.addEventListener('onReceiveInterstitialAd', function(){
+		window.plugins.AdMob.showInterstitialAd();
+        });
+	document.addEventListener('onPresentInterstitialAd', function(){
+        });
     	
 See the working example code in [demo under test folder](test/index.html), and here are some screenshots.
  

@@ -270,5 +270,20 @@ function( show, successCallback, failureCallback) {
 	);
 };
 
+admobExport.showInterstitialAd = 
+	function( show, successCallback, failureCallback) {
+		if (show === undefined) {
+			show = true;
+		}
+
+		cordova.exec(
+			successCallback,
+			failureCallback, 
+			'AdMob', 
+			'showInterstitialAd', 
+			[ show ]
+		);
+	};
+
 module.exports = admobExport;
 

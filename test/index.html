@@ -41,6 +41,8 @@
     	
     	// more callback to handle Ad events
     	document.addEventListener('onReceiveAd', function(){
+		window.plugins.AdMob.showAd(true);
+		onResize();
     	});
     	document.addEventListener('onFailedToReceiveAd', function(data){
     	});
@@ -50,6 +52,9 @@
     	});
     	document.addEventListener('onLeaveToAd', function(){
     	});
+	document.addEventListener('onReceiveInterstitialAd', function(){
+                window.plugins.AdMob.showInterstitialAd(true);
+        });
     }
     function createAd() {
     	if ( window.plugins && window.plugins.AdMob ) {
@@ -62,7 +67,6 @@
                                 'overlap': true
                                 }, function() {
                                 am.requestAd( { 'isTesting':true }, function() {
-                                             am.showAd( true, function(){ onResize(); }, function(){} );
                                              }, function() {
                                              alert('failed to request ad');
                                              })

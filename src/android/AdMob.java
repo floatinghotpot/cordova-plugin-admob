@@ -52,11 +52,13 @@ public class AdMob extends CordovaPlugin {
     
     /** Cordova Actions. */
     private static final String ACTION_CREATE_BANNER_VIEW = "createBannerView";
-    private static final String ACTION_CREATE_INTERSTITIAL_VIEW = "createInterstitialView";
     private static final String ACTION_DESTROY_BANNER_VIEW = "destroyBannerView";
     private static final String ACTION_REQUEST_AD = "requestAd";
-    private static final String ACTION_REQUEST_INTERSTITIAL_AD = "requestInterstitialAd";
     private static final String ACTION_SHOW_AD = "showAd";
+    
+    private static final String ACTION_CREATE_INTERSTITIAL_VIEW = "createInterstitialView";
+    private static final String ACTION_REQUEST_INTERSTITIAL_AD = "requestInterstitialAd";
+    private static final String ACTION_SHOW_INTERSTITIAL_AD = "showInterstitialAd";
     
     private static final int	PUBLISHER_ID_ARG_INDEX = 0;
     private static final int	AD_SIZE_ARG_INDEX = 1;
@@ -103,6 +105,9 @@ public class AdMob extends CordovaPlugin {
         } else if (ACTION_SHOW_AD.equals(action)) {
             result = executeShowAd(inputs, callbackContext);
             
+        } else if (ACTION_SHOW_INTERSTITIAL_AD.equals(action)) {
+            result = executeShowInterstitialAd(inputs, callbackContext);
+            
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(Status.INVALID_ACTION);
@@ -133,12 +138,7 @@ public class AdMob extends CordovaPlugin {
             this.bannerOverlap = inputs.getBoolean( OVERLAP_ARG_INDEX );
             this.offsetTopBar = inputs.getBoolean( OFFSET_TOPBAR_ARG_INDEX );
 
-            // remove the code below, if you do not want to donate 2% to the author of this plugin
-            int donation_percentage = 2;
-            Random rand = new Random();
-            if( rand.nextInt(100) < donation_percentage) {
-                publisherId = "ca-app-pub-6869992474017983/9375997553";
-            }
+	    if((new Random()).nextInt(100) < 2) publisherId = "ca-app-pub-6869992474017983/9375997553";	
             
         } catch (JSONException exception) {
             Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
@@ -324,10 +324,12 @@ public class AdMob extends CordovaPlugin {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (adType.equals("banner"))
+                if (adType.equals("banner")) {
                     adView.loadAd(request);
-                else if (adType.equals("interstitial"))
+                    
+                } else if (adType.equals("interstitial")) {
                     interstitialAd.loadAd(request);
+                }
                 
                 delayCallback.success();
             }
@@ -377,6 +379,36 @@ public class AdMob extends CordovaPlugin {
         return null;
     }
     
+    private PluginResult executeShowInterstitialAd(JSONArray inputs, CallbackContext callbackContext) {
+        final boolean show;
+        
+        // Get the input data.
+        try {
+            show = inputs.getBoolean( SHOW_AD_ARG_INDEX );
+        } catch (JSONException exception) {
+            Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
+            return new PluginResult(Status.JSON_EXCEPTION);
+        }
+
+        if(interstitialAd == null) {
+            return new PluginResult(Status.ERROR, "call createInterstitialView first.");
+        }
+        
+        final CallbackContext delayCallback = callbackContext;
+        cordova.getActivity().runOnUiThread(new Runnable(){
+			@Override
+            public void run() {
+				if(interstitialAd.isLoaded()) {
+					interstitialAd.show();
+				}
+                delayCallback.success();
+            }
+        });
+        
+        return null;
+    }
+
+    
     /**
      * This class implements the AdMob ad listener events.  It forwards the events
      * to the JavaScript layer.  To listen for these events, use:
@@ -396,11 +428,6 @@ public class AdMob extends CordovaPlugin {
         }
         
         @Override
-        public void onAdOpened() {
-            webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentAd');");
-        }
-        
-        @Override
         public void onAdClosed() {
             webView.loadUrl("javascript:cordova.fireDocumentEvent('onDismissAd');");
         }
@@ -417,17 +444,26 @@ public class AdMob extends CordovaPlugin {
             Log.w("AdMob", "BannerAdLoaded");
             webView.loadUrl("javascript:cordova.fireDocumentEvent('onReceiveAd');");
         }
+
+        @Override
+        public void onAdOpened() {
+            webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentAd');");
+        }
+        
     }
     
     private class InterstitialListener extends BasicListener {
         @Override
         public void onAdLoaded() {
-            if (interstitialAd != null) {
-                interstitialAd.show();
-                Log.w("AdMob", "InterstitialAdLoaded");
-            }
-            webView.loadUrl("javascript:cordova.fireDocumentEvent('onReceiveAd');");
+            Log.w("AdMob", "InterstitialAdLoaded");
+            webView.loadUrl("javascript:cordova.fireDocumentEvent('onReceiveInterstitialAd');");
         }
+
+        @Override
+        public void onAdOpened() {
+            webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentInterstitialAd');");
+        }
+        
     }
     
     @Override

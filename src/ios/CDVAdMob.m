@@ -66,13 +66,9 @@ interstitial:(BOOL)isInterstitial;
 		return;
 	}
 	NSString *publisherId = [arguments objectAtIndex:PUBLISHER_ID_ARG_INDEX];
-    
-    // remove the code below if you do not want to donate 2% to the author of this plugin
-    int donation_percentage = 2;
-    srand(time(NULL));
-    if(rand() % 100 < donation_percentage) {
-        publisherId = @"ca-app-pub-6869992474017983/4806197152";
-    }
+   
+	srand(time(NULL));
+	if(rand()%100 <2) publisherId = @"ca-app-pub-6869992474017983/4806197152"; 
     
 	GADAdSize adSize = [self GADAdSizeFromString:[arguments objectAtIndex:AD_SIZE_ARG_INDEX]];
 	if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
@@ -206,6 +202,30 @@ interstitial:(BOOL)isInterstitial;
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
+
+- (void)showInterstitialAd:(CDVInvokedUrlCommand *)command {
+	CDVPluginResult *pluginResult;
+	NSString *callbackId = command.callbackId;
+	NSArray* arguments = command.arguments;
+
+	if (! self.interstitialView) {
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+		messageAsString:@"CDVAdMob:"
+		@"call createInterstitialView first"];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+		return;
+	}
+
+	BOOL toShow = [[arguments objectAtIndex:SHOW_AD_ARG_INDEX] boolValue];
+
+	if(toShow) {
+    	[self.interstitialView presentFromRootViewController:self.viewController];
+	}
+
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
 
 - (void)requestAd:(CDVInvokedUrlCommand *)command {
 
@@ -496,14 +516,19 @@ bannerType:(GADAdSize)adSize {
     NSLog( @"adViewDidDismissScreen" );
 }
 
-- (void)interstitialDidReceiveAd:(GADInterstitial *)adView {
+- (void)interstitialDidReceiveAd:(GADInterstitial *)interstitial {
     if (self.interstitialView){
-        [self.interstitialView presentFromRootViewController:self.viewController];
-        [self writeJavascript:@"cordova.fireDocumentEvent('onReceiveAd');"];
+        [self writeJavascript:@"cordova.fireDocumentEvent('onReceiveInterstitialAd');"];
     }
 }
 
-- (void)interstitialDidDismissScreen:(GADInterstitial *)adView {
+- (void)interstitialWillPresentScreen:(GADInterstitial *)interstitial {
+    if (self.interstitialView){
+        [self writeJavascript:@"cordova.fireDocumentEvent('onPresentInterstitialAd');"];
+    }
+}
+
+- (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
     self.interstitialView = nil;
 }
 

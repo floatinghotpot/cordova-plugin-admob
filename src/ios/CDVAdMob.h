@@ -40,5 +40,6 @@
 
 - (void)createInterstitialView:(CDVInvokedUrlCommand *)command;
 - (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command;
+- (void)showInterstitialAd:(CDVInvokedUrlCommand *)command;
 
 @end
