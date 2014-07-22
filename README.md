@@ -130,11 +130,9 @@ Android:
 
 ## Donate ##
 ----------------------------------------------
-You can use this cordova plugin for free. 
-
-To support this project, donation is welcome.
+You can use this cordova plugin for free. To support this project, donation is welcome.  
 
 Donation can be accepted in either of following ways:
-* Keep the donation code to share 2% Ad traffic. (Just remove it, if you don't hope so)
+* Share 2% Ad traffic. 
 * [Donate directly via Paypal](http://floatinghotpot.github.io/#donate)
 
