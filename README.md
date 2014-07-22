@@ -1,7 +1,5 @@
 # cordova-plugin-admob #
-This is the AdMob Cordova Plugin for Android and iOS. It provides a way to request AdMob ads natively from JavaScript. 
-
-This plugin was originally written and tested with the Google AdMob SDK version 6.4.0 for iOS, and Cordova 2.5.0.
+This is the AdMob Cordova Plugin. It provides a way to request AdMob ads natively from JavaScript. 
 
 It's now updated and enhanced to support:
 * Cordova 3.0, 3.5.
@@ -57,7 +55,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
 ```javascript
     var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
     var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
-    var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
+    var adId = (/(android)/i.test(navigator.userAgent)) ? admob_android_key : admob_ios_key;
         
     if( window.plugins && window.plugins.AdMob ) {
         var am = window.plugins.AdMob;
@@ -66,12 +64,12 @@ Call the following code inside onDeviceReady(), because only after device ready 
             {
             'publisherId': adId,
             'adSize': am.AD_SIZE.BANNER,
-            'bannerAtTop': false,
-            'overlap': false,
-            'offsetTopBar': false // set to true to avoid ios 7 status bar overlap
+            'bannerAtTop': false, // set to true, to make banner at top
+            'overlap': false,  // set to true, to allow banner view overlap web content instead of push up/down
+            'offsetTopBar': false // set to true, to avoid ios 7 status bar overlap
             }, 
             function() {
-        	    am.requestAd( { 'isTesting':true }, 
+        	    am.requestAd( { 'isTesting':true }, // set to false, for production purpose 
             		function(){}, 
             		function(){ alert('failed to request ad'); }
             		);
@@ -84,7 +82,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
                   'publisherId': adId
               },
               function() {
-                  am.requestInterstitialAd( { 'isTesting':true }, 
+                  am.requestInterstitialAd( { 'isTesting':true }, // set to false, for production purpose
 			function() {}, 
 			function() { alert('failed to request ad'); }
 			);
