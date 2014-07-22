@@ -518,17 +518,21 @@ bannerType:(GADAdSize)adSize {
 
 - (void)interstitialDidReceiveAd:(GADInterstitial *)interstitial {
     if (self.interstitialView){
+	NSLog( @"onReceiveInterstitialAd" );
         [self writeJavascript:@"cordova.fireDocumentEvent('onReceiveInterstitialAd');"];
     }
 }
 
 - (void)interstitialWillPresentScreen:(GADInterstitial *)interstitial {
     if (self.interstitialView){
+	NSLog( @"onPresentInterstitialAd" );
         [self writeJavascript:@"cordova.fireDocumentEvent('onPresentInterstitialAd');"];
     }
 }
 
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
+    NSLog( @"onDismissInterstitialAd" );
+    [self writeJavascript:@"cordova.fireDocumentEvent('onDismissInterstitialAd');"];
     self.interstitialView = nil;
 }
 
