@@ -24,6 +24,10 @@ import android.os.Bundle;
 import java.util.Iterator;
 import java.util.Random;
 
+import android.provider.Settings;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * This class represents the native implementation for the AdMob Cordova plugin.
  * This plugin can be used to request AdMob ads natively via the Google AdMob SDK.
@@ -296,11 +300,10 @@ public class AdMob extends CordovaPlugin {
         
         AdRequest.Builder request_builder = new AdRequest.Builder();
         if (isTesting) {
-            // This will request test ads on the emulator only.  You can get your
-            // hashed device ID from LogCat when making a live request.  Pass
-            // this hashed device ID to addTestDevice request test ads on your
-            // device.
-            request_builder = request_builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+            // This will request test ads on the emulator and deviceby passing this hashed device ID.
+        	String ANDROID_ID = Settings.Secure.getString(cordova.getActivity().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+            String deviceId = md5(ANDROID_ID).toUpperCase();
+            request_builder = request_builder.addTestDevice(deviceId).addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
         }
         
         Bundle bundle = new Bundle();
@@ -532,6 +535,25 @@ public class AdMob extends CordovaPlugin {
           break;
       }
       return errorReason;
+    }
+    
+    public static final String md5(final String s) {
+        try {
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++) {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+        }
+        return "";
     }
 }
 
