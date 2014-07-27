@@ -120,17 +120,7 @@ interstitial:(BOOL)isInterstitial;
 		[self.bannerView removeFromSuperview];
         self.bannerView = nil;
         
-        // Handle orientation change
-        CGRect superViewFrame = self.webView.superview.frame;
-        CGRect webViewFrameNew = self.webView.frame;
-        if( [self __isLandscape] ) {
-            webViewFrameNew.size.width = superViewFrame.size.height;
-            webViewFrameNew.size.height = superViewFrame.size.width;
-        } else {
-            webViewFrameNew = superViewFrame;
-        }
-
-        self.webView.frame = webViewFrameNew;
+        [self resizeViews];
 	}
 
 	// Call the success callback that was passed in through the javascript.
@@ -388,80 +378,83 @@ bannerType:(GADAdSize)adSize {
 }
 
 - (void)resizeViews {
-	// If the banner hasn't been created yet, no need for resizing views.
-	if (!self.bannerView) {
-		return;
-	}
-
-	// Handle changing Smart Banner constants for the user.
-    bool isLandscape = [self __isLandscape];
-    if( isLandscape ) {
-        if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerLandscape)) {
-            self.bannerView.adSize = kGADAdSizeSmartBannerLandscape;
-        }
-    } else {
-        if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerPortrait)) {
-            self.bannerView.adSize = kGADAdSizeSmartBannerPortrait;
-        }
-    }
-
     // Frame of the main container view that holds the Cordova webview.
     CGRect superViewFrame = self.webView.superview.frame;
     // Frame of the main Cordova webview.
     CGRect webViewFrame = self.webView.frame;
-    CGRect bannerViewFrame = self.bannerView.frame;
     
     // Let's calculate the new position and size
     CGRect superViewFrameNew = superViewFrame;
     CGRect webViewFrameNew = webViewFrame;
-    CGRect bannerViewFrameNew = bannerViewFrame;
-    
-    // Handle orientation change
+
+    bool isLandscape = [self __isLandscape];
     if( isLandscape ) {
         superViewFrameNew.size.width = superViewFrame.size.height;
         superViewFrameNew.size.height = superViewFrame.size.width;
     }
     
+    // ensure y = 0, as strange that sometimes not 0 ?
+    superViewFrameNew.origin.y = 0;
+    
     // If the ad is not showing or the ad is hidden, we don't want to resize anything.
-    BOOL adIsShowing = [self.webView.superview.subviews containsObject:self.bannerView] &&
-    (! self.bannerView.hidden);
+    BOOL adIsShowing = (self.bannerView != nil) &&
+        [self.webView.superview.subviews containsObject:self.bannerView] &&
+        (! self.bannerView.hidden);
+    
     if(adIsShowing) {
+        // Handle changing Smart Banner constants for the user.
+        if( isLandscape ) {
+            if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerLandscape)) {
+                self.bannerView.adSize = kGADAdSizeSmartBannerLandscape;
+            }
+        } else {
+            if(! GADAdSizeEqualToSize(self.bannerView.adSize, kGADAdSizeSmartBannerPortrait)) {
+                self.bannerView.adSize = kGADAdSizeSmartBannerPortrait;
+            }
+        }
+
+        CGRect bannerViewFrame = self.bannerView.frame;
+        CGRect bannerViewFrameNew = bannerViewFrame;
+        
+        bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) * 0.5f;
+        
         // iOS7 Hack, handle the Statusbar
         MainViewController *mainView = (MainViewController*) self.webView.superview.window.rootViewController;
         BOOL isIOS7 = ([[UIDevice currentDevice].systemVersion floatValue] >= 7);
         CGFloat top = isIOS7 ? mainView.topLayoutGuide.length : 0.0;
         
         if(! self.offsetTopBar) top = 0.0;
-            
+        
         // banner overlap webview, no resizing needed, but we need bring banner over webview, and put it center.
         if(self.bannerOverlap) {
-            bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) /2;
+            webViewFrameNew.origin.y = top;
+            
             if(self.bannerAtTop) {
                 bannerViewFrameNew.origin.y = top;
-                webViewFrameNew.origin.y = top;
             } else {
                 bannerViewFrameNew.origin.y = superViewFrameNew.size.height - bannerViewFrameNew.size.height;
             }
-            self.bannerView.frame = bannerViewFrameNew;
-            [self.webView.superview bringSubviewToFront:self.bannerView];
-            return;
-        }
-
-        if(self.bannerAtTop) {
-            // move banner view to top
-            bannerViewFrameNew.origin.y = top;
             
-            // move the web view to below
-            webViewFrameNew.origin.y = top + bannerViewFrameNew.size.height;
-            webViewFrameNew.size.height = superViewFrameNew.size.height - webViewFrameNew.origin.y;
+            [self.webView.superview bringSubviewToFront:self.bannerView];
+            
         } else {
-            // move the banner view to below
-            webViewFrameNew.size.height = superViewFrameNew.size.height - bannerViewFrameNew.size.height;
-            bannerViewFrameNew.origin.y = webViewFrameNew.size.height;
+            if(self.bannerAtTop) {
+                // move banner view to top
+                bannerViewFrameNew.origin.y = top;
+                
+                // move the web view to below
+                webViewFrameNew.origin.y = bannerViewFrameNew.origin.y + bannerViewFrameNew.size.height;
+                webViewFrameNew.size.height = superViewFrameNew.size.height - webViewFrameNew.origin.y;
+            } else {
+                // move the banner view to below
+                bannerViewFrameNew.origin.y = superViewFrameNew.size.height - bannerViewFrameNew.size.height;
+                
+                webViewFrameNew.origin.y = top;
+                webViewFrameNew.size.height = bannerViewFrameNew.origin.y - top;
+            }
+            
+            webViewFrameNew.size.width = superViewFrameNew.size.width;
         }
-        
-        webViewFrameNew.size.width = superViewFrameNew.size.width;
-        bannerViewFrameNew.origin.x = (superViewFrameNew.size.width - bannerViewFrameNew.size.width) * 0.5f;
         
         NSLog(@"webview: %d x %d, banner view: %d x %d",
               (int) webViewFrameNew.size.width, (int) webViewFrameNew.size.height,
@@ -469,7 +462,7 @@ bannerType:(GADAdSize)adSize {
         
         self.bannerView.frame = bannerViewFrameNew;
         
-    } else {
+    } else { // banner hidden
         webViewFrameNew = superViewFrameNew;
         
         NSLog(@"webview: %d x %d",
