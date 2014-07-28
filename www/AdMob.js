@@ -62,13 +62,13 @@ admobExport.AD_SIZE = {
 admobExport.createBannerView =
 function(options, successCallback, failureCallback) {
   var defaults = {
-    'publisherId': undefined,
-    'adSize': undefined,
-    'bannerAtTop': false,
-    'overlap':false,
-    'offsetTopBar':false
+    publisherId: undefined,
+    adSize: 'SMART_BANNER',
+    bannerAtTop: false,
+    overlap:false,
+    offsetTopBar:false
   };
-  var requiredOptions = ['publisherId', 'adSize'];
+  var requiredOptions = ['publisherId'];
 
   // Merge optional settings into defaults.
   for (var key in defaults) {
@@ -91,7 +91,7 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'createBannerView',
-      [defaults['publisherId'], defaults['adSize'], defaults['bannerAtTop'], defaults['overlap'], defaults['offsetTopBar']]
+      [defaults.publisherId, defaults.adSize, defaults.bannerAtTop, defaults.overlap, defaults.offsetTopBar]
   );
 };
 
@@ -114,7 +114,7 @@ function(options, successCallback, failureCallback) {
 admobExport.createInterstitialView =
 function(options, successCallback, failureCallback) {
   var defaults = {
-    'publisherId': undefined
+    publisherId: undefined
   };
   var requiredOptions = ['publisherId'];
 
@@ -139,7 +139,7 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'createInterstitialView',
-      [defaults['publisherId']]
+      [defaults.publisherId]
   );
 };
 
@@ -181,8 +181,8 @@ function(options, successCallback, failureCallback) {
 admobExport.requestAd =
 function(options, successCallback, failureCallback) {
   var defaults = {
-    'isTesting': false,
-    'extras': {}
+    isTesting: false,
+    extras: {}
   };
 
   for (var key in defaults) {
@@ -196,7 +196,7 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'requestAd',
-      [defaults['isTesting'], defaults['extras']]
+      [defaults.isTesting, defaults.extras]
   );
 };
 
@@ -227,8 +227,8 @@ function(options, successCallback, failureCallback) {
 admobExport.requestInterstitialAd =
 function(options, successCallback, failureCallback) {
   var defaults = {
-    'isTesting': false,
-    'extras': {}
+    isTesting: false,
+    extras: {}
   };
 
   for (var key in defaults) {
@@ -242,7 +242,7 @@ function(options, successCallback, failureCallback) {
       failureCallback,
       'AdMob',
       'requestInterstitialAd',
-      [defaults['isTesting'], defaults['extras']]
+      [defaults.isTesting, defaults.extras]
   );
 };
 
