@@ -2,21 +2,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "GADAdSize.h"
+#import "GADBannerView.h"
+#import "GADInterstitial.h"
 #import "GADBannerViewDelegate.h"
 #import "GADInterstitialDelegate.h"
 
 #pragma mark - JS requestAd options
-
-#define PUBLISHER_ID_ARG_INDEX    0
-#define AD_SIZE_ARG_INDEX         1
-#define BANNER_AT_TOP_ARG_INDEX   2
-#define OVERLAP_ARG_INDEX         3
-#define OFFSET_TOPBAR_ARG_INDEX	  4
-
-#define IS_TESTING_ARG_INDEX      0
-#define EXTRAS_ARG_INDEX          1
-
-#define SHOW_AD_ARG_INDEX    0
 
 @class GADBannerView;
 @class GADInterstitial;
@@ -29,9 +21,24 @@
 
 @property(nonatomic, retain) GADBannerView *bannerView;
 @property(nonatomic, retain) GADInterstitial *interstitialView;
+
+@property (nonatomic, retain) NSString* publisherId;
+@property (nonatomic, retain) NSString* interstitialAdId;
+
+@property (assign) GADAdSize adSize;
 @property (assign) BOOL bannerAtTop;
 @property (assign) BOOL bannerOverlap;
 @property (assign) BOOL offsetTopBar;
+
+@property (assign) BOOL isTesting;
+@property (nonatomic, retain) NSDictionary* adExtras;
+
+@property (assign) BOOL bannerIsVisible;
+@property (assign) BOOL bannerIsInitialized;
+@property (assign) BOOL bannerShow;
+@property (assign) BOOL autoShow;
+
+- (void) setOptions:(CDVInvokedUrlCommand *)command;
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command;

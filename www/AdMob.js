@@ -37,6 +37,25 @@ admobExport.AD_SIZE = {
   SMART_BANNER: 'SMART_BANNER'
 };
 
+admobExport.setOptions =
+	function(options, successCallback, failureCallback) {
+	  if(typeof options === 'object' 
+		  && typeof options.publisherId === 'string'
+	      && options.publisherId.length > 0) {
+		  cordova.exec(
+			      successCallback,
+			      failureCallback,
+			      'AdMob',
+			      'setOptions',
+			      [options]
+			  );
+	  } else {
+		  if(typeof failureCallback === 'function') {
+			  failureCallback('options.publisherId should be specified.')
+		  }
+	  }
+	};
+
 /**
  * Creates a new AdMob banner view.
  *
@@ -61,37 +80,13 @@ admobExport.AD_SIZE = {
  */
 admobExport.createBannerView =
 function(options, successCallback, failureCallback) {
-  var defaults = {
-    publisherId: undefined,
-    adSize: 'SMART_BANNER',
-    bannerAtTop: false,
-    overlap:false,
-    offsetTopBar:false
-  };
-  var requiredOptions = ['publisherId'];
-
-  // Merge optional settings into defaults.
-  for (var key in defaults) {
-    if (typeof options[key] !== 'undefined') {
-      defaults[key] = options[key];
-    }
-  }
-
-  // Check for and merge required settings into defaults.
-  requiredOptions.forEach(function(key) {
-    if (typeof options[key] === 'undefined') {
-      failureCallback('Failed to specify key: ' + key + '.');
-      return;
-    }
-    defaults[key] = options[key];
-  });
-
+  if(typeof options === 'undefined' || options == null) options = {};
   cordova.exec(
       successCallback,
       failureCallback,
       'AdMob',
       'createBannerView',
-      [defaults.publisherId, defaults.adSize, defaults.bannerAtTop, defaults.overlap, defaults.offsetTopBar]
+      [ options ]
   );
 };
 
@@ -113,38 +108,18 @@ function(options, successCallback, failureCallback) {
  */
 admobExport.createInterstitialView =
 function(options, successCallback, failureCallback) {
-  var defaults = {
-    publisherId: undefined
-  };
-  var requiredOptions = ['publisherId'];
-
-  // Merge optional settings into defaults.
-  for (var key in defaults) {
-    if (typeof options[key] !== 'undefined') {
-      defaults[key] = options[key];
-    }
-  }
-
-  // Check for and merge required settings into defaults.
-  requiredOptions.forEach(function(key) {
-    if (typeof options[key] === 'undefined') {
-      failureCallback('Failed to specify key: ' + key + '.');
-      return;
-    }
-    defaults[key] = options[key];
-  });
-
   cordova.exec(
       successCallback,
       failureCallback,
       'AdMob',
       'createInterstitialView',
-      [defaults.publisherId]
+      [ options ]
   );
 };
 
 admobExport.destroyBannerView =
 function(options, successCallback, failureCallback) {
+  if(typeof options === 'undefined' || options == null) options = {};
   cordova.exec(
 	      successCallback,
 	      failureCallback,
@@ -180,23 +155,13 @@ function(options, successCallback, failureCallback) {
 
 admobExport.requestAd =
 function(options, successCallback, failureCallback) {
-  var defaults = {
-    isTesting: false,
-    extras: {}
-  };
-
-  for (var key in defaults) {
-    if (typeof options[key] !== 'undefined') {
-      defaults[key] = options[key];
-    }
-  }
-
+	  if(typeof options === 'undefined' || options == null) options = {};
   cordova.exec(
       successCallback,
       failureCallback,
       'AdMob',
       'requestAd',
-      [defaults.isTesting, defaults.extras]
+      [ options ]
   );
 };
 
@@ -226,23 +191,13 @@ function(options, successCallback, failureCallback) {
 
 admobExport.requestInterstitialAd =
 function(options, successCallback, failureCallback) {
-  var defaults = {
-    isTesting: false,
-    extras: {}
-  };
-
-  for (var key in defaults) {
-    if (typeof options[key] !== 'undefined') {
-      defaults[key] = options[key];
-    }
-  }
-
+	  if(typeof options === 'undefined' || options == null) options = {};
   cordova.exec(
       successCallback,
       failureCallback,
       'AdMob',
       'requestInterstitialAd',
-      [defaults.isTesting, defaults.extras]
+      [ options ]
   );
 };
 

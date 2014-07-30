@@ -1,22 +1,4 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
     <head>
         <meta charset="utf-8" />
@@ -30,88 +12,52 @@
             button { font-size: 22px; }
         </style>
     </head>
-    <body onload="onLoad()" onresize="onResize()">
+    <body onload="onDocLoad()" onresize="onResize()">
     <script>
-    var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
-    var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
-    var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
-    
-    function onLoad() {
-    	document.addEventListener("deviceready", onDeviceReady, false);
-    	
-    	// more callback to handle Ad events
-    	document.addEventListener('onReceiveAd', function(){
-		window.plugins.AdMob.showAd(true);
-		onResize();
-    	});
-    	document.addEventListener('onFailedToReceiveAd', function(data){
-    	});
-    	document.addEventListener('onPresentAd', function(){
-    	});
-    	document.addEventListener('onDismissAd', function(){
-    	});
-    	document.addEventListener('onLeaveToAd', function(){
-    	});
-	document.addEventListener('onReceiveInterstitialAd', function(){
-                window.plugins.AdMob.showInterstitialAd(true);
-        });
-    }
-    function createAd() {
-    	if ( window.plugins && window.plugins.AdMob ) {
-    	    var am = window.plugins.AdMob;
-    	    am.createBannerView(
-                                {
-                                'publisherId': adId,
-                                'bannerAtTop': false,
-                                'overlap': true,
-                                'offsetTopBar': false
-                                }, function() {
-                                am.requestAd( { 'isTesting':true }, function() {
-                                             }, function() {
-                                             alert('failed to request ad');
-                                             })
-                                }, function(){
-                                alert( "failed to create ad view" );
-                                });
-                                
-                                
-    	} else {
-    		alert('AdMob plugin not available/ready.');
-    	}
-    }
-    function removeAd() {
-        if ( window.plugins && window.plugins.AdMob ) {
-    	    var am = window.plugins.AdMob;
-    	    am.destroyBannerView({},function(){onResize();},function(){});
+    function onDocLoad() {
+        if(( /(ipad|iphone|ipod|android)/i.test(navigator.userAgent) )) {
+            document.addEventListener('deviceready', initApp, false);
+        } else {
+            initApp();
         }
+    }
+    
+    function initApp() {
+        initAd();
 
+        // display the banner at startup
+        window.plugins.AdMob.createBannerView();
     }
-    function onDeviceReady() {
-    	createAd();
+    function initAd(){
+        if ( window.plugins && window.plugins.AdMob ) {
+            var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
+            var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
+            var admobid = (( /(android)/i.test(navigator.userAgent) ) ? admob_android_key : admob_ios_key);
+            window.plugins.AdMob.setOptions( {
+                publisherId: admobid,
+                bannerAtTop: false, // set to true, to put banner at top
+                overlap: false, // set to true, to allow banner overlap webview
+                offsetTopBar: false, // set to true to avoid ios7 status bar overlap
+                isTesting: true, // receiving test ad
+                autoShow: true // auto show interstitial ad when loaded
+            });
+
+            registerAdEvents();
+            
+        } else {
+            alert( 'admob plugin not ready' );
+        }
     }
-    function showAd( bshow ) {
-    	if ( window.plugins && window.plugins.AdMob ) {
-    	    var am = window.plugins.AdMob;
-    	    am.showAd( bshow, function(){ onResize(); }, function(){ alert('please create ad first'); } );
-    	} else {
-    		alert('AdMob plugin not available/ready.');
-    	} 
-    }
-    function showInterstitialAd() {
-        var am = window.plugins.AdMob;
-        am.createInterstitialView(
-                                  {
-                                  'publisherId': adId,
-                                  },
-                                  function() {
-                                  am.requestInterstitialAd( { 'isTesting':true }, function() {}, function() {
-                                                           alert('failed to request ad');
-                                                           });
-                                  },
-                                  function() {
-                                  alert("Interstitial failed");
-                                  }
-                                  );
+	// optional, in case respond to events
+    function registerAdEvents() {
+    	document.addEventListener('onReceiveAd', function(){});
+        document.addEventListener('onFailedToReceiveAd', function(data){});
+        document.addEventListener('onPresentAd', function(){});
+        document.addEventListener('onDismissAd', function(){ });
+        document.addEventListener('onLeaveToAd', function(){ });
+        document.addEventListener('onReceiveInterstitialAd', function(){ });
+        document.addEventListener('onPresentInterstitialAd', function(){ });
+        document.addEventListener('onDismissInterstitialAd', function(){ });
     }
     function onResize() {
         var msg = 'web view: ' + window.innerWidth + ' x ' + window.innerHeight;
@@ -120,9 +66,9 @@
     </script>
     <div id="fullpage">
     <p>Demo for AdMob Plugin</p>
-    <p><button onclick="createAd();">create Ad</button> <button onclick="removeAd();">remove Ad</button></p>
-    <p><button onclick="showAd(true);">show Ad</button> <button onclick="showAd(false);">hide Ad</button></p>
-    <p><button onclick="showInterstitialAd();">show Interstitial Ad</button></p>
+    <p><button onclick="window.plugins.AdMob.createBannerView();">create Ad</button> <button onclick="window.plugins.AdMob.destroyBannerView();">remove Ad</button></p>
+    <p><button onclick="window.plugins.AdMob.showAd(true);">show Ad</button> <button onclick="window.plugins.AdMob.showAd(false);">hide Ad</button></p>
+    <p><button onclick="window.plugins.AdMob.createInterstitialView();">show Interstitial Ad</button></p>
     <div id="sizeinfo">width * height</div>
     <div>Try rotate screen to test the orientation change</div>
 
