@@ -1,8 +1,8 @@
 # cordova-plugin-admob #
 This is the AdMob Cordova Plugin. It provides a way to request AdMob ads natively from JavaScript. 
 
-It's now updated and enhanced to support:
-* Cordova 3.0, 3.5.
+Required:
+* Cordova, >=3.0
 
 Platform SDK supported:
 * iOS, using AdMob SDK for iOS, v6.10.0
@@ -36,16 +36,18 @@ Note: ensure you have a proper AdMob account and create an Id for your app.
 ## Javascript API ##
 
 APIs:
-- setOptions(options, success, fail);
+```javascript
+setOptions(options, success, fail);
 
-- createBannerView(options, success, fail);
-- requestAd(options, success, fail);  // optional
-- showAd(true/false, success, fail); 
-- destroyBannerView();
+createBannerView(options, success, fail);
+requestAd(options, success, fail);  // optional, will be absolete
+showAd(true/false, success, fail); 
+destroyBannerView();
 
-- createInterstitialView(options, success, fail);
-- requestInterstitialAd(options, success, fail); // optional
-- showInterstitialAd();
+createInterstitialView(options, success, fail);
+requestInterstitialAd(options, success, fail); // optional, will be absolete
+showInterstitialAd();
+```
 
 Events: 
 - onReceiveAd, onFailedToReceiveAd, onPresentAd, onDismissAd, onLeaveToAd
@@ -64,7 +66,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
         window.plugins.AdMob.createInterstitialView();
         
         // somewhere else, show the interstital, not needed if set autoShow = true
-        window.plugins.AdMob.showInterstitialView();
+        window.plugins.AdMob.showInterstitialAd();
     }
     function initAd(){
         if ( window.plugins && window.plugins.AdMob ) {
