@@ -181,6 +181,8 @@
         [self __createBanner];
     }
     
+    bannerShow = show;
+    
     [self __showAd:show];
         
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -192,6 +194,10 @@
     
     CDVPluginResult *pluginResult;
     NSString *callbackId = command.callbackId;
+    
+    if(! self.interstitialView) {
+        [self __cycleInterstitial];
+    }
     
     [self __showInterstitial:YES];
     
@@ -215,10 +221,11 @@
 
     if(! self.bannerView) {
         [self __createBanner];
+        
+    } else {
+        [self.bannerView loadRequest:[self __buildAdRequest]];
     }
     
-    [self.bannerView loadRequest:[self __buildAdRequest]];
-
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
@@ -238,9 +245,10 @@
     
     if(! self.interstitialView) {
         [self __cycleInterstitial];
+        
+    } else {
+        [self.interstitialView loadRequest:[self __buildAdRequest]];
     }
-    
-    [self.interstitialView loadRequest:[self __buildAdRequest]];
     
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
@@ -336,9 +344,8 @@
         self.bannerView.rootViewController = self.viewController;
         
 		self.bannerIsInitialized = YES;
-		self.bannerIsVisible = NO;
+        self.bannerIsVisible = NO;
         
-        [self.webView.superview addSubview:self.bannerView];
         [self resizeViews];
         
         [self.bannerView loadRequest:[self __buildAdRequest]];
