@@ -30,9 +30,9 @@ Note: ensure you have a proper AdMob account and create an Id for your app.
     cd testadmob
     cordova platform add android
     cordova platform add ios
-    cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
-    mv www www.default
-    mkdir www
+    // no need to manually add dependent plugin, cordova will handle it automatically
+    cordova plugin add com.rjfun.cordova.plugin.admob
+    rm -r www/*;
     cp plugins/com.rjfun.cordova.plugin.admob/test/index.html www/
     cordova prepare; cordova run android; cordova run ios;
     // or import into Xcode / eclipse
