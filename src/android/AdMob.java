@@ -429,11 +429,6 @@ public class AdMob extends CordovaPlugin {
         }
         
         @Override
-        public void onAdClosed() {
-            webView.loadUrl("javascript:cordova.fireDocumentEvent('onDismissAd');");
-        }
-        
-        @Override
         public void onAdLeftApplication() {
             webView.loadUrl("javascript:cordova.fireDocumentEvent('onLeaveToAd');");
         }
@@ -449,6 +444,11 @@ public class AdMob extends CordovaPlugin {
         @Override
         public void onAdOpened() {
             webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentAd');");
+        }
+        
+        @Override
+        public void onAdClosed() {
+            webView.loadUrl("javascript:cordova.fireDocumentEvent('onDismissAd');");
         }
         
     }
@@ -467,6 +467,11 @@ public class AdMob extends CordovaPlugin {
         @Override
         public void onAdOpened() {
             webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentInterstitialAd');");
+        }
+        
+        @Override
+        public void onAdClosed() {
+            webView.loadUrl("javascript:cordova.fireDocumentEvent('onDismissInterstitialAd');");
         }
         
     }
