@@ -67,8 +67,9 @@
     <div id="fullpage">
     <p>Demo for AdMob Plugin</p>
     <p><button onclick="window.plugins.AdMob.createBannerView();">create Ad</button> <button onclick="window.plugins.AdMob.destroyBannerView();">remove Ad</button></p>
-    <p><button onclick="window.plugins.AdMob.showAd(true);">show Ad</button> <button onclick="window.plugins.AdMob.showAd(false);">hide Ad</button></p>
-    <p><button onclick="window.plugins.AdMob.createInterstitialView();">show Interstitial Ad</button></p>
+    <p><button onclick="window.plugins.AdMob.showAd(true,function(){},function(e){alert(JSON.stringify(e));});">show Ad</button> <button onclick="window.plugins.AdMob.showAd(false);">hide Ad</button></p>
+    <p><button onclick="window.plugins.AdMob.createInterstitialView();">create Interstitial Ad</button></p>
+    <p><button onclick="window.plugins.AdMob.showInterstitialAd(true,function(){},function(e){alert(JSON.stringify(e));});">show Interstitial Ad</button></p>
     <div id="sizeinfo">width * height</div>
     <div>Try rotate screen to test the orientation change</div>
 

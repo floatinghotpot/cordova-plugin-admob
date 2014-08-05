@@ -120,6 +120,12 @@
         [self __createBanner];
     }
     
+    bannerShow = autoShow;
+    
+    if(bannerShow) {
+        [self __showAd:YES];
+    }
+    
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
@@ -177,15 +183,17 @@
         show = showValue ? [showValue boolValue] : YES;
     }
     
-    if(! self.bannerView) {
-        [self __createBanner];
-    }
-    
     bannerShow = show;
     
-    [self __showAd:show];
+    if(! self.bannerView) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"adView is null, call createBannerView first."];
         
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        [self __showAd:show];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
+    }
+    
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
@@ -196,12 +204,14 @@
     NSString *callbackId = command.callbackId;
     
     if(! self.interstitialView) {
-        [self __cycleInterstitial];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, call createInterstitialView first."];
+        
+    } else {
+        [self __showInterstitial:YES];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
     }
     
-    [self __showInterstitial:YES];
-    
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 

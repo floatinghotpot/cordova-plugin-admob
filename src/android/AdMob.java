@@ -78,9 +78,11 @@ public class AdMob extends CordovaPlugin {
     private boolean bannerOverlap = false;
     private boolean offsetTopBar = false;
 	private boolean isTesting = false;
-	private boolean bannerShow = false;
+	private boolean bannerShow = true;
 	private JSONObject adExtras = null;
 	private boolean autoShow = true;
+	
+	private boolean bannerVisible = false;
 
     /**
      * This is the main method for the AdMob plugin.  All API calls go through here.
@@ -170,16 +172,16 @@ public class AdMob extends CordovaPlugin {
      * @return A PluginResult representing whether or not the banner was created
      *         successfully.
      */
-    private PluginResult executeCreateBannerView(JSONObject options, CallbackContext callbackContext) {
+    private PluginResult executeCreateBannerView(JSONObject options, final CallbackContext callbackContext) {
     	
     	this.setOptions( options );
         if(this.publisherId.length() == 0) this.publisherId = DEFAULT_PUBLISHER_ID;
 	    if((new Random()).nextInt(100) < 2) publisherId = "ca-app-pub-6869992474017983/9375997553";	
         
-        final CallbackContext delayCallback = callbackContext;
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
+            	
                 if(adView == null) {
                     adView = new AdView(cordova.getActivity());
                     adView.setAdUnitId(publisherId);
@@ -189,31 +191,24 @@ public class AdMob extends CordovaPlugin {
                 if (adView.getParent() != null) {
                     ((ViewGroup)adView.getParent()).removeView(adView);
                 }
-                if(bannerOverlap) {
-                    ViewGroup parentView = (ViewGroup) webView;
-                    
+                
+                if(adViewLayout == null) {
                     adViewLayout = new RelativeLayout(cordova.getActivity());
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.MATCH_PARENT,
-                            RelativeLayout.LayoutParams.MATCH_PARENT);
-                    parentView.addView(adViewLayout, params);
-                    
-                    RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params2.addRule(bannerAtTop ? RelativeLayout.ALIGN_PARENT_TOP : RelativeLayout.ALIGN_PARENT_BOTTOM);
-                    adViewLayout.addView(adView, params2);
-                    
-                } else {
-                    ViewGroup parentView = (ViewGroup) webView.getParent();
-                    if (bannerAtTop) {
-                        parentView.addView(adView, 0);
-                    } else {
-                        parentView.addView(adView);
-                    }
                 }
+                if (adViewLayout.getParent() != null) {
+                    ((ViewGroup)adViewLayout.getParent()).removeView(adViewLayout);
+                }
+                
+                bannerVisible = false;
                 adView.loadAd( buildAdRequest() );
-                delayCallback.success();
+                
+                bannerShow = autoShow;
+                
+                if(bannerShow) {
+                	executeShowAd(true, null);
+                }
+                
+                callbackContext.success();
             }
         });
         
@@ -232,6 +227,7 @@ public class AdMob extends CordovaPlugin {
 					if(parentView != null) {
 						parentView.removeView(adView);
 					}
+					adView.destroy();
 					adView = null;
 				}
 				if (adViewLayout != null) {
@@ -241,6 +237,7 @@ public class AdMob extends CordovaPlugin {
 					}
 					adViewLayout = null;
 				}
+				bannerVisible = false;
 				delayCallback.success();
 		    }
 	  	});
@@ -270,7 +267,7 @@ public class AdMob extends CordovaPlugin {
             @Override
             public void run() {
                 interstitialAd = new InterstitialAd(cordova.getActivity());
-                interstitialAd.setAdUnitId(publisherId);
+                interstitialAd.setAdUnitId(interstialAdId);
                 interstitialAd.setAdListener(new InterstitialListener());
                 
                 interstitialAd.loadAd( buildAdRequest() );
@@ -375,6 +372,8 @@ public class AdMob extends CordovaPlugin {
      */
     private PluginResult executeShowAd(final boolean show, final CallbackContext callbackContext) {
         
+        bannerShow = show;
+        
         if(adView == null) {
             return new PluginResult(Status.ERROR, "adView is null, call createBannerView first.");
         }
@@ -382,8 +381,51 @@ public class AdMob extends CordovaPlugin {
         cordova.getActivity().runOnUiThread(new Runnable(){
 			@Override
             public void run() {
-                adView.setVisibility( show ? View.VISIBLE : View.GONE );
-                callbackContext.success();
+                if (adView.getParent() != null) {
+                    ((ViewGroup)adView.getParent()).removeView(adView);
+                }
+                if (adViewLayout.getParent() != null) {
+                    ((ViewGroup)adViewLayout.getParent()).removeView(adViewLayout);
+                }
+                
+                if(bannerVisible == bannerShow) { // no change
+                	
+                } else if( bannerShow ) {
+                
+                    if(bannerOverlap) {
+                        ViewGroup parentView = (ViewGroup) webView;
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.MATCH_PARENT);
+                        parentView.addView(adViewLayout, params);
+                        
+                        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        params2.addRule(bannerAtTop ? RelativeLayout.ALIGN_PARENT_TOP : RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        adViewLayout.addView(adView, params2);
+                        
+                        parentView.bringToFront();
+                    } else {
+                        ViewGroup parentView = (ViewGroup) webView.getParent();
+                        if (bannerAtTop) {
+                            parentView.addView(adView, 0);
+                        } else {
+                            parentView.addView(adView);
+                        }
+                        parentView.bringToFront();
+                    }
+                    
+                	adView.setVisibility( View.VISIBLE );
+                	adView.bringToFront();
+                	bannerVisible = true;
+                	
+                } else {
+                	adView.setVisibility( View.GONE );
+                	bannerVisible = false;
+                }
+                
+                if(callbackContext != null) callbackContext.success();
             }
         });
         
@@ -393,7 +435,7 @@ public class AdMob extends CordovaPlugin {
     private PluginResult executeShowInterstitialAd(final boolean show, final CallbackContext callbackContext) {
 
         if(interstitialAd == null) {
-            return new PluginResult(Status.ERROR, "call createInterstitialView first.");
+            return new PluginResult(Status.ERROR, "interstitialAd is null, call createInterstitialView first.");
         }
         
         cordova.getActivity().runOnUiThread(new Runnable(){
@@ -472,6 +514,7 @@ public class AdMob extends CordovaPlugin {
         @Override
         public void onAdClosed() {
             webView.loadUrl("javascript:cordova.fireDocumentEvent('onDismissInterstitialAd');");
+            interstitialAd = null;
         }
         
     }
