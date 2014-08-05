@@ -594,7 +594,7 @@
 }
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
-	//[self writeJavascript:@"cordova.fireDocumentEvent('onLeaveToAd');"];
+    [self writeJavascript:@"cordova.fireDocumentEvent('onLeaveToAd');"];
     NSLog( @"adViewWillLeaveApplication" );
 }
 
