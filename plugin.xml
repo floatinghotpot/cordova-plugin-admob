@@ -23,7 +23,7 @@
 
     <!-- android -->
     <platform name="android">
-    	<dependency id="com.google.admobsdk-googleplay" version=">=4.4.0"/>
+    	<dependency id="com.google.admobsdk-googleplay" version=">=5.0.89"/>
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="AdMob">
                 <param name="android-package" value="com.rjfun.cordova.plugin.AdMob"/>
