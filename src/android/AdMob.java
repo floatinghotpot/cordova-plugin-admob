@@ -148,7 +148,7 @@ public class AdMob extends CordovaPlugin {
     private void setOptions( JSONObject options ) {
     	if(options == null) return;
     	
-    	if(options.has(OPT_AD_ID))              this.adOd             = options.optString( OPT_AD_ID );
+    	if(options.has(OPT_AD_ID))              this.adId             = options.optString( OPT_AD_ID );
     	if(options.has(OPT_AD_SIZE))            this.adSize           = adSizeFromString( options.optString( OPT_AD_SIZE ) );
     	if(options.has(OPT_BANNER_AT_TOP))      this.bannerAtTop      = options.optBoolean( OPT_BANNER_AT_TOP );
     	if(options.has(OPT_OVERLAP))            this.bannerOverlap    = options.optBoolean( OPT_OVERLAP );
