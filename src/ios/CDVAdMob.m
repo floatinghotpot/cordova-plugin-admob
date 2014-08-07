@@ -27,24 +27,25 @@
 @synthesize bannerView = bannerView_;
 @synthesize interstitialView = interstitialView_;
 
-@synthesize publisherId, interstitialAdId, adSize;
+@synthesize adId, adSize;
 @synthesize bannerAtTop, bannerOverlap, offsetTopBar;
 @synthesize isTesting, adExtras;
 
 @synthesize bannerIsVisible, bannerIsInitialized;
 @synthesize bannerShow, autoShow;
 
-#define DEFAULT_PUBLISHER_ID    @"ca-app-pub-6869992474017983/4806197152"
+#define DEFAULT_AD_ID_BANNER       @"ca-app-pub-6869992474017983/4806197152"
+#define DEFAULT_AD_ID_INTERSTITIAL @"ca-app-pub-6869992474017983/4806197152"
 
-#define OPT_PUBLISHER_ID    @"publisherId"
-#define OPT_INTERSTITIAL_ADID   @"interstitialAdId"
-#define OPT_AD_SIZE         @"adSize"
-#define OPT_BANNER_AT_TOP   @"bannerAtTop"
-#define OPT_OVERLAP         @"overlap"
-#define OPT_OFFSET_TOPBAR   @"offsetTopBar"
-#define OPT_IS_TESTING      @"isTesting"
-#define OPT_AD_EXTRAS       @"adExtras"
-#define OPT_AUTO_SHOW       @"autoShow"
+#define OPT_AD_ID              @"adId"
+#define OPT_AD_SIZE            @"adSize"
+#define OPT_BANNER_AT_TOP      @"bannerAtTop"
+#define OPT_OVERLAP            @"overlap"
+#define OPT_OFFSET_TOPBAR      @"offsetTopBar"
+#define OPT_IS_TESTING         @"isTesting"
+#define OPT_DONATE_TWO_PERCENT @"donateTwoPercent"
+#define OPT_AD_EXTRAS          @"adExtras"
+#define OPT_AUTO_SHOW          @"autoShow"
 
 #pragma mark Cordova JS bridge
 
@@ -63,8 +64,7 @@
 	}
     
     bannerShow = true;
-    publisherId = DEFAULT_PUBLISHER_ID;
-    interstitialAdId = DEFAULT_PUBLISHER_ID;
+    adId = DEFAULT_AD_ID_BANNER;
     adSize = [self __AdSizeFromString:@"SMART_BANNER"];
     
     bannerAtTop = false;
@@ -309,11 +309,8 @@
     
     NSString* str = nil;
     
-    str = [options objectForKey:OPT_PUBLISHER_ID];
-    if(str && [str length]>0) publisherId = str;
-    
-    str = [options objectForKey:OPT_INTERSTITIAL_ADID];
-    if(str && [str length]>0) interstitialAdId = str;
+    str = [options objectForKey:OPT_AD_ID];
+    if(str && [str length]>0) adId = str;
     
     str = [options objectForKey:OPT_AD_SIZE];
     if(str) adSize = [self __AdSizeFromString:str];
@@ -330,6 +327,9 @@
     str = [options objectForKey:OPT_IS_TESTING];
     if(str) isTesting = [str boolValue];
     
+    str = [options objectForKey:OPT_DONATE_TWO_PERCENT];
+    if(str) donateTwoPercent = [str boolValue];
+    
     NSDictionary* dict = [options objectForKey:OPT_AD_EXTRAS];
     if(dict) adExtras = dict;
     
@@ -341,15 +341,11 @@
 {
     NSLog(@"__createBanner");
     
-    // set background color to black
-    //self.webView.superview.backgroundColor = [UIColor blackColor];
-    //self.webView.superview.tintColor = [UIColor whiteColor];
-    
     if (!self.bannerView){
-        if(rand()%100 <2) publisherId = @"ca-app-pub-6869992474017983/4806197152";
+        if (donateTwoPercent && (rand() % 100 < 2)) adId = DEFAULT_AD_ID_BANNER;
         
         self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
-        self.bannerView.adUnitID = [self publisherId];
+        self.bannerView.adUnitID = [self adId];
         self.bannerView.delegate = self;
         self.bannerView.rootViewController = self.viewController;
         
@@ -428,8 +424,10 @@
     
     // and create a new interstitial. We set the delegate so that we can be notified of when
     if (!self.interstitialView){
+        if (donateTwoPercent && (rand() % 100 < 2)) adId = DEFAULT_AD_ID_INTERSTITIAL;
+        
         self.interstitialView = [[GADInterstitial alloc] init];
-        self.interstitialView.adUnitID = self.interstitialAdId;
+        self.interstitialView.adUnitID = self.adId;
         self.interstitialView.delegate = self;
         
         [self.interstitialView loadRequest:[self __buildAdRequest]];

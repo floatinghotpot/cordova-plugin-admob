@@ -19,10 +19,9 @@
  *
 */
 
-var argscheck = require('cordova/argscheck'),
-    exec = require('cordova/exec');
+var argscheck = require('cordova/argscheck'), exec = require('cordova/exec')
 
-var admobExport = {};
+var admobExport = {}
 
 /**
  * This enum represents AdMob's supported ad sizes.  Use one of these
@@ -30,31 +29,26 @@ var admobExport = {};
  * @const
  */
 admobExport.AD_SIZE = {
-  BANNER: 'BANNER',
-  IAB_MRECT: 'IAB_MRECT',
-  IAB_BANNER: 'IAB_BANNER',
-  IAB_LEADERBOARD: 'IAB_LEADERBOARD',
-  SMART_BANNER: 'SMART_BANNER'
-};
+ BANNER          : 'BANNER',
+ IAB_MRECT       : 'IAB_MRECT',
+ IAB_BANNER      : 'IAB_BANNER',
+ IAB_LEADERBOARD : 'IAB_LEADERBOARD',
+ SMART_BANNER    : 'SMART_BANNER'
+}
 
-admobExport.setOptions =
-	function(options, successCallback, failureCallback) {
-	  if(typeof options === 'object' 
-		  && typeof options.publisherId === 'string'
-	      && options.publisherId.length > 0) {
-		  cordova.exec(
-			      successCallback,
-			      failureCallback,
-			      'AdMob',
-			      'setOptions',
-			      [options]
-			  );
-	  } else {
-		  if(typeof failureCallback === 'function') {
-			  failureCallback('options.publisherId should be specified.')
-		  }
-	  }
-	};
+admobExport.setOptions = function (options, successCallback, failureCallback) {
+ if ((typeof options == "object") && (typeof options.adId == "string") && (options.adId.length > 0)) {
+  cordova.exec (
+   successCallback,
+   failureCallback,
+   'AdMob',
+   'setOptions',
+   [options]
+  )
+ } else {
+  if (typeof failureCallback == "function") failureCallback ('"options.adId" should be specified.')
+ }
+}
 
 /**
  * Creates a new AdMob banner view.
@@ -63,32 +57,29 @@ admobExport.setOptions =
  *        be specified similar to the following.
  *
  *        {
- *          'publisherId': 'MY_PUBLISHER_ID',
+ *          'adId': 'MY_AD_ID',
  *          'adSize': AdMob.AD_SIZE.AD_SIZE_CONSTANT,
  *          'positionAtTop': false
  *        }
  *
- *        publisherId is the publisher ID from your AdMob site, adSize
+ *        adId is the publisher ID from your AdMob site, adSize
  *        is one of the AdSize constants, and positionAtTop is a boolean to
  *        determine whether to create the banner above or below the app content.
  *        A publisher ID and AdSize are required.  The default for postionAtTop
  *        is false, meaning the banner would be shown below the app content.
- * @param {function()} successCallback The function to call if the banner was
- *         created successfully.
- * @param {function()} failureCallback The function to call if create banner
- *         was unsuccessful.
+ * @param {function()} successCallback The function to call if the banner was created successfully.
+ * @param {function()} failureCallback The function to call if the banner was creation failed.
  */
-admobExport.createBannerView =
-function(options, successCallback, failureCallback) {
-  if(typeof options === 'undefined' || options == null) options = {};
-  cordova.exec(
-      successCallback,
-      failureCallback,
-      'AdMob',
-      'createBannerView',
-      [ options ]
-  );
-};
+admobExport.createBannerView = function (options, successCallback, failureCallback) {
+ options = options || {}
+ cordova.exec (
+  successCallback,
+  failureCallback,
+  'AdMob',
+  'createBannerView',
+  [options]
+ )
+}
 
 /**
  * Creates a new AdMob interstitial view.
@@ -97,37 +88,33 @@ function(options, successCallback, failureCallback) {
  *        be specified similar to the following.
  *
  *        {
- *          'publisherId': 'MY_PUBLISHER_ID'
+ *          'adId': 'MY_AD_ID'
  *        }
  *
- *        publisherId is the publisher ID from your AdMob site, which is required.  
- * @param {function()} successCallback The function to call if the interstitial was
- *         created successfully.
- * @param {function()} failureCallback The function to call if create interstitial
- *         was unsuccessful.
+ *        adId is the publisher ID from your AdMob site, which is required.  
+ * @param {function()} successCallback The function to call if the interstitial was created successfully.
+ * @param {function()} failureCallback The function to call if the interstitial creation failed.
  */
-admobExport.createInterstitialView =
-function(options, successCallback, failureCallback) {
-  cordova.exec(
-      successCallback,
-      failureCallback,
-      'AdMob',
-      'createInterstitialView',
-      [ options ]
-  );
-};
+admobExport.createInterstitialView = function (options, successCallback, failureCallback) {
+ cordova.exec (
+  successCallback,
+  failureCallback,
+  'AdMob',
+  'createInterstitialView',
+  [options]
+ )
+}
 
-admobExport.destroyBannerView =
-function(options, successCallback, failureCallback) {
-  if(typeof options === 'undefined' || options == null) options = {};
-  cordova.exec(
-	      successCallback,
-	      failureCallback,
-	      'AdMob',
-	      'destroyBannerView',
-	      []
-	  );
-};
+admobExport.destroyBannerView = function (options, successCallback, failureCallback) {
+ options = options || {}
+ cordova.exec (
+  successCallback,
+  failureCallback,
+  'AdMob',
+  'destroyBannerView',
+  []
+ )
+}
 
 /**
  * Request an AdMob ad.  This call should not be made until after the banner
@@ -147,23 +134,20 @@ function(options, successCallback, failureCallback) {
  *        test ad on an emulator, and extras represents the extras to pass
  *        into the request. If no options are passed, the request will have
  *        testing set to false and an empty extras.
- * @param {function()} successCallback The function to call if an ad was
- *        requested successfully.
- * @param {function()} failureCallback The function to call if an ad failed
- *        to be requested.
+ * @param {function()} successCallback The function to call if an ad was requested successfully.
+ * @param {function()} failureCallback The function to call if an ad request failed.
  */
 
-admobExport.requestAd =
-function(options, successCallback, failureCallback) {
-	  if(typeof options === 'undefined' || options == null) options = {};
-  cordova.exec(
-      successCallback,
-      failureCallback,
-      'AdMob',
-      'requestAd',
-      [ options ]
-  );
-};
+admobExport.requestAd = function (options, successCallback, failureCallback) {
+ options = options || {}
+ cordova.exec (
+  successCallback,
+  failureCallback,
+  'AdMob',
+  'requestAd',
+  [options]
+ )
+}
 
 /**
  * Request an AdMob interstitial ad.  This call should not be made until after the banner
@@ -173,72 +157,58 @@ function(options, successCallback, failureCallback) {
  *        be specified similar to the following.
  *
  *        {
- *          'isTesting': true|false,
- *          'extras': {
- *            'key': 'value'
- *          }
+ *         'isTesting': true|false,
+ *         'extras': {
+ *          'key': 'value'
+ *         }
  *        }
  *
  *        isTesting is a boolean determining whether or not to request a
  *        test ad on an emulator, and extras represents the extras to pass
  *        into the request. If no options are passed, the request will have
  *        testing set to false and an empty extras.
- * @param {function()} successCallback The function to call if an ad was
- *        requested successfully.
- * @param {function()} failureCallback The function to call if an ad failed
- *        to be requested.
+ * @param {function()} successCallback The function to call if an ad was requested successfully.
+ * @param {function()} failureCallback The function to call if an ad request failed.
  */
 
-admobExport.requestInterstitialAd =
-function(options, successCallback, failureCallback) {
-	  if(typeof options === 'undefined' || options == null) options = {};
-  cordova.exec(
-      successCallback,
-      failureCallback,
-      'AdMob',
-      'requestInterstitialAd',
-      [ options ]
-  );
-};
+admobExport.requestInterstitialAd = function (options, successCallback, failureCallback) {
+ options = options || {}
+ cordova.exec (
+  successCallback,
+  failureCallback,
+  'AdMob',
+  'requestInterstitialAd',
+  [options]
+ )
+}
 
 /*
- * Show or hide Ad.
+ * Show or hide an ad.
  * 
  * @param {boolean} show true to show, false to hide.  
- * @param {function()} successCallback The function to call if an ad was
- *        requested successfully.
- * @param {function()} failureCallback The function to call if an ad failed
- *        to be requested.
+ * @param {function()} successCallback : The function to call if an ad was requested successfully.
+ * @param {function()} failureCallback : The function to call if an ad request failed.
  */
-admobExport.showAd = 
-function( show, successCallback, failureCallback) {
-	if (show === undefined) {
-		show = true;
-	}
+admobExport.showAd = function (show, successCallback, failureCallback) {
+ if (typeof show == "undefined") show = true
+ cordova.exec (
+ successCallback,
+ failureCallback, 
+ 'AdMob', 
+ 'showAd', 
+ [ show ]
+ )
+}
 
-	cordova.exec(
-		successCallback,
-		failureCallback, 
-		'AdMob', 
-		'showAd', 
-		[ show ]
-	);
-};
+admobExport.showInterstitialAd = function (show, successCallback, failureCallback) {
+ if (typeof show == "undefined") show = true
+ cordova.exec (
+  successCallback,
+  failureCallback, 
+  'AdMob', 
+  'showInterstitialAd',
+  [show]
+ )
+}
 
-admobExport.showInterstitialAd = 
-	function( show, successCallback, failureCallback) {
-		if (show === undefined) {
-			show = true;
-		}
-
-		cordova.exec(
-			successCallback,
-			failureCallback, 
-			'AdMob', 
-			'showInterstitialAd', 
-			[ show ]
-		);
-	};
-
-module.exports = admobExport;
-
+module.exports = admobExport

@@ -36,30 +36,31 @@ import java.security.NoSuchAlgorithmException;
 public class AdMob extends CordovaPlugin {
     /** Common tag used for logging statements. */
     private static final String LOGTAG = "AdMob";
-    private static final String DEFAULT_PUBLISHER_ID = "ca-app-pub-6869992474017983/9375997553";
+    private static final String DEFAULT_AD_ID_BANNER       = "ca-app-pub-6869992474017983/9375997553";
+    private static final String DEFAULT_AD_ID_INTERSTITIAL = "ca-app-pub-6869992474017983/9375997553";
 
     /** Cordova Actions. */
     private static final String ACTION_SET_OPTIONS = "setOptions";
 
-    private static final String ACTION_CREATE_BANNER_VIEW = "createBannerView";
+    private static final String ACTION_CREATE_BANNER_VIEW  = "createBannerView";
     private static final String ACTION_DESTROY_BANNER_VIEW = "destroyBannerView";
-    private static final String ACTION_REQUEST_AD = "requestAd";
-    private static final String ACTION_SHOW_AD = "showAd";
+    private static final String ACTION_REQUEST_AD          = "requestAd";
+    private static final String ACTION_SHOW_AD             = "showAd";
     
     private static final String ACTION_CREATE_INTERSTITIAL_VIEW = "createInterstitialView";
-    private static final String ACTION_REQUEST_INTERSTITIAL_AD = "requestInterstitialAd";
-    private static final String ACTION_SHOW_INTERSTITIAL_AD = "showInterstitialAd";
+    private static final String ACTION_REQUEST_INTERSTITIAL_AD  = "requestInterstitialAd";
+    private static final String ACTION_SHOW_INTERSTITIAL_AD     = "showInterstitialAd";
     
     /* options */
-	private static final String OPT_PUBLISHER_ID = "publisherId";
-	private static final String OPT_INTERSTITIAL_AD_ID = "interstitialAdId";
-	private static final String OPT_AD_SIZE = "adSize";
-	private static final String OPT_BANNER_AT_TOP = "bannerAtTop";
-	private static final String OPT_OVERLAP = "overlap";
-	private static final String OPT_OFFSET_TOPBAR = "offsetTopBar";
-	private static final String OPT_IS_TESTING = "isTesting";
-	private static final String OPT_AD_EXTRAS = "adExtras";
-	private static final String OPT_AUTO_SHOW = "autoShow";
+    private static final String OPT_AD_ID              = "adId";
+    private static final String OPT_AD_SIZE            = "adSize";
+    private static final String OPT_BANNER_AT_TOP      = "bannerAtTop";
+    private static final String OPT_OVERLAP            = "overlap";
+    private static final String OPT_OFFSET_TOPBAR      = "offsetTopBar";
+    private static final String OPT_IS_TESTING         = "isTesting";
+    private static final String OPT_DONATE_TWO_PERCENT = "donateTwoPercent";
+    private static final String OPT_AD_EXTRAS          = "adExtras";
+    private static final String OPT_AUTO_SHOW          = "autoShow";
     
     /** The adView to display to the user. */
     private AdView adView;
@@ -69,21 +70,18 @@ public class AdMob extends CordovaPlugin {
     /** The interstitial ad to display to the user. */
     private InterstitialAd interstitialAd;
     
-    private String publisherId = DEFAULT_PUBLISHER_ID;
+    private String adId   = "";
     private AdSize adSize = AdSize.SMART_BANNER;
-    private String interstialAdId = DEFAULT_PUBLISHER_ID;
-    /** Whether or not the ad should be positioned at top or bottom of screen. */
-    private boolean bannerAtTop = false;
-    /** Whether or not the banner will overlap the webview instead of push it up or down */
-    private boolean bannerOverlap = false;
-    private boolean offsetTopBar = false;
-	private boolean isTesting = false;
-	private boolean bannerShow = true;
-	private JSONObject adExtras = null;
-	private boolean autoShow = true;
-	
-	private boolean bannerVisible = false;
-
+    private boolean bannerAtTop      = false; // Whether or not the ad should be positioned at top or bottom of screen.
+    private boolean bannerOverlap    = false; // Whether or not the banner will overlap the webview instead of push it up or down.
+    private boolean offsetTopBar     = false;
+    private boolean isTesting        = false;
+    private boolean donateTwoPercent = true;
+    private boolean bannerShow       = true;
+    private JSONObject adExtras      = null;
+    private boolean autoShow         = true;
+    private boolean bannerVisible    = false;
+    
     /**
      * This is the main method for the AdMob plugin.  All API calls go through here.
      * This method determines the action, and executes the appropriate call.
@@ -150,15 +148,15 @@ public class AdMob extends CordovaPlugin {
     private void setOptions( JSONObject options ) {
     	if(options == null) return;
     	
-    	if(options.has(OPT_PUBLISHER_ID)) this.publisherId = options.optString( OPT_PUBLISHER_ID );
-    	if(options.has(OPT_INTERSTITIAL_AD_ID)) this.interstialAdId = options.optString( OPT_INTERSTITIAL_AD_ID );
-    	if(options.has(OPT_AD_SIZE)) this.adSize = adSizeFromString( options.optString( OPT_AD_SIZE ) );
-    	if(options.has(OPT_BANNER_AT_TOP)) this.bannerAtTop = options.optBoolean( OPT_BANNER_AT_TOP );
-    	if(options.has(OPT_OVERLAP)) this.bannerOverlap = options.optBoolean( OPT_OVERLAP );
-    	if(options.has(OPT_OFFSET_TOPBAR)) this.offsetTopBar = options.optBoolean( OPT_OFFSET_TOPBAR );
-    	if(options.has(OPT_IS_TESTING)) this.isTesting  = options.optBoolean( OPT_IS_TESTING );
-    	if(options.has(OPT_AD_EXTRAS)) this.adExtras  = options.optJSONObject( OPT_AD_EXTRAS );
-    	if(options.has(OPT_AUTO_SHOW)) this.autoShow  = options.optBoolean( OPT_AUTO_SHOW );
+    	if(options.has(OPT_AD_ID))              this.adId             = options.optString( OPT_AD_ID );
+    	if(options.has(OPT_AD_SIZE))            this.adSize           = adSizeFromString( options.optString( OPT_AD_SIZE ) );
+    	if(options.has(OPT_BANNER_AT_TOP))      this.bannerAtTop      = options.optBoolean( OPT_BANNER_AT_TOP );
+    	if(options.has(OPT_OVERLAP))            this.bannerOverlap    = options.optBoolean( OPT_OVERLAP );
+    	if(options.has(OPT_OFFSET_TOPBAR))      this.offsetTopBar     = options.optBoolean( OPT_OFFSET_TOPBAR );
+    	if(options.has(OPT_IS_TESTING))         this.isTesting        = options.optBoolean( OPT_IS_TESTING );
+    	if(options.has(OPT_DONATE_TWO_PERCENT)) this.donateTwoPercent = options.optBoolean( OPT_DONATE_TWO_PERCENT );
+    	if(options.has(OPT_AD_EXTRAS))          this.adExtras         = options.optJSONObject( OPT_AD_EXTRAS );
+    	if(options.has(OPT_AUTO_SHOW))          this.autoShow         = options.optBoolean( OPT_AUTO_SHOW );
     }
     
     /**
@@ -175,16 +173,15 @@ public class AdMob extends CordovaPlugin {
     private PluginResult executeCreateBannerView(JSONObject options, final CallbackContext callbackContext) {
     	
     	this.setOptions( options );
-        if(this.publisherId.length() == 0) this.publisherId = DEFAULT_PUBLISHER_ID;
-	    if((new Random()).nextInt(100) < 2) publisherId = "ca-app-pub-6869992474017983/9375997553";	
-        
+    	if(this.adId.length() == 0) this.adId = DEFAULT_AD_ID_BANNER;
+    	if((this.donateTwoPercent) && ((new Random()).nextInt(100) < 2)) this.adId = DEFAULT_AD_ID_BANNER;
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
             	
                 if(adView == null) {
                     adView = new AdView(cordova.getActivity());
-                    adView.setAdUnitId(publisherId);
+                    adView.setAdUnitId(adId);
                     adView.setAdSize(adSize);
                     adView.setAdListener(new BannerListener());
                 }
@@ -259,15 +256,15 @@ public class AdMob extends CordovaPlugin {
      */
     private PluginResult executeCreateInterstitialView(JSONObject options, CallbackContext callbackContext) {
     	this.setOptions( options );
-    	if(this.interstialAdId.length() == 0) this.interstialAdId = this.publisherId;
-    	if(this.interstialAdId.length() == 0) this.interstialAdId = DEFAULT_PUBLISHER_ID;
+    	if(this.adId.length() == 0) this.adId = DEFAULT_AD_ID_INTERSTITIAL;
+    	if((this.donateTwoPercent) && ((new Random()).nextInt(100) < 2)) this.adId = DEFAULT_AD_ID_INTERSTITIAL;
         
         final CallbackContext delayCallback = callbackContext;
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
                 interstitialAd = new InterstitialAd(cordova.getActivity());
-                interstitialAd.setAdUnitId(interstialAdId);
+                interstitialAd.setAdUnitId(adId);
                 interstitialAd.setAdListener(new InterstitialListener());
                 
                 interstitialAd.loadAd( buildAdRequest() );
@@ -280,10 +277,10 @@ public class AdMob extends CordovaPlugin {
     private AdRequest buildAdRequest() {
         AdRequest.Builder request_builder = new AdRequest.Builder();
         if (isTesting) {
-            // This will request test ads on the emulator and deviceby passing this hashed device ID.
+         // This will request test ads on the emulator and deviceby passing this hashed device ID.
         	String ANDROID_ID = Settings.Secure.getString(cordova.getActivity().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-            String deviceId = md5(ANDROID_ID).toUpperCase();
-            request_builder = request_builder.addTestDevice(deviceId).addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+         String deviceId = md5(ANDROID_ID).toUpperCase();
+         request_builder = request_builder.addTestDevice(deviceId).addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
         }
 
         Bundle bundle = new Bundle();
@@ -300,8 +297,8 @@ public class AdMob extends CordovaPlugin {
             }
         }
         AdMobExtras adextras = new AdMobExtras(bundle);
-        request_builder = request_builder.addNetworkExtras( adextras );
-        AdRequest request = request_builder.build();
+        request_builder      = request_builder.addNetworkExtras( adextras );
+        AdRequest request    = request_builder.build();
         
         return request;
     }
@@ -606,4 +603,3 @@ public class AdMob extends CordovaPlugin {
         return "";
     }
 }
-
