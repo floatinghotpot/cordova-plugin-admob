@@ -6,10 +6,10 @@
 	version="2.0.1">
       
     <name>AdMob</name>
-	<description>Add AdMob support to your cordova apps or games to earn revenue</description>
+	<description>The most popular AdMob plugin for PhoneGap and Cordova, support latest Android (with Google Play Services), iOS and Windows Phone SDK. Easy-to-use API. Actively maintained.</description>
 	<author>Liming Xie</author>
 	<license>MIT</license>
-	<keywords>ad,admob</keywords>
+	<keywords>ad,admob,google,play,services,iad,flurry</keywords>
     <repo>https://github.com/floatinghotpot/cordova-plugin-admob.git</repo>
     <issue>https://github.com/floatinghotpot/cordova-plugin-admob/issues</issue>
 

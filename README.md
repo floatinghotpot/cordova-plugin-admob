@@ -80,15 +80,25 @@ Call the following code inside onDeviceReady(), because only after device ready 
     }
     function initAd(){
         if ( window.plugins && window.plugins.AdMob ) {
-            var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
-            var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
-            var admobid = (( /(android)/i.test(navigator.userAgent) ) ? admob_android_key : admob_ios_key);
+    	    var ad_units = {
+				ios : {
+					banner: 'ca-app-pub-6869992474017983/4806197152',
+					interstitial: 'ca-app-pub-6869992474017983/7563979554'
+				},
+				android : {
+					banner: 'ca-app-pub-6869992474017983/9375997553',
+					interstitial: 'ca-app-pub-6869992474017983/1657046752'
+				}
+    	    };
+            var admobid = ( /(android)/i.test(navigator.userAgent) ) ? ad_units.android : ad_units.ios;
+            
             window.plugins.AdMob.setOptions( {
-                publisherId: admobid,
+                publisherId: admobid.banner,
+                interstitialAdId: admobid.interstitial,
                 bannerAtTop: false, // set to true, to put banner at top
                 overlap: false, // set to true, to allow banner overlap webview
                 offsetTopBar: false, // set to true to avoid ios7 status bar overlap
-                isTesting: true, // receiving test ad
+                isTesting: false, // receiving test ad
                 autoShow: true // auto show interstitial ad when loaded
             });
 
