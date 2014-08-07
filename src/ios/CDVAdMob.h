@@ -22,8 +22,7 @@
 @property(nonatomic, retain) GADBannerView *bannerView;
 @property(nonatomic, retain) GADInterstitial *interstitialView;
 
-@property (nonatomic, retain) NSString* publisherId;
-@property (nonatomic, retain) NSString* interstitialAdId;
+@property (nonatomic, retain) NSString* adId;
 
 @property (assign) GADAdSize adSize;
 @property (assign) BOOL bannerAtTop;
