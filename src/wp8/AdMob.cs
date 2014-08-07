@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,7 +76,7 @@ namespace Cordova.Extension.Commands
             {
                 inputs = JsonHelper.Deserialize<string[]>(args);
 
-                var publisherId = inputs[0];
+                var adId = inputs[0];
                 var size = inputs[1];
                 var bannerAtTop = inputs[2];
 
@@ -99,7 +99,7 @@ namespace Cordova.Extension.Commands
                                 bannerAd = new AdView
                                 {
                                     Format = getAdSize(size),
-                                    AdUnitID = publisherId
+                                    AdUnitID = adId
                                 };
 
                                 bannerAd.ReceivedAd += OnAdReceived;
