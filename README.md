@@ -1,5 +1,6 @@
 # cordova-plugin-admob #
-This is the AdMob Cordova Plugin. It provides a way to request AdMob ads natively from JavaScript. 
+
+AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScript. 
 
 Required:
 * Cordova, >=3.0
@@ -10,7 +11,8 @@ Platform SDK supported:
 * Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.11
 
 ## See Also ##
-Besides using Google AdMob, you have some other options, all working on cordova:
+
+* [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced AdMob plugin, more flexible, multiple size, any position, friendly APIs.
 * [cordova-plugin-iad](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
 * [cordova-plugin-flurry](https://github.com/floatinghotpot/cordova-plugin-flurry), Flurry Ads service.
 
@@ -127,15 +129,15 @@ See the working example code in [demo under test folder](test/index.html), and h
 
 iPhone:
 
-![ScreenShot](admob-iphone.jpg)
+![ScreenShot](demo/admob-iphone.jpg)
 
 iPad, landscape:
 
-![ScreenShot](admob-ipad-landscape.jpg)
+![ScreenShot](demo/admob-ipad-landscape.jpg)
 
 Android:
 
-![ScreenShot](admob-android.jpg)
+![ScreenShot](demo/admob-android.jpg)
 
 
 ## Donate ##
