@@ -2,13 +2,26 @@
 
 AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScript. 
 
-Required:
-* Cordova, >=3.0
-
 Platform SDK supported:
 * iOS, using AdMob SDK for iOS, v6.10.0
 * Android, using Google Play Service for Android, v4.4
 * Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.11
+
+# Notice #
+
+I recommend [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), the enhanced version of this plugin. 
+
+Highlights of "AdMob Plugin Pro":
+* Banner and Interstitial, both supported.
+* Simple APIs: easily present Ad with single line of Js code.
+* Max fexibility: allow to put Ad at any place on screen.
+* Multiple standard size, and even support custom width and height.
+* Flexible timing to show Ad: set to auto show, or you decide when to show Ad.
+* Rich Options, allow receiving test Ad, and set extra styles.
+* Latest SDK, iOS SDK v6.10.0, Android Google play services v19.
+
+Will this one be continue? Yes. 
+Don't worry, this one will still be maintained and supported.
 
 ## See Also ##
 
