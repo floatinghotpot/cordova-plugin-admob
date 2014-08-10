@@ -2,32 +2,33 @@
 
 AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScript. 
 
-Platform SDK supported:
-* iOS, using AdMob SDK for iOS, v6.10.0
-* Android, using Google Play Service for Android, v4.4
-* Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.11
-
 # Notice #
 
-I recommend [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), the enhanced version of this plugin. 
+[AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro) is recommended, which is the enhanced version of this plugin. 
 
-Highlights of "AdMob Plugin Pro":
-* Banner and Interstitial, both supported.
-* Simple APIs: easily present Ad with single line of Js code.
-* Max fexibility: allow to put Ad at any place on screen.
-* Multiple standard size, and even support custom width and height.
-* Flexible timing to show Ad: set to auto show, or you decide when to show Ad.
-* Rich Options, allow receiving test Ad, and set extra styles.
-* Latest SDK, iOS SDK v6.10.0, Android Google play services v19.
+Highlights:
+- [x] Support Banner Ad and Interstitial Ad.
+- [x] Most flexible, put banner at any position.
+- [x] Multiple banner size, also support custom size.
+- [x] Latest SDK, iOS SDK v6.10.0, Android Google play services v19
+- [x] Easy-to-use APIs. Can display Ad with single line of Js code.
+- [x] Actively maintained, prompt support.
 
-Will this one be continue? Yes. 
-Don't worry, this one will still be maintained and supported.
+Will this project continue? Yes. This project will continue to be maintained and supported.
 
 ## See Also ##
 
 * [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced AdMob plugin, more flexible, multiple size, any position, friendly APIs.
 * [cordova-plugin-iad](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
 * [cordova-plugin-flurry](https://github.com/floatinghotpot/cordova-plugin-flurry), Flurry Ads service.
+
+More Cordova/PhoneGap plugins by Raymond Xie, [click here](http://floatinghotpot.github.io/).
+
+## Platform SDK supported ##
+
+* iOS, using AdMob SDK for iOS, v6.10.0
+* Android, using Google Play Service for Android, v4.4
+* Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.11
 
 ## How to use? ##
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
