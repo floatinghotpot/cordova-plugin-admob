@@ -6,9 +6,13 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.mediation.admob.AdMobExtras;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
 import org.json.JSONArray;
@@ -25,6 +29,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import android.provider.Settings;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -83,7 +88,15 @@ public class AdMob extends CordovaPlugin {
 	private boolean autoShow = true;
 	
 	private boolean bannerVisible = false;
+	private boolean isGpsAvailable = false;
 
+    @Override
+	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+    	super.initialize(cordova, webView);
+    	isGpsAvailable = (GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordova.getActivity()) == ConnectionResult.SUCCESS);
+    	Log.w(LOGTAG, String.format("isGooglePlayServicesAvailable: %s",  isGpsAvailable?"true":"false"));
+	}
+	
     /**
      * This is the main method for the AdMob plugin.  All API calls go through here.
      * This method determines the action, and executes the appropriate call.
@@ -97,7 +110,10 @@ public class AdMob extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
         PluginResult result = null;
-        if (ACTION_SET_OPTIONS.equals(action)) {
+        if( ! isGpsAvailable ) {
+        	result = new PluginResult(Status.ERROR, "Google Play Services Not Available");
+        	
+        } else if (ACTION_SET_OPTIONS.equals(action)) {
             JSONObject options = inputs.optJSONObject(0);
             result = executeSetOptions(options, callbackContext);
             
@@ -530,6 +546,7 @@ public class AdMob extends CordovaPlugin {
     @Override
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
+        isGpsAvailable = (GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordova.getActivity()) == ConnectionResult.SUCCESS);
         if (adView != null) {
             adView.resume();
         }
