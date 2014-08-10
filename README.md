@@ -4,7 +4,7 @@ AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScri
 
 # Notice #
 
-[AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro) is recommended, which is the enhanced version of this plugin. 
+[AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro) is more recommended, which is the enhanced version of this plugin. 
 
 Highlights:
 - [x] Support Banner Ad and Interstitial Ad.
