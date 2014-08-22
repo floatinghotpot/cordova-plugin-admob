@@ -110,10 +110,11 @@ public class AdMob extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
         PluginResult result = null;
-        if( ! isGpsAvailable ) {
-        	result = new PluginResult(Status.ERROR, "Google Play Services Not Available");
-        	
-        } else if (ACTION_SET_OPTIONS.equals(action)) {
+        //if( ! isGpsAvailable ) {
+        //	result = new PluginResult(Status.ERROR, "Google Play Services Not Available");
+        //} else 
+
+	if (ACTION_SET_OPTIONS.equals(action)) {
             JSONObject options = inputs.optJSONObject(0);
             result = executeSetOptions(options, callbackContext);
             
