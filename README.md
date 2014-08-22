@@ -8,9 +8,12 @@ AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScri
 
 Highlights:
 - [x] Support Banner Ad and Interstitial Ad.
-- [x] Most flexible, put banner at any position.
 - [x] Multiple banner size, also support custom size.
-- [x] Latest SDK, iOS SDK v6.10.0, Android Google play services v19
+- [x] Fixed and overlapped mode.
+- [x] Most flexible, put banner at any position with overlap mode.
+- [x] Auto fit on orientation change.
+- [x] Latest iOS SDK v6.11.1, 
+- [x] Latest Android Google play services v19.
 - [x] Easy-to-use APIs. Can display Ad with single line of Js code.
 - [x] Actively maintained, prompt support.
 

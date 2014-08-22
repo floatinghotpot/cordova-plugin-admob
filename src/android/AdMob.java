@@ -210,9 +210,10 @@ public class AdMob extends CordovaPlugin {
                 
                 if(adViewLayout == null) {
                     adViewLayout = new RelativeLayout(cordova.getActivity());
-                }
-                if (adViewLayout.getParent() != null) {
-                    ((ViewGroup)adViewLayout.getParent()).removeView(adViewLayout);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.MATCH_PARENT);
+                    webView.addView(adViewLayout, params);
                 }
                 
                 bannerVisible = false;
@@ -245,13 +246,6 @@ public class AdMob extends CordovaPlugin {
 					}
 					adView.destroy();
 					adView = null;
-				}
-				if (adViewLayout != null) {
-					ViewGroup parentView = (ViewGroup)adViewLayout.getParent();
-					if(parentView != null) {
-						parentView.removeView(adViewLayout);
-					}
-					adViewLayout = null;
 				}
 				bannerVisible = false;
 				delayCallback.success();
@@ -397,31 +391,19 @@ public class AdMob extends CordovaPlugin {
         cordova.getActivity().runOnUiThread(new Runnable(){
 			@Override
             public void run() {
-                if (adView.getParent() != null) {
-                    ((ViewGroup)adView.getParent()).removeView(adView);
-                }
-                if (adViewLayout.getParent() != null) {
-                    ((ViewGroup)adViewLayout.getParent()).removeView(adViewLayout);
-                }
-                
                 if(bannerVisible == bannerShow) { // no change
                 	
                 } else if( bannerShow ) {
-                
+                    if (adView.getParent() != null) {
+                        ((ViewGroup)adView.getParent()).removeView(adView);
+                    }
                     if(bannerOverlap) {
-                        ViewGroup parentView = (ViewGroup) webView;
-                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.MATCH_PARENT);
-                        parentView.addView(adViewLayout, params);
-                        
                         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
                         params2.addRule(bannerAtTop ? RelativeLayout.ALIGN_PARENT_TOP : RelativeLayout.ALIGN_PARENT_BOTTOM);
                         adViewLayout.addView(adView, params2);
-                        
-                        parentView.bringToFront();
+                        adViewLayout.bringToFront();
                     } else {
                         ViewGroup parentView = (ViewGroup) webView.getParent();
                         if (bannerAtTop) {
@@ -433,7 +415,6 @@ public class AdMob extends CordovaPlugin {
                     }
                     
                 	adView.setVisibility( View.VISIBLE );
-                	adView.bringToFront();
                 	bannerVisible = true;
                 	
                 } else {
@@ -473,7 +454,7 @@ public class AdMob extends CordovaPlugin {
      * to the JavaScript layer.  To listen for these events, use:
      *
      * document.addEventListener('onReceiveAd', function());
-     * document.addEventListener('onFailedToReceiveAd', function(data));
+     * document.addEventListener('onFailedToReceiveAd', function(data){});
      * document.addEventListener('onPresentAd', function());
      * document.addEventListener('onDismissAd', function());
      * document.addEventListener('onLeaveToAd', function());
@@ -556,7 +537,15 @@ public class AdMob extends CordovaPlugin {
     public void onDestroy() {
         if (adView != null) {
             adView.destroy();
+            adView = null;
         }
+		if (adViewLayout != null) {
+			ViewGroup parentView = (ViewGroup)adViewLayout.getParent();
+			if(parentView != null) {
+				parentView.removeView(adViewLayout);
+			}
+			adViewLayout = null;
+		}
         super.onDestroy();
     }
     
