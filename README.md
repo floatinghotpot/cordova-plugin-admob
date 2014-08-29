@@ -91,10 +91,6 @@ requestInterstitialAd(options, success, fail); // optional, will be absolete
 showInterstitialAd();
 ```
 
-Events: 
-- onReceiveAd, onFailedToReceiveAd, onPresentAd, onDismissAd, onLeaveToAd
-- onReceiveInterstitialAd, onPresentInterstitialAd, onDismissInterstitialAd
-
 ## Example code ##
 Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
 ```javascript
@@ -114,12 +110,12 @@ Call the following code inside onDeviceReady(), because only after device ready 
         if ( window.plugins && window.plugins.AdMob ) {
     	    var ad_units = {
 				ios : {
-					banner: 'ca-app-pub-6869992474017983/4806197152',
-					interstitial: 'ca-app-pub-6869992474017983/7563979554'
+					banner: 'ca-app-pub-xxx/4806197152',
+					interstitial: 'ca-app-pub-xxx/7563979554'
 				},
 				android : {
-					banner: 'ca-app-pub-6869992474017983/9375997553',
-					interstitial: 'ca-app-pub-6869992474017983/1657046752'
+					banner: 'ca-app-pub-xxx/9375997553',
+					interstitial: 'ca-app-pub-xxx/1657046752'
 				}
     	    };
             var admobid = ( /(android)/i.test(navigator.userAgent) ) ? ad_units.android : ad_units.ios;
@@ -173,6 +169,6 @@ Android:
 ## Donate ##
 You can use this cordova plugin for free. To support this project, donation is welcome.  
 Donation can be accepted in either of following ways:
-* Share 2% Ad traffic. 
+* Share 2% Ad traffic. (It's not mandatory. If you are unwilling to share, please fork and remove the donation code.)
 * [Donate directly via Paypal](http://floatinghotpot.github.io/#donate)
 
