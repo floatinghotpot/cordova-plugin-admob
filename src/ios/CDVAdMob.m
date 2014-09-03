@@ -490,24 +490,24 @@
             if( bannerAtTop ) {
                 if(bannerOverlap) {
                     wf.origin.y = top;
-                    bf.origin.y = 0;
+                    bf.origin.y = 0; // banner is subview of webview
                 } else {
                     bf.origin.y = top;
                     wf.origin.y = bf.origin.y + bf.size.height;
                 }
-                wf.size.height = pr.size.height - wf.origin.y;
                 
             } else {
                 // move webview to top
                 wf.origin.y = top;
                 
                 if( bannerOverlap ) {
-                    bf.origin.y = wf.size.height - bf.size.height;
+                    bf.origin.y = wf.size.height - bf.size.height; // banner is subview of webview
                 } else {
                     bf.origin.y = pr.size.height - bf.size.height;
-                    wf.size.height = bf.origin.y;
                 }
             }
+            
+            if(! bannerOverlap) wf.size.height -= bf.size.height;
             
             bf.origin.x = (pr.size.width - bf.size.width) * 0.5f;
             
