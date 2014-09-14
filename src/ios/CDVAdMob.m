@@ -31,7 +31,7 @@
 @synthesize isTesting, adExtras;
 
 @synthesize bannerIsVisible, bannerIsInitialized;
-@synthesize bannerShow, autoShow;
+@synthesize bannerShow, autoShow, autoShowBanner, autoShowInterstitial;
 
 #define DEFAULT_PUBLISHER_ID    @"ca-app-pub-6869992474017983/4806197152"
 
@@ -72,6 +72,8 @@
     isTesting = false;
     
     autoShow = true;
+    autoShowBanner = true;
+    autoShowInterstitial = false;
     
     bannerIsInitialized = false;
     bannerIsVisible = false;
@@ -114,14 +116,13 @@
         NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
     }
+    autoShowBanner = autoShow;
     
     if(! self.bannerView) {
         [self __createBanner];
     }
     
-    bannerShow = autoShow;
-    
-    if(bannerShow) {
+    if(autoShowBanner) {
         [self __showAd:YES];
     }
     
@@ -160,6 +161,7 @@
         NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
     }
+    autoShowInterstitial = autoShow;
     
     [self __cycleInterstitial];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -565,7 +567,7 @@
 	NSLog( @"onReceiveInterstitialAd" );
     if (self.interstitialView){
     [self writeJavascript:@"cordova.fireDocumentEvent('onReceiveInterstitialAd');"];
-        if(self.autoShow) {
+        if(self.autoShowInterstitial) {
             [self __showInterstitial:YES];
         }
     }

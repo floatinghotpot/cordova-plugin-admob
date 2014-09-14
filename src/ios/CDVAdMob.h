@@ -38,6 +38,9 @@
 @property (assign) BOOL bannerShow;
 @property (assign) BOOL autoShow;
 
+@property (assign) BOOL autoShowBanner;
+@property (assign) BOOL autoShowInterstitial;
+
 - (void) setOptions:(CDVInvokedUrlCommand *)command;
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command;
