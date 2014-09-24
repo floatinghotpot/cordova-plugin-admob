@@ -36,7 +36,7 @@ admobExport.AD_SIZE = {
   IAB_LEADERBOARD: 'IAB_LEADERBOARD',
   SMART_BANNER: 'SMART_BANNER'
 };
-
+a
 admobExport.setOptions =
 	function(options, successCallback, failureCallback) {
 	  if(typeof options === 'object' 
