@@ -12,15 +12,17 @@ Highlights:
 - [x] Fixed and overlapped mode.
 - [x] Most flexible, put banner at any position with overlap mode.
 - [x] Auto fit on orientation change.
-- [x] Latest iOS SDK v6.11.1, 
-- [x] Latest Android Google play services r19.
+- [x] Latest iOS SDK.
+- [x] Latest Android Google play services.
 - [x] Compatible with Intel XDK and Crosswalk.
+- [x] Compatible with IBM Worklight.
 - [x] Easy-to-use APIs. Can display Ad with single line of Js code.
 - [x] Actively maintained, prompt support.
 
 Tips: (According to history stat data in past 2 months)
 - [x] Using AdMob Plugin Pro, will get higher fill rate.
 - [x] Using Interstitial, will earn better profit, RPM 10 times higher than Banner. 
+- [x] Using SMART_BANNER instead of BANNER.
 
 News:
 - Recommended by Telerik in Verified Plugins Marketplace. [read more ...](http://plugins.telerik.com/plugin/admob)
