@@ -34,14 +34,6 @@ More Cordova plugins by Raymond Xie, [click here](http://floatinghotpot.github.i
 
 Will this project continue? Yes. This project will continue to be maintained and supported.
 
-## See Also ##
-
-* [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced AdMob plugin, more flexible, multiple size, any position, friendly APIs.
-* [cordova-plugin-iad](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
-* [cordova-plugin-flurry](https://github.com/floatinghotpot/cordova-plugin-flurry), Flurry Ads service.
-
-More Cordova/PhoneGap plugins by Raymond Xie, [click here](http://floatinghotpot.github.io/).
-
 ## Platform SDK supported ##
 
 * iOS, using AdMob SDK for iOS, v6.10.0
@@ -167,10 +159,14 @@ Android:
 
 ![ScreenShot](demo/admob-android.jpg)
 
+## See Also ##
 
-## Donate ##
-You can use this cordova plugin for free. To support this project, donation is welcome.  
-Donation can be accepted in either of following ways:
-* Share 2% Ad traffic. (It's not mandatory. If you are unwilling to share, please fork and remove the donation code.)
-* [Donate directly via Paypal](http://floatinghotpot.github.io/#donate)
+* [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced Google AdMob plugin, easy API and more features.
+* [MobFox Plugin Pro](https://github.com/floatinghotpot/cordova-mobfox-pro), enhanced MobFox plugin, support video Ad and many other Ad network with server-side intergration.
+* [iAd Plugin](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
+* [FlurryAds Plugin](https://github.com/floatinghotpot/cordova-plugin-flurry), Yahoo Flurry Ads service.
+
+More Cordova/PhoneGap plugins by Raymond Xie, [click here](http://floatinghotpot.github.io/).
+
+Project outsourcing and consulting service is also available. Please [contact us](http://floatinghotpot.github.io) if you have the business needs.
 
