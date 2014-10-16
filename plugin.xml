@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	id="com.rjfun.cordova.plugin.admob"
-	version="2.1.1">
+	version="2.1.2">
       
     <name>AdMob</name>
 	<description>The most popular AdMob plugin for Cordova/PhoneGap, Intel XDK compatible. Support latest Google Play Services for Android, iOS and Windows Phone SDK. </description>
@@ -47,23 +47,29 @@
   <!-- Windows Phone 8 -->
   <platform name="wp8">
     <dependency id="com.google.admobsdk-wp" version=">=6.5.13"/>
+    <config-file target="Properties/WMAppManifest.xml" parent="/Deployment/App/Capabilities">
+        <Capability Name="ID_CAP_LOCATION" />
+    </config-file>
     <config-file target="config.xml" parent="/*">
-      <feature name="AdMob">
-        <param name="wp-package" value="AdMob"/>
-      </feature>
+        <feature name="AdMob">
+            <param name="wp-package" value="AdMob"/>
+        </feature>
     </config-file>
     <source-file src="src/wp8/AdMob.cs" />
-  </platform>
+</platform>
 
   <!-- Windows Phone 8.1+ -->
-  <platform name="windows">
+<platform name="windows">
     <dependency id="com.google.admobsdk-wp" version=">=6.5.13"/>
+    <config-file target="Properties/WMAppManifest.xml" parent="/Deployment/App/Capabilities">
+        <Capability Name="ID_CAP_LOCATION" />
+    </config-file>
     <config-file target="config.xml" parent="/*">
-      <feature name="AdMob">
-        <param name="wp-package" value="AdMob"/>
-      </feature>
+        <feature name="AdMob">
+            <param name="wp-package" value="AdMob"/>
+        </feature>
     </config-file>
     <source-file src="src/wp8/AdMob.cs" />
-  </platform>
+</platform>
 
 </plugin>
