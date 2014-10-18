@@ -110,9 +110,20 @@ Call the following code inside onDeviceReady(), because only after device ready 
 				android : {
 					banner: 'ca-app-pub-xxx/9375997553',
 					interstitial: 'ca-app-pub-xxx/1657046752'
+				},
+				wp8 : {
+					banner: 'ca-app-pub-xxx/9375997559',
+					interstitial: 'ca-app-pub-xxx/1657046759'
 				}
     	    };
-            var admobid = ( /(android)/i.test(navigator.userAgent) ) ? ad_units.android : ad_units.ios;
+    	    var admobid = "";
+    	    if( /(android)/i.test(navigator.userAgent) ) {
+    	    	admobid = ad_units.android;
+    	    } else if(/(iphone|ipad)/i.test(navigator.userAgent)) {
+    	    	admobid = ad_units.ios;
+    	    } else {
+    	    	admobid = ad_units.wp8;
+    	    }
             
             window.plugins.AdMob.setOptions( {
                 publisherId: admobid.banner,

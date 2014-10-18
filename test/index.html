@@ -15,7 +15,7 @@
     <body onload="onDocLoad()" onresize="onResize()">
     <script>
     function onDocLoad() {
-        if(( /(ipad|iphone|ipod|android)/i.test(navigator.userAgent) )) {
+        if(( /(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent) )) {
             document.addEventListener('deviceready', initApp, false);
         } else {
             initApp();
@@ -38,9 +38,20 @@
 				android : {
 					banner: 'ca-app-pub-6869992474017983/9375997553',
 					interstitial: 'ca-app-pub-6869992474017983/1657046752'
+				},
+				wp8 : {
+					banner: 'ca-app-pub-6869992474017983/8878394753',
+					interstitial: 'ca-app-pub-6869992474017983/1355127956'
 				}
     	    };
-            var admobid = ( /(android)/i.test(navigator.userAgent) ) ? ad_units.android : ad_units.ios;
+    	    var admobid = "";
+    	    if( /(android)/i.test(navigator.userAgent) ) {
+    	    	admobid = ad_units.android;
+    	    } else if(/(iphone|ipad)/i.test(navigator.userAgent)) {
+    	    	admobid = ad_units.ios;
+    	    } else {
+    	    	admobid = ad_units.wp8;
+    	    }
 
             window.plugins.AdMob.setOptions( {
                 publisherId: admobid.banner,
@@ -83,15 +94,6 @@
     <div id="sizeinfo">width * height</div>
     <div>Try rotate screen to test the orientation change</div>
 
-<hr>
-<p>Donation via PayPal</p>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="G5EKTLZ3GQDTU">
-<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
-<img alt="" border="0" src="https://www.paypalobjects.com/zh_HK/i/scr/pixel.gif" width="1" height="1">
-</form>
-    
     </div>
     
     </body>
