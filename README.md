@@ -167,15 +167,12 @@ Enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
 * [FlurryAds Plugin](https://github.com/floatinghotpot/cordova-plugin-flurry), Yahoo Flurry Ads service.
 
 Highlights of Plugin Pro:
-- [x] Easy-to-use APIs. Can display Ad with single line of Js code.
-- [x] Actively maintained, prompt support.
+- [x] Easy-to-use API, can display Ad with single line of javascript code. 
+- [x] Actively maintained, prompt support. Timely update with latest SDK.
 - [x] Support Banner, Interstitial and Video Ad.
-- [x] Multiple banner size, also support custom size.
-- [x] Most flexible, put banner at any position with overlap mode.
-- [x] Auto fit on orientation change.
 - [x] Fixed and overlapped mode.
-- [x] Timely update with latest SDK.
-- [x] Detailed documentation.
+- [x] Multiple banner size, most flexible, put banner at any position with overlap mode.
+- [x] Auto fit on orientation change.
 - [x] Compatible with Intel XDK and Crosswalk.
 - [x] Compatible with IBM Worklight.
 
