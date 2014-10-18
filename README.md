@@ -2,38 +2,6 @@
 
 AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScript. 
 
-# Notice #
-
-[AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro) is more recommended, which is the enhanced version of this plugin. 
-
-Highlights:
-- [x] Support Banner Ad and Interstitial Ad.
-- [x] Multiple banner size, also support custom size.
-- [x] Fixed and overlapped mode.
-- [x] Most flexible, put banner at any position with overlap mode.
-- [x] Auto fit on orientation change.
-- [x] Latest iOS SDK.
-- [x] Latest Android Google play services.
-- [x] Compatible with Intel XDK and Crosswalk.
-- [x] Compatible with IBM Worklight.
-- [x] Easy-to-use APIs. Can display Ad with single line of Js code.
-- [x] Actively maintained, prompt support.
-
-Tips: (According to history stat data in past 2 months)
-- [x] Using AdMob Plugin Pro, will get higher fill rate.
-- [x] Using Interstitial, will earn better profit, RPM 10 times higher than Banner. 
-- [x] Using SMART_BANNER instead of BANNER.
-
-News:
-- Recommended by Telerik in Verified Plugins Marketplace. [read more ...](http://plugins.telerik.com/plugin/admob)
-- Recommended by William SerGio in code project (20 Jun 2014), [read more ...](http://www.codeproject.com/Articles/788304/AdMob-Plugin-for-Latest-Version-of-PhoneGap-Cordov)
-- Recommended by Arne in Scirra Game Dev Forum (07 Aug, 2014), [read more ...](https://www.scirra.com/forum/plugin-admob-ads-for-crosswalk_t111940)
-- Recommended by Intel XDK team (08/22/2014), [read more ...](https://software.intel.com/en-us/html5/articles/adding-google-play-services-to-your-cordova-application)
-
-More Cordova plugins by Raymond Xie, [click here](http://floatinghotpot.github.io/).
-
-Will this project continue? Yes. This project will continue to be maintained and supported.
-
 ## Platform SDK supported ##
 
 * iOS, using AdMob SDK for iOS, v6.10.0
@@ -189,16 +157,35 @@ Forking and improving is welcome. Please ADD VALUE, instead of changing the name
 
 ## See Also ##
 
-Cordova/PhoneGap plugins for the world leading Mobile Ad services:
+Enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
 
 * [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced Google AdMob plugin, easy API and more features.
 * [mMedia Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mmedia), enhanced mMedia plugin, support impressive video Ad.
-* [iAd Plugin](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
-* [FlurryAds Plugin](https://github.com/floatinghotpot/cordova-plugin-flurry), Yahoo Flurry Ads service.
 * [MoPub Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mopub), MobPub Ads service.
 * [MobFox Plugin Pro](https://github.com/floatinghotpot/cordova-mobfox-pro), enhanced MobFox plugin, support video Ad and many other Ad network with server-side integration.
+* [iAd Plugin](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
+* [FlurryAds Plugin](https://github.com/floatinghotpot/cordova-plugin-flurry), Yahoo Flurry Ads service.
 
-More Cordova/PhoneGap plugins by Raymond Xie, [click here](http://floatinghotpot.github.io/).
+Highlights of Plugin Pro:
+- [x] Easy-to-use APIs. Can display Ad with single line of Js code.
+- [x] Actively maintained, prompt support.
+- [x] Support Banner, Interstitial and Video Ad.
+- [x] Multiple banner size, also support custom size.
+- [x] Most flexible, put banner at any position with overlap mode.
+- [x] Auto fit on orientation change.
+- [x] Fixed and overlapped mode.
+- [x] Timely update with latest SDK.
+- [x] Detailed documentation.
+- [x] Compatible with Intel XDK and Crosswalk.
+- [x] Compatible with IBM Worklight.
+
+News:
+- Recommended by Telerik in Verified Plugins Marketplace. [read more ...](http://plugins.telerik.com/plugin/admob)
+- Recommended by William SerGio in code project (20 Jun 2014), [read more ...](http://www.codeproject.com/Articles/788304/AdMob-Plugin-for-Latest-Version-of-PhoneGap-Cordov)
+- Recommended by Arne in Scirra Game Dev Forum (07 Aug, 2014), [read more ...](https://www.scirra.com/forum/plugin-admob-ads-for-crosswalk_t111940)
+- Recommended by Intel XDK team (08/22/2014), [read more ...](https://software.intel.com/en-us/html5/articles/adding-google-play-services-to-your-cordova-application)
+
+More plugins by Raymond Xie, [click here](http://floatinghotpot.github.io/).
 
 Project outsourcing and consulting service is also available. Please [contact us](http://floatinghotpot.github.io) if you have the business needs.
 
