@@ -4,9 +4,9 @@ AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScri
 
 ## Platform SDK supported ##
 
-* iOS, using AdMob SDK for iOS, v6.10.0
-* Android, using Google Play Service for Android, v4.4
-* Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.11
+* iOS, using AdMob SDK for iOS, v6.12.0
+* Android, using Google Play Service for Android, r19
+* Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.13
 
 ## How to use? ##
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
