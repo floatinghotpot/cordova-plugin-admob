@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	id="com.rjfun.cordova.plugin.admob"
-	version="2.1.3">
+	version="2.1.4">
       
     <name>AdMob</name>
 	<description>The most popular AdMob plugin for Cordova/PhoneGap, Intel XDK compatible. Support latest Google Play Services for Android, iOS and Windows Phone SDK. </description>
@@ -14,7 +14,7 @@
     <issue>https://github.com/floatinghotpot/cordova-plugin-admob/issues</issue>
 
 	<engines>
-	    <engine name="cordova" version=">=2.9" />
+	    <engine name="cordova" version=">=3.0" />
 	</engines>
 
     <js-module src="www/AdMob.js" name="AdMob">

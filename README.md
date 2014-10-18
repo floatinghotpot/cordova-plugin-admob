@@ -159,6 +159,23 @@ Android:
 
 ![ScreenShot](demo/admob-android.jpg)
 
+## Credits ##
+
+This plugin is mainly maintained by Raymond Xie, and also thanks to following contributors:
+
+* @jumin-zhu, added interstitial support for Android.
+* @fersingb, added interstitial support for iOS.
+* @AlexB71, improved WP8 support.
+* @ihshim523, added initial WP8 support.
+* And, bugfix patches from @chrisschaub, @jmelvin, @mbektchiev, @grahamkennery, @bastaware, @EddyVerbruggen, @codebykevin, @codebykevin, @zahhak.
+
+You can use this plugin for FREE. To support the project, donation is welcome.
+
+* Donate via PayPal to rjfun.mobile@gmail.com
+* Keep the 2% Ad traffic sharing code.
+
+Forking and improving is welcome. Please ADD VALUE, instead of changing the name only.
+
 ## See Also ##
 
 Cordova/PhoneGap plugins for the world leading Mobile Ad services:
