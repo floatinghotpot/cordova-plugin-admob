@@ -130,14 +130,6 @@ iPhone:
 
 ![ScreenShot](demo/admob-iphone.jpg)
 
-iPad, landscape:
-
-![ScreenShot](demo/admob-ipad-landscape.jpg)
-
-Android:
-
-![ScreenShot](demo/admob-android.jpg)
-
 ## Credits ##
 
 This plugin is mainly maintained by Raymond Xie, and also thanks to following contributors:
