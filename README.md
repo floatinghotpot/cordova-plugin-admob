@@ -159,22 +159,42 @@ Forking and improving is welcome. Please ADD VALUE, instead of changing the name
 
 Enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
 
-* [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced Google AdMob plugin, easy API and more features.
-* [mMedia Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mmedia), enhanced mMedia plugin, support impressive video Ad.
-* [MoPub Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mopub), MobPub Ads service.
-* [MobFox Plugin Pro](https://github.com/floatinghotpot/cordova-mobfox-pro), enhanced MobFox plugin, support video Ad and many other Ad network with server-side integration.
+* [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced Google AdMob plugin, easy API, with mediation to multiple Ad networks.
+* [mMedia Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mmedia), for Millennial Media Ad service, support impressive video Ad.
 * [iAd Plugin](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
-* [FlurryAds Plugin](https://github.com/floatinghotpot/cordova-plugin-flurry), Yahoo Flurry Ads service.
+* [FacebookAds Plugin](https://github.com/floatinghotpot/cordova-plugin-facebookads), for Facebook Audience Network Ads service.
+* [FlurryAds Plugin](https://github.com/floatinghotpot/cordova-plugin-flurry), for Yahoo Flurry Ads service.
+* [MoPub Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mopub), for MobPub Ads service.
+* [MobFox Plugin Pro](https://github.com/floatinghotpot/cordova-mobfox-pro), for MobFox Ads service, support video Ad and many other Ad network with server-side integration.
 
-Highlights of Plugin Pro:
-- [x] Easy-to-use API, can display Ad with single line of javascript code. 
-- [x] Actively maintained, prompt support. Timely update with latest SDK.
-- [x] Support Banner, Interstitial and Video Ad.
-- [x] Fixed and overlapped mode.
-- [x] Multiple banner size, most flexible, put banner at any position with overlap mode.
-- [x] Auto fit on orientation change.
-- [x] Compatible with Intel XDK and Crosswalk.
-- [x] Compatible with IBM Worklight.
+Especially, AdMob Plugin Pro is highly recommended:
+
+N-in-1 Advert Plugin for Cordova/PhoneGap. Maximize revenue with mediation to AdMob, DoubleClick, iAd, Flurry, Millennial Media, InMobi, Mobfox, and much more.
+
+Highlights:
+- [x] Easy-to-use: Can display Ad with single line of Js code.
+- [x] Powerful: Support banner, interstitial, and video Ad.
+- [x] Max revenue: Support mediation with up to 8 leading mobile Ad services.
+- [x] Multi-size: Multiple banner size, also support custom size.
+- [x] Flexible: Fixed and overlapped mode, put banner at any position with overlap mode.
+- [x] Smart: Auto fit on orientation change.
+- [x] Up to date: Latest SDK and Android Google play services.
+- [x] Good support: Actively maintained, prompt response.
+
+Tested with:
+* [x] Cordova CLI, v3.0+ (do not use the buggy v3.4)
+* [x] Intel XDK, r1095+
+* [x] IBM Worklight, v6.2+
+
+Mediation with:
+* [x] AdMob
+* [x] DFP (DoubleClick for Publisher)
+* [x] Facebook Audience Network
+* [x] Flurry
+* [x] iAd
+* [x] InMobi
+* [x] Millennial Media
+* [x] MobFox
 
 News:
 - Recommended by Telerik in Verified Plugins Marketplace. [read more ...](http://plugins.telerik.com/plugin/admob)
