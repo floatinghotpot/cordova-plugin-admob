@@ -167,7 +167,7 @@ Enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
 * [MoPub Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mopub), for MobPub Ads service.
 * [MobFox Plugin Pro](https://github.com/floatinghotpot/cordova-mobfox-pro), for MobFox Ads service, support video Ad and many other Ad network with server-side integration.
 
-Especially, AdMob Plugin Pro is highly recommended:
+### [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro) is highly recommended. ###
 
 N-in-1 Advert Plugin for Cordova/PhoneGap. Maximize revenue with mediation to AdMob, DoubleClick, iAd, Flurry, Millennial Media, InMobi, Mobfox, and much more.
 
