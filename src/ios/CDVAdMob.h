@@ -37,7 +37,6 @@
 @property (assign) BOOL bannerIsInitialized;
 @property (assign) BOOL bannerShow;
 @property (assign) BOOL autoShow;
-
 @property (assign) BOOL autoShowBanner;
 @property (assign) BOOL autoShowInterstitial;
 

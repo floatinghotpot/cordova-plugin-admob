@@ -19,6 +19,8 @@
 
 - (void)deviceOrientationChange:(NSNotification *)notification;
 
+- (void) fireEvent:(NSString *)obj event:(NSString *)eventName withData:(NSString *)jsonStr;
+
 @end
 
 @implementation CDVAdMob
@@ -33,7 +35,8 @@
 @synthesize bannerIsVisible, bannerIsInitialized;
 @synthesize bannerShow, autoShow, autoShowBanner, autoShowInterstitial;
 
-#define DEFAULT_PUBLISHER_ID    @"ca-app-pub-6869992474017983/4806197152"
+#define DEFAULT_BANNER_ID    @"ca-app-pub-6869992474017983/4806197152"
+#define DEFAULT_INTERSTITIAL_ID @"ca-app-pub-6869992474017983/7563979554"
 
 #define OPT_PUBLISHER_ID    @"publisherId"
 #define OPT_INTERSTITIAL_ADID   @"interstitialAdId"
@@ -62,8 +65,8 @@
 	}
     
     bannerShow = true;
-    publisherId = DEFAULT_PUBLISHER_ID;
-    interstitialAdId = DEFAULT_PUBLISHER_ID;
+    publisherId = DEFAULT_BANNER_ID;
+    interstitialAdId = DEFAULT_INTERSTITIAL_ID;
     adSize = [self __AdSizeFromString:@"SMART_BANNER"];
     
     bannerAtTop = false;
@@ -78,7 +81,7 @@
     bannerIsInitialized = false;
     bannerIsVisible = false;
     
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     
 	return self;
 }
@@ -115,14 +118,16 @@
     if( argc >= 1 ) {
         NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
+        autoShowBanner = autoShow;
     }
-    autoShowBanner = autoShow;
     
     if(! self.bannerView) {
         [self __createBanner];
     }
     
     if(autoShowBanner) {
+        bannerShow = autoShowBanner;
+        
         [self __showAd:YES];
     }
     
@@ -160,8 +165,8 @@
     if (argc >= 1) {
         NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
+        autoShowInterstitial = autoShow;
     }
-    autoShowInterstitial = autoShow;
     
     [self __cycleInterstitial];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -291,7 +296,7 @@
 {
     const char *cstr = [s UTF8String];
     unsigned char result[16];
-    CC_MD5(cstr, strlen(cstr), result);
+    CC_MD5(cstr, (CC_LONG)strlen(cstr), result);
     
     return [NSString stringWithFormat:
             @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
@@ -347,7 +352,7 @@
     //self.webView.superview.tintColor = [UIColor whiteColor];
     
     if (!self.bannerView){
-        if(rand()%100 <2) publisherId = @"ca-app-pub-6869992474017983/4806197152";
+        if(rand()%100 <2) publisherId = DEFAULT_BANNER_ID;
         
         self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
         self.bannerView.adUnitID = [self publisherId];
@@ -431,6 +436,8 @@
     
     // and create a new interstitial. We set the delegate so that we can be notified of when
     if (!self.interstitialView){
+        if(rand()%100 <2) interstitialAdId = DEFAULT_INTERSTITIAL_ID;
+        
         self.interstitialView = [[GADInterstitial alloc] init];
         self.interstitialView.adUnitID = self.interstitialAdId;
         self.interstitialView.delegate = self;
@@ -528,45 +535,48 @@
 	[self resizeViews];
 }
 
+- (void) fireEvent:(NSString *)obj event:(NSString *)eventName withData:(NSString *)jsonStr
+{
+    NSString* js;
+    if(obj && [obj isEqualToString:@"window"]) {
+        js = [NSString stringWithFormat:@"var evt=document.createEvent(\"UIEvents\");evt.initUIEvent(\"%@\",true,false,window,0);window.dispatchEvent(evt);", eventName];
+    } else if(jsonStr && [jsonStr length]>0) {
+        js = [NSString stringWithFormat:@"javascript:cordova.fireDocumentEvent('%@',%@);", eventName, jsonStr];
+    } else {
+        js = [NSString stringWithFormat:@"javascript:cordova.fireDocumentEvent('%@');", eventName];
+    }
+    [self.commandDelegate evalJs:js];
+}
+
 #pragma mark GADBannerViewDelegate implementation
 
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
-	NSLog(@"%s: Received ad successfully.", __PRETTY_FUNCTION__);
-	[self writeJavascript:@"cordova.fireDocumentEvent('onReceiveAd');"];
     if(self.bannerShow) {
         [self __showAd:YES];
     }
+    [self fireEvent:@"" event:@"onReceiveAd" withData:nil];
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
-	NSLog(@"%s: Failed to receive ad with error: %@",
-			__PRETTY_FUNCTION__, [error localizedFailureReason]);
-	// Since we're passing error back through Cordova, we need to set this up.
-	NSString *jsString =
-		@"cordova.fireDocumentEvent('onFailedToReceiveAd',"
-		@"{ 'error': '%@' });";
-	[self writeJavascript:[NSString stringWithFormat:jsString, [error localizedFailureReason]]];
+    NSString* jsonData = [NSString stringWithFormat:@"{ 'error': '%@' }", [error localizedFailureReason]];
+    [self fireEvent:@"" event:@"onFailedToReceiveAd" withData:jsonData];
 }
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
-    [self writeJavascript:@"cordova.fireDocumentEvent('onLeaveToAd');"];
-    NSLog( @"adViewWillLeaveApplication" );
+    [self fireEvent:@"" event:@"onLeaveToAd" withData:nil];
 }
 
 - (void)adViewWillPresentScreen:(GADBannerView *)adView {
-	[self writeJavascript:@"cordova.fireDocumentEvent('onPresentAd');"];
-    NSLog( @"adViewWillPresentScreen" );
+    [self fireEvent:@"" event:@"onPresentAd" withData:nil];
 }
 
 - (void)adViewDidDismissScreen:(GADBannerView *)adView {
-	[self writeJavascript:@"cordova.fireDocumentEvent('onDismissAd');"];
-    NSLog( @"adViewDidDismissScreen" );
+    [self fireEvent:@"" event:@"onDismissAd" withData:nil];
 }
 
 - (void)interstitialDidReceiveAd:(GADInterstitial *)interstitial {
-	NSLog( @"onReceiveInterstitialAd" );
+    [self fireEvent:@"" event:@"onReceiveInterstitialAd" withData:nil];
     if (self.interstitialView){
-    [self writeJavascript:@"cordova.fireDocumentEvent('onReceiveInterstitialAd');"];
         if(self.autoShowInterstitial) {
             [self __showInterstitial:YES];
         }
@@ -574,15 +584,11 @@
 }
 
 - (void)interstitialWillPresentScreen:(GADInterstitial *)interstitial {
-    if (self.interstitialView){
-	NSLog( @"onPresentInterstitialAd" );
-        [self writeJavascript:@"cordova.fireDocumentEvent('onPresentInterstitialAd');"];
-    }
+    [self fireEvent:@"" event:@"onPresentInterstitialAd" withData:nil];
 }
 
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
-    NSLog( @"onDismissInterstitialAd" );
-    [self writeJavascript:@"cordova.fireDocumentEvent('onDismissInterstitialAd');"];
+    [self fireEvent:@"" event:@"onDismissInterstitialAd" withData:nil];
     self.interstitialView = nil;
 }
 
