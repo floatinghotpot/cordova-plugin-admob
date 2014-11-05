@@ -216,7 +216,7 @@ public class AdMob extends CordovaPlugin {
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.MATCH_PARENT);
-                    webView.addView(adViewLayout, params);
+                    webView.getRootView().addView(adViewLayout, params);
                 }
                 
                 bannerVisible = false;
