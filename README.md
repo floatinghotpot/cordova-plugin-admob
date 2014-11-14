@@ -4,8 +4,8 @@ AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScri
 
 ## Platform SDK supported ##
 
-* iOS, using AdMob SDK for iOS, v6.12.0
 * Android, using Google Play Service for Android, r19
+* iOS, using AdMob SDK for iOS, v6.12.0
 * Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.13
 
 ## How to use? ##
@@ -18,24 +18,6 @@ Or,
     cordova plugin add com.rjfun.cordova.plugin.admob
 
 Note: ensure you have a proper AdMob account and create an Id for your app.
-
-## Quick example with cordova CLI ##
-```c
-    cordova create <project_folder> com.<company_name>.<app_name> <AppName>
-    cd <project_folder>
-    cordova platform add android
-    cordova platform add ios
-
-    // cordova will handle dependency automatically
-    cordova plugin add com.rjfun.cordova.plugin.admob
-
-    // now remove the default www content, copy the demo html file to www
-    rm -r www/*;
-    cp plugins/com.rjfun.cordova.plugin.admob/test/index.html www/
-
-    cordova prepare; cordova run android; cordova run ios;
-    // or import into Xcode / eclipse
-```
 
 ## Javascript API ##
 
@@ -54,73 +36,8 @@ showInterstitialAd();
 ```
 
 ## Example code ##
-Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
-```javascript
-     function onDeviceReady() {
-        initAd();
 
-        // display a banner at startup
-        window.plugins.AdMob.createBannerView();
-        
-        // prepare the interstitial
-        window.plugins.AdMob.createInterstitialView();
-        
-        // somewhere else, show the interstital, not needed if set autoShow = true
-        window.plugins.AdMob.showInterstitialAd();
-    }
-    function initAd(){
-        if ( window.plugins && window.plugins.AdMob ) {
-    	    var ad_units = {
-				ios : {
-					banner: 'ca-app-pub-xxx/4806197152',
-					interstitial: 'ca-app-pub-xxx/7563979554'
-				},
-				android : {
-					banner: 'ca-app-pub-xxx/9375997553',
-					interstitial: 'ca-app-pub-xxx/1657046752'
-				},
-				wp8 : {
-					banner: 'ca-app-pub-xxx/9375997559',
-					interstitial: 'ca-app-pub-xxx/1657046759'
-				}
-    	    };
-    	    var admobid = "";
-    	    if( /(android)/i.test(navigator.userAgent) ) {
-    	    	admobid = ad_units.android;
-    	    } else if(/(iphone|ipad)/i.test(navigator.userAgent)) {
-    	    	admobid = ad_units.ios;
-    	    } else {
-    	    	admobid = ad_units.wp8;
-    	    }
-            
-            window.plugins.AdMob.setOptions( {
-                publisherId: admobid.banner,
-                interstitialAdId: admobid.interstitial,
-                bannerAtTop: false, // set to true, to put banner at top
-                overlap: false, // set to true, to allow banner overlap webview
-                offsetTopBar: false, // set to true to avoid ios7 status bar overlap
-                isTesting: false, // receiving test ad
-                autoShow: true // auto show interstitial ad when loaded
-            });
-
-            registerAdEvents();
-            
-        } else {
-            alert( 'admob plugin not ready' );
-        }
-    }
-	// optional, in case respond to events
-    function registerAdEvents() {
-    	document.addEventListener('onReceiveAd', function(){});
-        document.addEventListener('onFailedToReceiveAd', function(data){});
-        document.addEventListener('onPresentAd', function(){});
-        document.addEventListener('onDismissAd', function(){ });
-        document.addEventListener('onLeaveToAd', function(){ });
-        document.addEventListener('onReceiveInterstitialAd', function(){ });
-        document.addEventListener('onPresentInterstitialAd', function(){ });
-        document.addEventListener('onDismissInterstitialAd', function(){ });
-    }
-```
+Check the [test/index.html] (https://github.com/floatinghotpot/cordova-plugin-admob/blob/master/test/index.html).
 
 See the working example code in [demo under test folder](test/index.html), and here are some screenshots.
  
@@ -149,7 +66,7 @@ Forking and improving is welcome. Please ADD VALUE, instead of changing the name
 
 ## See Also ##
 
-Enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
+More enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
 
 * [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced Google AdMob plugin, easy API, with mediation to multiple Ad networks.
 * [mMedia Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mmedia), for Millennial Media Ad service, support impressive video Ad.
@@ -159,7 +76,7 @@ Enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
 * [MoPub Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mopub), for MobPub Ads service.
 * [MobFox Plugin Pro](https://github.com/floatinghotpot/cordova-mobfox-pro), for MobFox Ads service, support video Ad and many other Ad network with server-side integration.
 
-### [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro) is highly recommended. ###
+### [AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro) is more recommended. ###
 
 N-in-1 Advert Plugin for Cordova/PhoneGap. Maximize revenue with mediation to AdMob, DoubleClick, iAd, Flurry, Millennial Media, InMobi, Mobfox, and much more.
 
