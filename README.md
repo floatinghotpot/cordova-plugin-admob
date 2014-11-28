@@ -5,7 +5,7 @@ AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScri
 ## Platform SDK supported ##
 
 * Android, using Google Play Service for Android, r19
-* iOS, using AdMob SDK for iOS, v6.12.0
+* iOS, using AdMob SDK for iOS, v6.12.2
 * Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.13
 
 ## How to use? ##
@@ -64,24 +64,12 @@ You can use this plugin for FREE. To support the project, donation is welcome.
 
 Forking and improving is welcome. Please ADD VALUE, instead of changing the name only.
 
-## See Also ##
+## AdMob PluginPro ##
 
-More enhanced Cordova/PhoneGap plugins for the world leading Mobile Ad services:
-
-* [AdMob Plugin Pro](https://github.com/floatinghotpot/cordova-admob-pro), enhanced Google AdMob plugin, easy API, with mediation to multiple Ad networks.
-* [mMedia Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mmedia), for Millennial Media Ad service, support impressive video Ad.
-* [iAd Plugin](https://github.com/floatinghotpot/cordova-plugin-iad), Apple iAd service. 
-* [FacebookAds Plugin](https://github.com/floatinghotpot/cordova-plugin-facebookads), for Facebook Audience Network Ads service.
-* [FlurryAds Plugin](https://github.com/floatinghotpot/cordova-plugin-flurry), for Yahoo Flurry Ads service.
-* [MoPub Plugin Pro](https://github.com/floatinghotpot/cordova-plugin-mopub), for MobPub Ads service.
-* [MobFox Plugin Pro](https://github.com/floatinghotpot/cordova-mobfox-pro), for MobFox Ads service, support video Ad and many other Ad network with server-side integration.
-
-### [AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro) is more recommended. ###
-
-N-in-1 Advert Plugin for Cordova/PhoneGap. Maximize revenue with mediation to AdMob, DoubleClick, iAd, Flurry, Millennial Media, InMobi, Mobfox, and much more.
+Totally re-designed ### [AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro) is more recommended. ###
 
 Highlights:
-- [x] Easy-to-use: Can display Ad with single line of Js code.
+- [x] Easy-to-use: Display Ad with single line of javascript code.
 - [x] Powerful: Support banner, interstitial, and video Ad.
 - [x] Max revenue: Support mediation with up to 8 leading mobile Ad services.
 - [x] Multi-size: Multiple banner size, also support custom size.
@@ -90,8 +78,13 @@ Highlights:
 - [x] Up to date: Latest SDK and Android Google play services.
 - [x] Good support: Actively maintained, prompt response.
 
+Platforms supported:
+- [x] Android
+- [x] iOS
+- [x] Windows Phone
+
 Tested with:
-* [x] Cordova CLI, v3.0+ (do not use the buggy v3.4)
+* [x] Cordova CLI, v3.0+
 * [x] Intel XDK, r1095+
 * [x] IBM Worklight, v6.2+
 
@@ -111,7 +104,19 @@ News:
 - Recommended by Arne in Scirra Game Dev Forum (07 Aug, 2014), [read more ...](https://www.scirra.com/forum/plugin-admob-ads-for-crosswalk_t111940)
 - Recommended by Intel XDK team (08/22/2014), [read more ...](https://software.intel.com/en-us/html5/articles/adding-google-play-services-to-your-cordova-application)
 
-More plugins by Raymond Xie, [click here](http://floatinghotpot.github.io/).
+## See Also ##
 
-Project outsourcing and consulting service is also available. Please [contact us](http://floatinghotpot.github.io) if you have the business needs.
+Ad PluginPro series for the world leading Mobile Ad services:
+
+* [GoogleAds PluginPro](https://github.com/floatinghotpot/cordova-admob-pro), for Google AdMob/DoubleClick.
+* [iAd PluginPro](https://github.com/floatinghotpot/cordova-iad-pro), for Apple iAd. 
+* [FacebookAds PluginPro](https://github.com/floatinghotpot/cordova-plugin-facebookads), for Facebook Audience Network.
+* [FlurryAds PluginPro](https://github.com/floatinghotpot/cordova-plugin-flurry), for Flurry Ads.
+* [mMedia PluginPro](https://github.com/floatinghotpot/cordova-plugin-mmedia), for Millennial Meida.
+* [MobFox PluginPro](https://github.com/floatinghotpot/cordova-mobfox-pro), for MobFox.
+* [MoPub PluginPro](https://github.com/floatinghotpot/cordova-plugin-mopub), for MoPub.
+
+More Cordova/PhoneGap plugins by Raymond Xie, [find them in plugin registry](http://plugins.cordova.io/#/search?search=rjfun).
+
+Project outsourcing and consulting service is also available. Please [contact us](mailto:rjfun.mobile@gmail.com) if you have the business needs.
 
