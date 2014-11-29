@@ -11,10 +11,6 @@ AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScri
 ## How to use? ##
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
-    cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob.git
-    
-Or,
-
     cordova plugin add com.rjfun.cordova.plugin.admob
 
 Note: ensure you have a proper AdMob account and create an Id for your app.
@@ -66,7 +62,7 @@ Forking and improving is welcome. Please ADD VALUE, instead of changing the name
 
 ## AdMob PluginPro ##
 
-Totally re-designed ### [AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro) is more recommended. ###
+Totally re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)** is more recommended.
 
 Highlights:
 - [x] Easy-to-use: Display Ad with single line of javascript code.
@@ -75,6 +71,7 @@ Highlights:
 - [x] Multi-size: Multiple banner size, also support custom size.
 - [x] Flexible: Fixed and overlapped mode, put banner at any position with overlap mode.
 - [x] Smart: Auto fit on orientation change.
+- [x] Same API: Exactly same API with other Ad plugins, easy to switch from one Ad service to another.
 - [x] Up to date: Latest SDK and Android Google play services.
 - [x] Good support: Actively maintained, prompt response.
 
@@ -84,9 +81,10 @@ Platforms supported:
 - [x] Windows Phone
 
 Tested with:
-* [x] Cordova CLI, v3.0+
+* [x] Apache Cordova CLI, v3.0+
 * [x] Intel XDK, r1095+
 * [x] IBM Worklight, v6.2+
+* [x] Google Mobile Chrome App, v0.5.0+
 
 Mediation with:
 * [x] AdMob
@@ -116,7 +114,9 @@ Ad PluginPro series for the world leading Mobile Ad services:
 * [MobFox PluginPro](https://github.com/floatinghotpot/cordova-mobfox-pro), for MobFox.
 * [MoPub PluginPro](https://github.com/floatinghotpot/cordova-plugin-mopub), for MoPub.
 
+All Ad plugins implemented with exactly same API, so very easy to switch from one Ad service to another. 
+
 More Cordova/PhoneGap plugins by Raymond Xie, [find them in plugin registry](http://plugins.cordova.io/#/search?search=rjfun).
 
-Project outsourcing and consulting service is also available. Please [contact us](mailto:rjfun.mobile@gmail.com) if you have the business needs.
+Customization, project outsourcing and consulting service is also available. Please [contact us](mailto:rjfun.mobile@gmail.com) if you have the business needs.
 
