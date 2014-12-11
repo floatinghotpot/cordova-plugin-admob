@@ -85,6 +85,7 @@ Tested with:
 * [x] Intel XDK, r1095+
 * [x] IBM Worklight, v6.2+
 * [x] Google Mobile Chrome App, v0.5.0+
+* [x] Adobe PhoneGap Build, since 2014.12.9
 
 Mediation with:
 * [x] AdMob
