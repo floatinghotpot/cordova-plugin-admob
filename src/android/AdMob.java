@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.os.Bundle;
 
 import java.util.Iterator;
@@ -94,10 +95,20 @@ public class AdMob extends CordovaPlugin {
 	private boolean isGpsAvailable = false;
 
     @Override
-	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+	public void initialize(CordovaInterface cordova, final CordovaWebView webView) {
     	super.initialize(cordova, webView);
     	isGpsAvailable = (GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordova.getActivity()) == ConnectionResult.SUCCESS);
     	Log.w(LOGTAG, String.format("isGooglePlayServicesAvailable: %s",  isGpsAvailable?"true":"false"));
+
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                webView.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    1.0F));
+            }
+        });
 	}
 	
     /**
