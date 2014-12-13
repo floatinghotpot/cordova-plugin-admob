@@ -200,12 +200,11 @@ public class AdMob extends CordovaPlugin {
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
-            	
+            	boolean adViewWasNull = (adView == null);
                 if(adView == null) {
                     adView = new AdView(cordova.getActivity());
                     adView.setAdUnitId(publisherId);
                     adView.setAdSize(adSize);
-                    adView.setAdListener(new BannerListener());
                 }
                 if (adView.getParent() != null) {
                     ((ViewGroup)adView.getParent()).removeView(adView);
@@ -221,7 +220,7 @@ public class AdMob extends CordovaPlugin {
                 
                 bannerVisible = false;
                 adView.loadAd( buildAdRequest() );
-                
+                if (adViewWasNull) adView.setAdListener (new BannerListener());
                 if(autoShowBanner) {
                 	executeShowAd(true, null);
                 }
@@ -281,9 +280,8 @@ public class AdMob extends CordovaPlugin {
             public void run() {
                 interstitialAd = new InterstitialAd(cordova.getActivity());
                 interstitialAd.setAdUnitId(interstialAdId);
+                interstitialAd.loadAd(buildAdRequest());
                 interstitialAd.setAdListener(new InterstitialListener());
-                
-                interstitialAd.loadAd( buildAdRequest() );
                 delayCallback.success();
             }
         });
