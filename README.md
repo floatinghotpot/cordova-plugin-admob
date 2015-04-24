@@ -11,7 +11,7 @@ AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScri
 ## How to use? ##
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
-    cordova plugin add com.rjfun.cordova.plugin.admob
+    cordova plugin add cordova-plugin-admob
 
 Note: ensure you have a proper AdMob account and create an Id for your app.
 
