@@ -52,16 +52,6 @@ Tested with:
 * [x] Adobe PhoneGap Build, since 2014.12.9
 * [x] Ionic
 
-Mediation with:
-* [x] AdMob
-* [x] DFP (DoubleClick for Publisher)
-* [x] Facebook Audience Network
-* [x] Flurry
-* [x] iAd
-* [x] InMobi
-* [x] Millennial Media
-* [x] MobFox
-
 ## See Also ##
 
 Ad PluginPro series for the world leading Mobile Ad services:
@@ -73,6 +63,7 @@ Ad PluginPro series for the world leading Mobile Ad services:
 * [mMedia PluginPro](https://github.com/floatinghotpot/cordova-plugin-mmedia), for Millennial Meida.
 * [MobFox PluginPro](https://github.com/floatinghotpot/cordova-mobfox-pro), for MobFox.
 * [MoPub PluginPro](https://github.com/floatinghotpot/cordova-plugin-mopub), for MoPub.
+* [SmartAdServer PluginPro](https://github.com/floatinghotpot/cordova-smart-adserver), for Smart AdServer.
 
 All Ad plugins implemented with exactly same API, so very easy to switch from one Ad service to another. 
 
