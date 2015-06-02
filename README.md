@@ -12,7 +12,7 @@ This plugin is mainly maintained by Raymond Xie, and also thanks to following co
 
 ## Important Notice ##
 
-This plugin is NO longer evolved, please use the re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)**.
+As the re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)** is proved much better and more than welcome by Cordova APP/game developers. This plugin will NO be evolved any more, please use the pro version instead.
 
 And, as announced by Cordova team, the plugins registry is being migrated to npm, you can find [all plugins by Raymond here](https://www.npmjs.com/~floatinghotpot).
 
