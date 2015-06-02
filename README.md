@@ -2,14 +2,6 @@
 
 AdMob Cordova Plugin, provides a way to request AdMob ads natively from JavaScript. 
 
-## Platform SDK supported ##
-
-* Android, using Google Play Service for Android, r19
-* iOS, using AdMob SDK for iOS, v6.12.2
-* Windows Phone, using AdMob SDK for Windows Phone 8, v6.5.13
-
-## Credits ##
-
 This plugin is mainly maintained by Raymond Xie, and also thanks to following contributors:
 
 * @jumin-zhu, added interstitial support for Android.
@@ -18,15 +10,19 @@ This plugin is mainly maintained by Raymond Xie, and also thanks to following co
 * @AlexB71, improved WP8 support.
 * And, bugfix patches from @chrisschaub, @jmelvin, @mbektchiev, @grahamkennery, @bastaware, @EddyVerbruggen, @codebykevin, @codebykevin, @zahhak.
 
-Forking and improving is welcome. Please ADD VALUE, instead of changing the name only.
+## Important Notice ##
 
-## Notice ##
+This plugin is NO longer evolved, please use the re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)**.
 
-This plugin is no longer evolved, please use the totally re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)**.
+And, as announced by Cordova team, the plugins registry is being migrated to npm, you can find [all plugins by Raymond here](https://www.npmjs.com/~floatinghotpot).
 
 ![ScreenShot](https://github.com/floatinghotpot/cordova-plugin-admob/raw/npm/demo/pro_vs_basic.png)
 
 ## AdMob PluginPro ##
+
+```
+cordova plugin add cordova-plugin-admobpro
+```
 
 Highlights:
 - [x] Easy-to-use: Display Ad with single line of javascript code.
@@ -67,7 +63,7 @@ Ad PluginPro series for the world leading Mobile Ad services:
 
 All Ad plugins implemented with exactly same API, so very easy to switch from one Ad service to another. 
 
-More Cordova/PhoneGap plugins by Raymond Xie, [find them in plugin registry](http://plugins.cordova.io/#/search?search=rjfun).
+More Cordova/PhoneGap plugins by Raymond Xie, [find them in plugin registry](http://plugins.cordova.io/#/search?search=rjfun), or [find them in npm](https://www.npmjs.com/~floatinghotpot).
 
 Customization, project outsourcing and consulting service is also available. Please [contact us](mailto:rjfun.mobile@gmail.com) if you have the business needs.
 
