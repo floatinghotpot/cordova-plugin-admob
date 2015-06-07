@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	id="com.rjfun.cordova.plugin.admob"
-	version="2.1.7">
+	version="2.2.0">
       
     <name>AdMob</name>
 	<description>The most popular AdMob plugin for Cordova/PhoneGap, Intel XDK compatible. Support latest Google Play Services for Android, iOS and Windows Phone SDK. </description>
