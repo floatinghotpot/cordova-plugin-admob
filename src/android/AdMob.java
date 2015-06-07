@@ -394,9 +394,9 @@ public class AdMob extends CordovaPlugin {
                         if (adViewLayout == null) {
                             adViewLayout = new RelativeLayout(cordova.getActivity());
                             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                            if (CORDOVA_MIN_4) {
-                                ((ViewGroup) webView.getView().getParent()).addView(adViewLayout, params);
-                            } else {
+                            try {
+                                ((ViewGroup)(((View)webView.getClass().getMethod("getView").invoke(webView)).getParent())).addView(adViewLayout, params);
+                            } catch (Exception e) {
                                 ((ViewGroup) webView).addView(adViewLayout, params);
                             }
                         }
@@ -405,16 +405,16 @@ public class AdMob extends CordovaPlugin {
                         adViewLayout.bringToFront();
                     } else {
                         if (CORDOVA_MIN_4) {
-                            ViewGroup wvParentView = (ViewGroup) webView.getView().getParent();
+                            ViewGroup wvParentView = (ViewGroup)getWebView().getParent();
                             if (parentView == null) {
                                 parentView = new LinearLayout(webView.getContext());
                             }
                             if (wvParentView != null && wvParentView != parentView) {
-                                wvParentView.removeView(webView.getView());
+                                wvParentView.removeView(getWebView());
                                 ((LinearLayout) parentView).setOrientation(LinearLayout.VERTICAL);
                                 parentView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.0F));
-                                webView.getView().setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0F));
-                                parentView.addView(webView.getView());
+                                getWebView().setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0F));
+                                parentView.addView(getWebView());
                                 cordova.getActivity().setContentView(parentView);
                             }
 
@@ -565,6 +565,14 @@ public class AdMob extends CordovaPlugin {
             adViewLayout = null;
         }
         super.onDestroy();
+    }
+
+    private View getWebView() {
+        try {
+            return (View) webView.getClass().getMethod("getView").invoke(webView);
+        } catch (Exception e) {
+            return (View) webView;
+        }
     }
 
     /**
