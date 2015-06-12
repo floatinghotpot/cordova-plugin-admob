@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-admob",
-  "version": "2.1.9",
+  "version": "2.2.0",
   "description": "Cordova plugin for AdMob Ads",
   "cordova": {
     "id": "cordova-plugin-admob",
