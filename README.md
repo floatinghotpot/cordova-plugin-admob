@@ -20,4 +20,10 @@ This plugin was mainly maintained by Raymond Xie, and also thanks to following c
 * @AlexB71, improved WP8 support.
 * And, bugfix patches from @chrisschaub, @jmelvin, @mbektchiev, @grahamkennery, @bastaware, @EddyVerbruggen, @codebykevin, @codebykevin, @zahhak.
 
+## More
+
+More free projects by Raymond Xie, find them on npm: 
+https://www.npmjs.com/~floatinghotpot
+
+
 
