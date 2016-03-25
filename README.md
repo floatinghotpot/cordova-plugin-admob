@@ -1,6 +1,10 @@
-## Important Notice ##
+## Cordova Plugin for Google AdMob
 
-This plugin will NOT be evolved any more, please use the pro version instead. The totoally re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)** is proved much better and more than welcome by Cordova APP/game developers. 
+Simple and easy choice to monetize your HTML5 hybrid apps and games.
+
+This plugin is quite stable, and will NOT be evolved any more. 
+
+If you want to use more powerful and new features, please use the pro version instead. The totoally re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)** is proved much better and more than welcome by Cordova APP/game developers. 
 
 As announced by Cordova team, the plugins registry is being migrated to npm, you can find [all plugins by Raymond here](https://www.npmjs.com/~floatinghotpot).
 
