@@ -2,7 +2,7 @@
 
 Simple and easy choice to monetize your HTML5 hybrid apps and games.
 
-This plugin is quite stable, and will NOT be evolved any more. 
+This plugin is quite stable, and will not be evolved any more. 
 
 If you want to use more powerful and new features, please use the pro version instead. The totoally re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)** is proved much better and more than welcome by Cordova APP/game developers. 
 
