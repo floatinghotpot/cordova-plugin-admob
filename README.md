@@ -52,9 +52,10 @@ This plugin was mainly maintained by Raymond Xie, and also thanks to following c
 * @AlexB71, improved WP8 support.
 * And, bugfix patches from @chrisschaub, @jmelvin, @mbektchiev, @grahamkennery, @bastaware, @EddyVerbruggen, @codebykevin, @codebykevin, @zahhak.
 
-If you feel this project is useful and wanna support it, any amount donation via PayPal is welcome. Or, just keep sharing 2% of the ad traffic. If you are unhappy with the ad traffic sharing, simply fork and remove the 2 lines of code:
+If you feel this project is useful and wanna support it, any amount donation via PayPal is welcome. Or, just keep sharing very little of the revenue by redirect 2% the ad traffic. (If you are unhappy with the ad traffic sharing, simply fork and remove the 2 lines of code.)
 * https://github.com/floatinghotpot/cordova-plugin-admob/blob/master/src/android/AdMob.java#L191
 * https://github.com/floatinghotpot/cordova-plugin-admob/blob/master/src/ios/CDVAdMob.m#L355
+
 
 ## More
 
