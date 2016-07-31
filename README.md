@@ -1,8 +1,24 @@
-## Cordova Plugin for AdMob
+## Cordova Plugin for AdMob, Open Source Project
+
+The FASTEST and EASIEST TO USE Cordova Admob plugin for Android, iOS and Windows phone.
 
 Simple and easy plugin to monetize your HTML5 hybrid apps and games.
 
 Usage:
+- Create your app
+
+```bash
+cordova create hallo com.example.hello HelloWorld
+cd hallo
+cordova platform add android
+```
+
+- Add the plugin
+```bash
+cordova plugin add cordova-plugin-admob
+```
+
+OR
 ```bash
 cordova plugin add https://github.com/floatinghotpot/cordova-plugin-admob
 ```
@@ -52,10 +68,7 @@ This plugin was mainly maintained by Raymond Xie, and also thanks to following c
 * @AlexB71, improved WP8 support.
 * And, bugfix patches from @chrisschaub, @jmelvin, @mbektchiev, @grahamkennery, @bastaware, @EddyVerbruggen, @codebykevin, @codebykevin, @zahhak.
 
-If you feel this project is useful and wanna support it, any amount donation via PayPal is welcome. Or, just keep sharing very little of the revenue by redirect 2% the ad traffic. (If you are unhappy with the ad traffic sharing, simply fork and remove the 2 lines of code.)
-* https://github.com/floatinghotpot/cordova-plugin-admob/blob/master/src/android/AdMob.java#L191
-* https://github.com/floatinghotpot/cordova-plugin-admob/blob/master/src/ios/CDVAdMob.m#L355
-
+This project is fully open source, and no ad traffic sharing any more.
 
 ## More
 
