@@ -48,7 +48,7 @@ Example Code:
 
 See full index.html: https://github.com/floatinghotpot/cordova-plugin-admob/blob/master/test/index.html
 
-Note: This plugin is quite stable, and will not be evolved any more. 
+Note: This plugin is quite stable, and will not be evolved any more, except upgrade AdMob SDK.
 
 ## AdMob Basic vs Pro
 
