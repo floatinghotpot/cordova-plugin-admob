@@ -198,8 +198,8 @@ public class AdMob extends CordovaPlugin {
      * @return A PluginResult representing whether or not the banner was created
      *         successfully.
      */
-    private PluginResult executeCreateBannerView(JSONObject options, final CallbackContext callbackContext) {
-
+    private PluginResult executeCreateBannerView(JSONObject options, CallbackContext callbackContext) {
+        final CallbackContext delayCallback = callbackContext;
         this.setOptions( options );
         autoShowBanner = autoShow;
 
@@ -230,8 +230,8 @@ public class AdMob extends CordovaPlugin {
                 //}
                 Log.w("banner", publisherId);
 
-                if(callbackContext!=null)
-                  callbackContext.success();
+                if(delayCallback!=null)
+                  delayCallback.success();
             }
         });
 
