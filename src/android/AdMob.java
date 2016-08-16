@@ -230,7 +230,7 @@ public class AdMob extends CordovaPlugin {
                 //}
                 Log.w("banner", publisherId);
 
-                if(delayCallback!=null)
+                if(callbackContext!=null)
                   callbackContext.success();
             }
         });
