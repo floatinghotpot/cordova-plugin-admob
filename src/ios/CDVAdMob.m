@@ -124,9 +124,9 @@ object:nil];
 
     bannerShow = true;
 
-    publisherId = [self getTestBannerId];
+    publisherId = nil;
 
-    interstitialAdId = [self getTestInterstitialId];
+    interstitialAdId = nil;
 
     adSize = [self __AdSizeFromString:@"SMART_BANNER"];
 
@@ -695,9 +695,7 @@ return kGADAdSizeInvalid;
 
     
 
-    if (!self.bannerView){
-
-        if(publisherId == nil) publisherId = [self getTestBannerId];
+    if (!self.bannerView && publisherId != nil){
 
         self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
 
@@ -856,9 +854,7 @@ self.bannerIsVisible = NO;
 
     // and create a new interstitial. We set the delegate so that we can be notified of when
 
-    if (!self.interstitialView){
-
-        if(interstitialAdId == nil) interstitialAdId = [self getTestInterstitialId];
+    if (!self.interstitialView && interstitialAdId != nil){
 
         self.interstitialView = [[GADInterstitial alloc] init];
 
@@ -1166,15 +1162,6 @@ if( self.bannerView ) {
 
 }
 
-- (NSString*) getTestBannerId
-{
-  return @"ca-app-pub-6869992474017983/4806197152";
-}
-
-- (NSString*) getTestInterstitialId
-{
-  return @"ca-app-pub-6869992474017983/7563979554";
-}
 
 #pragma mark Cleanup
 
