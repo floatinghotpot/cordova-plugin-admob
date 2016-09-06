@@ -203,8 +203,7 @@ public class AdMob extends CordovaPlugin {
         this.setOptions( options );
         autoShowBanner = autoShow;
 
-        if(publisherId==null || publisherId=="") publisherId = getTempBanner();
-        if(this.publisherId.indexOf("xxxx") > 0){
+        if(publisherId==null || publisherId=="" || publisherId.indexOf("xxxx") > 0){
             Log.e("banner", "Please put your admob id into the javascript code. No ad to display.");
             return null;
         }
@@ -277,8 +276,7 @@ public class AdMob extends CordovaPlugin {
         this.setOptions( options );
         autoShowInterstitial = autoShow;
 
-        if(interstialAdId==null || interstialAdId=="") interstialAdId = getTempInterstitial();
-        if(this.interstialAdId.indexOf("xxxx") > 0){
+        if(interstialAdId==null || interstialAdId=="" || interstialAdId.indexOf("xxxx") > 0){
             Log.e("interstitial", "Please put your admob id into the javascript code. No ad to display.");
             return null;
         }
@@ -657,13 +655,6 @@ public class AdMob extends CordovaPlugin {
                 break;
         }
         return errorReason;
-    }
-
-    private String getTempInterstitial(){
-        return "ca-app-pub-6869992474017983/1657046752";
-    }
-    private String getTempBanner(){
-        return "ca-app-pub-6869992474017983/9375997553";
     }
 
     public static final String md5(final String s) {

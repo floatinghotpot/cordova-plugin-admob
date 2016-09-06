@@ -260,7 +260,7 @@ namespace Cordova.Extension.Commands
 			
 			if (bannerAd == null)
 			{
-                if(publisherId == null || publisherId == "") publisherId = getTestBanner();
+                if(publisherId == null || publisherId == "") return;
 				
 				// Asynchronous UI threading call
 				Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -393,7 +393,7 @@ namespace Cordova.Extension.Commands
 			
 			if (interstitialAd == null)
 			{
-				if(interstitialAdId == null || interstitialAdId=="") interstitialAdId = getTestInterstitial();
+				if(interstitialAdId == null || interstitialAdId=="") return;
 				
 				// Asynchronous UI threading call
 				Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -1148,15 +1148,6 @@ namespace Cordova.Extension.Commands
 			
 			return AdFormats.SmartBanner;
 		}
-      
-        private string getTestBanner()
-        {
-          return "ca-app-pub-6869992474017983/8878394753";
-        }
-        private string getTestInterstitial()
-        {
-          return "ca-app-pub-6869992474017983/1355127956";
-        }
 
         /// <summary>
 		/// Parses simple jason object into a map of key value pairs
