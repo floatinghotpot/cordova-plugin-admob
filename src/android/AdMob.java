@@ -624,6 +624,8 @@ public class AdMob extends CordovaPlugin {
     public static AdSize adSizeFromString(String size) {
         if ("BANNER".equals(size)) {
             return AdSize.BANNER;
+        } else if ("LARGE_BANNER".equals(size)) {
+            return AdSize.LARGE_BANNER;
         } else if ("IAB_MRECT".equals(size)) {
             return AdSize.MEDIUM_RECTANGLE;
         } else if ("IAB_BANNER".equals(size)) {
