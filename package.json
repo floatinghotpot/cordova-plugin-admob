@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-admob",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "The FASTEST and EASIEST TO USE Cordova Admob plugin for Android, iOS and Windows phone. Pure open source without any traffic sharing. Allows preloading and automatic loading of interstitials and banners plus more. Works with Cordova, Phonegap, Intel XDK/Crosswalk, Ionic, Meteor and more.",
   "cordova": {
     "id": "cordova-plugin-admob",
