@@ -34,9 +34,12 @@ import java.util.Random;
  * The Google AdMob SDK is a dependency for this plugin.
  */
 public class AdMob extends CordovaPlugin {
+
+    private static final String EMPTY = "";
+
     /** Common tag used for logging statements. */
     private static final String LOGTAG = "AdMob";
-    private static final String DEFAULT_PUBLISHER_ID = "";
+    private static final String DEFAULT_PUBLISHER_ID = EMPTY;
 
     private static final boolean CORDOVA_MIN_4 = Integer.valueOf(CordovaWebView.CORDOVA_VERSION.split("\\.")[0]) >= 4;
 
@@ -75,7 +78,7 @@ public class AdMob extends CordovaPlugin {
 
     private String publisherId = DEFAULT_PUBLISHER_ID;
     private AdSize adSize = AdSize.SMART_BANNER;
-    private String interstialAdId = "";
+    private String interstialAdId = EMPTY;
     /** Whether or not the ad should be positioned at top or bottom of screen. */
     private boolean bannerAtTop = false;
     /** Whether or not the banner will overlap the webview instead of push it up or down */
@@ -203,7 +206,7 @@ public class AdMob extends CordovaPlugin {
         this.setOptions( options );
         autoShowBanner = autoShow;
 
-        if(publisherId==null || publisherId=="" || publisherId.indexOf("xxxx") > 0){
+        if(publisherId==null || publisherId.equals(EMPTY) || publisherId.indexOf("xxxx") > 0){
             Log.e("banner", "Please put your admob id into the javascript code. No ad to display.");
             return null;
         }
@@ -276,7 +279,7 @@ public class AdMob extends CordovaPlugin {
         this.setOptions( options );
         autoShowInterstitial = autoShow;
 
-        if(interstialAdId==null || interstialAdId=="" || interstialAdId.indexOf("xxxx") > 0){
+        if(interstialAdId==null || interstialAdId.equals(EMPTY) || interstialAdId.indexOf("xxxx") > 0){
             Log.e("interstitial", "Please put your admob id into the javascript code. No ad to display.");
             return null;
         }
@@ -641,7 +644,7 @@ public class AdMob extends CordovaPlugin {
 
     /** Gets a string error reason from an error code. */
     public String getErrorReason(int errorCode) {
-        String errorReason = "";
+        String errorReason = EMPTY;
         switch(errorCode) {
             case AdRequest.ERROR_CODE_INTERNAL_ERROR:
                 errorReason = "Internal error";
@@ -675,6 +678,6 @@ public class AdMob extends CordovaPlugin {
 
         } catch (NoSuchAlgorithmException e) {
         }
-        return "";
+        return EMPTY;
     }
 }
