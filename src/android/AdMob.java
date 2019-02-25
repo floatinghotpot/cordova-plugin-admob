@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.ads.*;
 import com.google.android.gms.ads.mediation.admob.AdMobExtras;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.apache.cordova.*;
 import org.apache.cordova.PluginResult.Status;
@@ -94,7 +93,6 @@ public class AdMob extends CordovaPlugin {
     private boolean autoShowInterstitialTemp = false;		//if people call it when it's not ready
 
     private boolean bannerVisible = false;
-    private boolean isGpsAvailable = false;
 
     SharedPreferences settings;
     SharedPreferences.Editor editor;
@@ -107,9 +105,6 @@ public class AdMob extends CordovaPlugin {
 
         settings = PreferenceManager.getDefaultSharedPreferences(this.cordova.getActivity().getApplicationContext());
         editor = settings.edit();
-
-        isGpsAvailable = (GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordova.getActivity()) == ConnectionResult.SUCCESS);
-        Log.w(LOGTAG, String.format("isGooglePlayServicesAvailable: %s", isGpsAvailable ? "true" : "false"));
     }
 
     /**
@@ -587,7 +582,6 @@ public class AdMob extends CordovaPlugin {
     @Override
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
-        isGpsAvailable = (GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordova.getActivity()) == ConnectionResult.SUCCESS);
         if (adView != null) {
             adView.resume();
         }
