@@ -50,6 +50,36 @@ See full index.html: https://github.com/floatinghotpot/cordova-plugin-admob/blob
 
 Note: This plugin is quite stable, and will not be evolved any more, except upgrade AdMob SDK.
 
+### Additional Android Manifest Configuration
+
+Recent versions of the Android Google Mobile Ads SDK [require to add the AdMob app ID into the Android manifest file.](https://ads-developers.googleblog.com/2018/10/announcing-v1700-of-android-google.html)
+
+This can be accomplished by [extending your Cordova `config.xml` as follows:](https://cordova.apache.org/docs/en/latest/plugin_ref/spec.html#config-file)
+
+```xml
+<widget ...>
+    [...]
+    <platform name="android">
+        [...]
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <!-- TODO: Replace with your real AdMob app ID -->
+            <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-################~##########"/>
+        </config-file>
+    </platform>
+    [...]
+</widget>
+```
+
+When using Google Ad Manager, use instead:
+
+```xml
+            <meta-data
+                android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+                android:value="true" />
+```
+
 ## AdMob Basic vs Pro
 
 If you want to use more powerful and new features, please use the pro version instead. The totoally re-designed **[AdMob PluginPro](https://github.com/floatinghotpot/cordova-admob-pro)** is proved much better and more than welcome by Cordova APP/game developers. 
